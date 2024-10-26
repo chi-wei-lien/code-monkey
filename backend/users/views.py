@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
+from users.serializers import UserSerializer
 from users.models import User
 
 def get_init_tokens(user):
@@ -31,14 +32,20 @@ def register(request):
     user.save()
     tokens = get_init_tokens(user)
     return JsonResponse({'username': username, 'tokens': tokens})
-
-
     
 @api_view(['GET'])
+def get_users(request):
+    users = User.objects.exclude(username='admin')
+    if request.user.is_authenticated:
+        users = users.exclude(username=request.user.username)
+    serializer = UserSerializer(users, many=True)
+    return JsonResponse({'data': serializer.data})
+
+@api_view(['GET'])
 def hello_world(request):
-    return JsonResponse({'success': True, 'data': 'hello world'})
+    return JsonResponse({'data': 'hello world'})
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def secret(request):
-    return JsonResponse({'success': True, 'data': "here's the secret"})
+    return JsonResponse({'data': "here's the secret"})
