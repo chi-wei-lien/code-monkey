@@ -8,6 +8,7 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (
@@ -17,13 +18,13 @@ const LoginPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setError("");
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const handleLogin = async () => {
-      await login(formData);
-      navigate("/");
+      await login(formData, () => navigate("/"), setError);
     };
     handleLogin();
   };
@@ -76,6 +77,7 @@ const LoginPage = () => {
         >
           Cancel
         </button>
+        {error && <div className="text-red-400">{error}</div>}
       </form>
     </div>
   );

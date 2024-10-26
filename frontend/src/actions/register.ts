@@ -16,11 +16,11 @@ const register = async (
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error(await response.json());
-    }
-
     const json = await response.json();
+
+    if (!response.ok) {
+      throw new Error(json);
+    }
 
     await Cookies.set("sessionId", json.tokens.access, {
       expires: 1,

@@ -1,6 +1,10 @@
 import Cookies from "js-cookie";
 
-const login = async (data: { username: string; password: string }) => {
+const login = async (
+  data: { username: string; password: string },
+  onSuccess: () => void,
+  onError: (msg: string) => void
+) => {
   const url = `${"http://127.0.0.1:8000"}/users/login`;
 
   try {
@@ -11,20 +15,21 @@ const login = async (data: { username: string; password: string }) => {
       },
       body: JSON.stringify(data),
     });
+    const json = await response.json();
 
     if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+      throw new Error(json.detail);
     }
-
-    const json = await response.json();
 
     await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,
       sameSite: "Lax",
     });
+    onSuccess();
   } catch (error) {
     if (error instanceof Error) {
+      onError(error.message);
       console.error(error.message);
     }
   }
