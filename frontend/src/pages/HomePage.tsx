@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import getQuestions from "../actions/getQuestions";
 import Question from "../types/Question";
 import User from "../types/User";
@@ -8,6 +8,8 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import JwtPayload from "../types/JwtPayload";
 import Auth from "../components/Auth";
+import markQuestion from "../actions/markQuestion";
+import Done from "../components/Done";
 
 function HomePage() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -109,7 +111,6 @@ function HomePage() {
                           Completed
                         </th>
                       )}
-
                       {users &&
                         users.map((user) => {
                           return (
@@ -123,6 +124,12 @@ function HomePage() {
                         })}
                       <th
                         scope="col"
+                        className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
+                      >
+                        Solution
+                      </th>
+                      <th
+                        scope="col"
                         className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-end"
                       >
                         Action
@@ -130,59 +137,11 @@ function HomePage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {questions.map((question) => (
-                      <tr>
-                        <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
-                          <a href={question.link} target="_blank">
-                            {question.name}
-                          </a>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                          {question.posted_by}
-                        </td>
-                        {myId !== -1 && (
-                          <td className="py-3 ps-4">
-                            <div className="flex items-center h-5">
-                              <input
-                                id="hs-table-search-checkbox-1"
-                                type="checkbox"
-                                className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
-                              />
-                              <label className="sr-only">Checkbox</label>
-                            </div>
-                          </td>
-                        )}
-                        {users &&
-                          users.map((user) => {
-                            return (
-                              <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {/* {markQuestions[user.username]?.done ? "✅" : ""} */}
-                                {question[user.username] ? "✅" : ""}
-                              </td>
-                            );
-                          })}
-                        <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
-                          <button
-                            type="button"
-                            className="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg gap-x-2 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
-                          >
-                            Answer
-                          </button>
-                          <button
-                            type="button"
-                            className="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg gap-x-2 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            type="button"
-                            className="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg gap-x-2 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {questions.map((question) => {
+                      return (
+                        <Done question={question} users={users} myId={myId} />
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

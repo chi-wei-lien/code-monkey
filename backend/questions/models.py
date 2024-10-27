@@ -1,10 +1,10 @@
 from django.db import models
-from backend.constants import DIFF_CHOICES, MEDIUM
+from backend.constants import DIFF_CHOICES, NONE
 
 class MarkQuestion(models.Model):
     user_id = models.ForeignKey('users.User', on_delete=models.CASCADE, blank=True, null=True)
     q_id = models.ForeignKey('questions.Question', on_delete=models.CASCADE, blank=True, null=True)
-    difficulty = models.IntegerField(default=MEDIUM, choices=DIFF_CHOICES)
+    difficulty = models.IntegerField(default=NONE, choices=DIFF_CHOICES)
     done = models.BooleanField(default=False)
 
 class Question(models.Model):    

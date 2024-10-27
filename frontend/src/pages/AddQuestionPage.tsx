@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import addQuestion from "../actions/addQuestion";
 
 const AddQuestionPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     link: "",
@@ -11,18 +12,32 @@ const AddQuestionPage = () => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({
+    let newData = {
       ...formData,
       [e.target.name]: e.target.value,
-    });
+    };
+    if (e.target.name == "link") {
+      const regex = /\/([^\/]+)\/$/;
+      const match = e.target.value.match(regex);
+      const lastPart = match ? match[1] : "";
+      newData = {
+        ...newData,
+        name: lastPart,
+      };
+    }
+
+    setFormData(newData);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addQuestion(formData);
+    const add = async () => {
+      addQuestion(formData);
+      navigate("/");
+    };
+    add();
   };
 
-  const navigate = useNavigate();
   const handleCancel = () => {
     navigate("/");
   };

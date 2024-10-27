@@ -11,7 +11,6 @@ from django.utils import timezone
 from itertools import product
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
 def get_questions(request):
     users = list(User.objects.exclude(username='admin').values('id', 'username'))
 
@@ -28,7 +27,7 @@ def get_questions(request):
         sql += " AND name LIKE %s"
         params.append(f"%{q_name}%")
     
-    sql += " ORDER BY q.posted_time"
+    sql += " ORDER BY q.posted_time DESC"
     result = []
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
@@ -39,9 +38,9 @@ def get_questions(request):
             for user in users:
                 marked = MarkQuestion.objects.filter(user_id=user['id'], q_id=row['q_id'])
                 if marked:
-                    row[user['username']] = marked[0].done
+                    row[user['id']] = marked[0].done
                 else:
-                    row[user['username']] = False
+                    row[user['id']] = False
             result.append(row)
     return JsonResponse({'data': result})
 
@@ -66,5 +65,26 @@ def add_question(request):
     question.save()
     serializer = QuestionSerializer(question)
     return JsonResponse({'data': serializer.data})
-    # return JsonResponse({'data': ''} )
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_question(request):
+
+    done = request.data['done']
+    q_id = request.data['q_id']
+    difficulty = request.data['difficulty']
+
+    m_q, created = MarkQuestion.objects.get_or_create(
+        q_id=Question.objects.get(q_id=q_id),
+        user_id=request.user,
+        defaults={'done': done, 'difficulty': difficulty}
+    )
+
+    if not created:
+        m_q.done = done
+        m_q.difficulty = difficulty
+        m_q.save()
+
+    serializer = MarkQuestionSerializer(m_q)
+    return JsonResponse({'data': serializer.data})
 

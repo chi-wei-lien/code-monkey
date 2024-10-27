@@ -1,10 +1,12 @@
-BEGINNER = 0
-EASY = 1
-MEDIUM = 2
-HARD = 3
-ADVANCED = 4
+NONE = 0
+BEGINNER = 1
+EASY = 2
+MEDIUM = 3
+HARD = 4
+ADVANCED = 5
 
 DIFF_CHOICES = (
+    (NONE, 'None'),
     (BEGINNER, 'Beginner'),
     (EASY, 'Easy'),
     (MEDIUM, 'Medium'),
