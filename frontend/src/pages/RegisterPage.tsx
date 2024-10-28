@@ -30,7 +30,12 @@ const RegisterPage = () => {
       setError("passwords do not match");
     }
     const handleRegister = async () => {
-      await register(formData, () => navigate("/"), setError);
+      await register(
+        formData,
+        () => navigate("/"),
+        () => {},
+        setError
+      );
     };
     handleRegister();
   };

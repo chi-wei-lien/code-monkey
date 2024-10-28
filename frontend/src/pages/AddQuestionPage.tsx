@@ -32,7 +32,9 @@ const AddQuestionPage = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const add = async () => {
-      addQuestion(formData);
+      addQuestion(() => {
+        navigate("/login");
+      }, formData);
       navigate("/");
     };
     add();

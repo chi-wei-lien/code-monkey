@@ -115,6 +115,7 @@ function HomePage() {
                         users.map((user) => {
                           return (
                             <th
+                              key={user.id}
                               scope="col"
                               className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
                             >
@@ -139,9 +140,17 @@ function HomePage() {
                   <tbody className="divide-y divide-gray-200">
                     {questions.map((question) => {
                       return (
-                        <Done question={question} users={users} myId={myId} />
+                        <Done
+                          question={question}
+                          users={users}
+                          myId={myId}
+                          key={question.q_id}
+                        />
                       );
                     })}
+                    <tr>
+                      <td className="px-6 text-sm font-medium py-9 whitespace-nowrap text-end"></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

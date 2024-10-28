@@ -18,6 +18,7 @@ const Auth = () => {
 
   const handleLogout = () => {
     Cookies.remove("sessionId");
+    Cookies.remove("refresh");
     window.location.reload();
   };
 

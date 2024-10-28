@@ -24,7 +24,12 @@ const LoginPage = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const handleLogin = async () => {
-      await login(formData, () => navigate("/"), setError);
+      await login(
+        formData,
+        () => navigate("/"),
+        () => {},
+        setError
+      );
     };
     handleLogin();
   };

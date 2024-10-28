@@ -1,31 +1,22 @@
-import Cookies from "js-cookie";
+import request from "./request";
 
-const markQuestion = async (data: {
-  q_id: number;
-  done: boolean;
-  difficulty: number;
-}) => {
-  const url = `${"http://127.0.0.1:8000"}/questions/mark-question`;
-
-  const sessionId = Cookies.get("sessionId");
-
+const markQuestion = async (
+  data: {
+    q_id: number;
+    done: boolean;
+    difficulty: number;
+  },
+  onAuthFail: () => void
+) => {
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      // credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionId}`,
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const json = await response.json();
-    return json.data;
+    return await request(
+      "POST",
+      "/questions/mark-question",
+      true,
+      onAuthFail,
+      undefined,
+      data
+    );
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);

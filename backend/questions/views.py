@@ -15,7 +15,7 @@ def get_questions(request):
     users = list(User.objects.exclude(username='admin').values('id', 'username'))
 
     sql = """
-        SELECT q.q_id, q.name, q.link, u.username AS posted_by 
+        SELECT q.q_id, q.name, q.link, u.username AS posted_by, u.id AS posted_by_id 
         FROM questions_question q JOIN users_user u ON q.posted_by_id=u.id 
         WHERE 1 = 1
     """
