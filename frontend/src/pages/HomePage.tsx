@@ -21,7 +21,9 @@ function HomePage() {
   useEffect(() => {
     const onLoad = async () => {
       const q_data = await getQuestions(qNameQuery);
-      const u_data = await getUsers();
+      const u_data = await getUsers(() => {
+        navigate("/login");
+      });
       setQuestions(q_data);
       setUsers(u_data);
     };
@@ -47,13 +49,18 @@ function HomePage() {
           <div className="p-1.5 min-w-full inline-block align-middle">
             <div className="border divide-y divide-gray-200 rounded-lg">
               <div className="flex justify-between px-4 py-3">
-                <button
-                  type="button"
-                  className="px-4 py-3 mb-2 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200"
-                  onClick={() => handleAddQuestion()}
-                >
-                  Add Question
-                </button>
+                {myId !== -1 ? (
+                  <button
+                    type="button"
+                    className="px-4 py-3 mb-2 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200"
+                    onClick={() => handleAddQuestion()}
+                  >
+                    Add Question
+                  </button>
+                ) : (
+                  <div />
+                )}
+
                 <Auth />
               </div>
               <div className="gap-3 px-4 py-3">

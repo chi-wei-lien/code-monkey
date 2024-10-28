@@ -3,6 +3,7 @@ import Question from "../types/Question";
 import markQuestion from "../actions/markQuestion";
 import User from "../types/User";
 import { useNavigate } from "react-router-dom";
+import deleteQuestion from "../actions/deleteQuestion";
 
 interface DoneProps {
   question: Question;
@@ -17,6 +18,16 @@ const Done = ({ question, myId, users }: DoneProps) => {
   );
   const onAuthFail = () => {
     navigate("/login");
+  };
+  const onDelete = async () => {
+    if (
+      window.confirm(
+        `Are you sure you want to remove this question: ${question.name}?`
+      )
+    ) {
+      await deleteQuestion(question.q_id);
+      window.location.reload();
+    }
   };
   return (
     <tr>
@@ -94,14 +105,32 @@ const Done = ({ question, myId, users }: DoneProps) => {
             </span>
           </button>
           <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
-            <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
-              Add Solution
-            </li>
+            <a className="hover:cursor-pointer" onClick={() => {}}>
+              <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
+                Add Solution
+              </li>
+            </a>
+
             {myId === question.posted_by_id && (
-              <li className="px-3 py-1 rounded-sm hover:bg-gray-100">Edit</li>
-            )}
-            {myId === question.posted_by_id && (
-              <li className="px-3 py-1 rounded-sm hover:bg-gray-100">Delete</li>
+              <>
+                <a
+                  className="hover:cursor-pointer"
+                  onClick={() => {
+                    navigate("/edit-question", {
+                      state: { q_id: question.q_id },
+                    });
+                  }}
+                >
+                  <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
+                    Edit
+                  </li>
+                </a>
+                <a onClick={() => onDelete()}>
+                  <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
+                    Delete
+                  </li>
+                </a>
+              </>
             )}
           </ul>
         </div>

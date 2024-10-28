@@ -11,6 +11,24 @@ from django.utils import timezone
 from itertools import product
 
 @api_view(['GET'])
+def get_question(request):
+    q_id = request.GET.get('q_id')
+    sql = """
+        SELECT * 
+        FROM questions_question
+        WHERE q_id = %s
+    """
+    result = []
+    with connection.cursor() as cursor:
+        cursor.execute(sql, [q_id])
+        columns = [col[0] for col in cursor.description]
+        results = cursor.fetchall()
+        rows = [dict(zip(columns, row)) for row in results]
+        for row in rows:
+            result.append(row)
+    return JsonResponse({'data': result})
+
+@api_view(['GET'])
 def get_questions(request):
     users = list(User.objects.exclude(username='admin').values('id', 'username'))
 
@@ -87,4 +105,26 @@ def mark_question(request):
 
     serializer = MarkQuestionSerializer(m_q)
     return JsonResponse({'data': serializer.data})
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_question(request):
+
+    q_id = request.data['q_id']
+    name = request.data['name']
+    link = request.data['link']
+
+    question = Question.objects.get(q_id=q_id)
+    question.name = name
+    question.link = link
+    question.save()
+
+    serializer = QuestionSerializer(question)
+    return JsonResponse({'data': serializer.data})
+
+@api_view(['DELETE'])
+def delete_question(request):
+    q_id = request.GET.get('q_id')
+    Question.objects.get(q_id=q_id).delete()
+    return JsonResponse({'data': f"question {q_id} deleted"})
 

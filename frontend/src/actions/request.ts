@@ -5,7 +5,7 @@ const request = async (
   method: string,
   path: string,
   useAuth: boolean,
-  onAuthFail: () => void,
+  onAuthFail?: () => void,
   onSuccess?: (json: any) => Promise<void>,
   data?: any,
   retry = 1
@@ -59,7 +59,7 @@ const request = async (
           0
         );
       } else {
-        onAuthFail();
+        if (onAuthFail) onAuthFail();
       }
     }
 

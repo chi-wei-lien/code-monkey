@@ -1,11 +1,16 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import addQuestion from "../actions/addQuestion";
 import Cookies from "js-cookie";
+import Question from "../types/Question";
+import getQuestion from "../actions/getQuestion";
+import updateQuestion from "../actions/updateQuestion";
 
-const AddQuestionPage = () => {
+const EditQuestionPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
+    q_id: -1,
     name: "",
     link: "",
   });
@@ -15,6 +20,17 @@ const AddQuestionPage = () => {
     if (!sessionId) {
       navigate("/login");
     }
+
+    const loadQuestion = async () => {
+      const question = (await getQuestion(location.state.q_id))[0];
+      console.log("load", question);
+      setFormData({
+        q_id: question.q_id,
+        name: question.name,
+        link: question.link,
+      });
+    };
+    loadQuestion();
   }, []);
 
   const handleChange = (
@@ -40,7 +56,7 @@ const AddQuestionPage = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const add = async () => {
-      addQuestion(() => {
+      updateQuestion(() => {
         navigate("/login");
       }, formData);
       navigate("/");
@@ -100,4 +116,4 @@ const AddQuestionPage = () => {
   );
 };
 
-export default AddQuestionPage;
+export default EditQuestionPage;

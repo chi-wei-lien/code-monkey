@@ -1,21 +1,16 @@
 import Cookies from "js-cookie";
+import request from "./request";
 
-const getUsers = async () => {
-  const url = `${"http://127.0.0.1:8000"}/users/get-users`;
+const getUsers = async (onAuthFail: () => void) => {
   const sessionId = Cookies.get("sessionId");
-
+  let useAuth = false;
   try {
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...(sessionId && { Authorization: `Bearer ${sessionId}` }),
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+    if (sessionId) {
+      useAuth = true;
     }
 
-    const json = await response.json();
+    const json = await request("GET", "/users/get-users", useAuth, onAuthFail);
+
     return json.data;
   } catch (error) {
     if (error instanceof Error) {

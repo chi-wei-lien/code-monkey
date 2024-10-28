@@ -47,5 +47,5 @@ def hello_world(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def secret(request):
-    return JsonResponse({'data': "here's the secret"})
+def check_login(request):
+    return JsonResponse({'data': "logged in"})
