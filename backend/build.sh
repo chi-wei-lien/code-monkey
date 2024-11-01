@@ -16,6 +16,10 @@ create_super_user() {
   python manage.py createsuperuser
 }
 
+db_init() {
+  python manage.py insert_init_languages
+}
+
 case "$1" in
   clear)
     clear
@@ -29,7 +33,10 @@ case "$1" in
   create_super_user)
     create_super_user
     ;;
+  db_init)
+    db_init
+    ;;
   *)
-    echo "Usage: $0 {connect|connect_db|clear|gcp_init|migrate|start|run|backup|first_deploy|deploy}"
+    echo "Usage: $0 {clear|migrate|start|create_super_user|db_init}"
     exit 1
 esac

@@ -6,7 +6,7 @@ import Question from "../types/Question";
 import getQuestion from "../actions/getQuestion";
 import updateQuestion from "../actions/updateQuestion";
 
-const EditQuestionPage = () => {
+const EditSolutionPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -115,4 +115,4 @@ const EditQuestionPage = () => {
   );
 };
 
-export default EditQuestionPage;
+export default EditSolutionPage;

@@ -26,7 +26,7 @@ def get_question(request):
         rows = [dict(zip(columns, row)) for row in results]
         for row in rows:
             result.append(row)
-    return JsonResponse({'data': result})
+    return JsonResponse({'data': result[0]})
 
 @api_view(['GET'])
 def get_questions(request):

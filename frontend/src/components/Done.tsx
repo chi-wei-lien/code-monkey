@@ -75,8 +75,13 @@ const Done = ({ question, myId, users }: DoneProps) => {
             </td>
           );
         })}
-      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-        Solution
+      <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
+        <a
+          className="hover:cursor-pointer"
+          onClick={() => navigate(`/solutions/${question.q_id}`)}
+        >
+          Solution
+        </a>
       </td>
       <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
         <div className="relative inline-block group">
