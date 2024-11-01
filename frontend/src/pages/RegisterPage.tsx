@@ -1,8 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addQuestion from "../actions/addQuestion";
-import login from "../actions/login";
-import register from "../actions/register";
+import register from "../actions/auth/register";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({

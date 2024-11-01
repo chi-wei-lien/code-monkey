@@ -1,10 +1,8 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import addQuestion from "../actions/addQuestion";
 import Cookies from "js-cookie";
-import Question from "../types/Question";
-import getQuestion from "../actions/getQuestion";
-import updateQuestion from "../actions/updateQuestion";
+import getQuestion from "../actions/question/getQuestion";
+import updateQuestion from "../actions/question/updateQuestion";
 
 const EditSolutionPage = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import request from "./request";
+import request from "../request";
 
 const deleteQuestion = async (s_id: number) => {
   const searchParams = new URLSearchParams();

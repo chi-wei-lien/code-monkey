@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import Question from "../types/Question";
-import markQuestion from "../actions/markQuestion";
+import markQuestion from "../actions/question/markQuestion";
 import User from "../types/User";
 import { useNavigate } from "react-router-dom";
-import deleteQuestion from "../actions/deleteQuestion";
+import deleteQuestion from "../actions/question/deleteQuestion";
 
 interface DoneProps {
   question: Question;

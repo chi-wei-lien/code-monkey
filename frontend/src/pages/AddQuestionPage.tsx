@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addQuestion from "../actions/addQuestion";
+import addQuestion from "../actions/question/addQuestion";
 import Cookies from "js-cookie";
 
 const AddQuestionPage = () => {

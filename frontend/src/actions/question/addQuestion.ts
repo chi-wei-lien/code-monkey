@@ -1,13 +1,13 @@
-import request from "./request";
+import request from "../request";
 
-const updateQuestion = async (
+const addQuestion = async (
   onAuthFail: () => void,
   data: { name: string; link: string }
 ) => {
   try {
     return await request(
-      "PUT",
-      "/questions/update-question",
+      "POST",
+      "/questions/add-question",
       true,
       onAuthFail,
       undefined,
@@ -20,4 +20,4 @@ const updateQuestion = async (
   }
 };
 
-export default updateQuestion;
+export default addQuestion;

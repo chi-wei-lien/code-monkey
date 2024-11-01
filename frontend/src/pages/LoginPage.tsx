@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addQuestion from "../actions/addQuestion";
-import login from "../actions/login";
+import login from "../actions/auth/login";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({

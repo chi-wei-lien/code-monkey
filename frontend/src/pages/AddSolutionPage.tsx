@@ -1,19 +1,17 @@
-import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import addQuestion from "../actions/addQuestion";
 import Cookies from "js-cookie";
 import Editor from "react-simple-code-editor";
-// import { highlight, languages } from "prismjs/components/prism-core";
 import Prism, { highlight, languages } from "prismjs";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-markdown.js";
-import addSolution from "../actions/addSolution";
+import addSolution from "../actions/solution/addSolution";
 import Language from "../types/Language";
-import getLangs from "../actions/getLangs";
+import getLangs from "../actions/language/getLangs";
 import Question from "../types/Question";
-import getQuestion from "../actions/getQuestion";
+import getQuestion from "../actions/question/getQuestion";
 
 const DEFAULT_LANG = "Language";
 

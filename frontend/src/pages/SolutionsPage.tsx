@@ -1,19 +1,20 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import User from "../types/User";
-import getUsers from "../actions/getUsers";
+import getUsers from "../actions/users/getUsers";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import JwtPayload from "../types/JwtPayload";
 import Auth from "../components/Auth";
-import markQuestion from "../actions/markQuestion";
-import getSolutions from "../actions/getSolutions";
+import getSolutions from "../actions/solution/getSolutions";
 import Solution from "../types/Solution";
-import deleteSolution from "../actions/deleteSolution";
+import deleteSolution from "../actions/solution/deleteSolution";
+import Question from "../types/Question";
+import getQuestion from "../actions/question/getQuestion";
 
 function SolutionPage() {
   const [solutions, setSolutions] = useState<Solution[]>([]);
-  const [qNameQuery, setQNameQuery] = useState("");
+  const [question, setQuestion] = useState<Question>();
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const [myId, setMyId] = useState(-1);
@@ -24,15 +25,17 @@ function SolutionPage() {
     const onLoad = async () => {
       if (q_id) {
         const s_data = await getSolutions(parseInt(q_id));
+        const q_data = await getQuestion(parseInt(q_id));
         const u_data = await getUsers(() => {
           navigate("/login");
         });
         setSolutions(s_data);
         setUsers(u_data);
+        setQuestion(q_data);
       }
     };
     onLoad();
-  }, [qNameQuery]);
+  }, []);
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -75,7 +78,15 @@ function SolutionPage() {
                 ) : (
                   <div />
                 )}
-
+                <button
+                  type="button"
+                  className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                  onClick={() =>
+                    window.open(question?.link, "_blank", "noopener,noreferrer")
+                  }
+                >
+                  {question?.name}
+                </button>
                 <Auth />
               </div>
               <div className="overflow-hidden">

@@ -1,13 +1,15 @@
-import request from "./request";
+import request from "../request";
 
-const getQuestion = async (q_id: number) => {
+const getQuestions = async (qNameQuery: string) => {
   const searchParams = new URLSearchParams();
-  searchParams.append("q_id", q_id.toString());
+  if (qNameQuery !== "") {
+    searchParams.append("q_name", qNameQuery);
+  }
 
   try {
     const json = await request(
       "GET",
-      `/questions/get-question?${searchParams.toString()}`,
+      `/questions?${searchParams.toString()}`,
       false
     );
     return json.data;
@@ -18,4 +20,4 @@ const getQuestion = async (q_id: number) => {
   }
 };
 
-export default getQuestion;
+export default getQuestions;

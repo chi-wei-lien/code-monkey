@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import request from "./request";
+import request from "../request";
 
 const getUsers = async (onAuthFail: () => void) => {
   const sessionId = Cookies.get("sessionId");

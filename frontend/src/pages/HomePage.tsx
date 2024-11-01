@@ -1,14 +1,13 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import getQuestions from "../actions/getQuestions";
+import { useEffect, useState } from "react";
+import getQuestions from "../actions/question/getQuestions";
 import Question from "../types/Question";
 import User from "../types/User";
-import getUsers from "../actions/getUsers";
+import getUsers from "../actions/users/getUsers";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import JwtPayload from "../types/JwtPayload";
 import Auth from "../components/Auth";
-import markQuestion from "../actions/markQuestion";
 import Done from "../components/Done";
 
 function HomePage() {

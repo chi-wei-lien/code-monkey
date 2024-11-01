@@ -1,19 +1,19 @@
 import Cookies from "js-cookie";
-import request from "./request";
+import request from "../request";
 
-const register = async (
+const login = async (
   data: { username: string; password: string },
   onSuccess: () => void,
   onAuthFail: () => void,
   onError: (msg: string) => void
 ) => {
   const storeToken = async (json: any) => {
-    await Cookies.set("sessionId", json.tokens.access, {
+    await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,
       sameSite: "Lax",
     });
-    await Cookies.set("refresh", json.tokens.refresh, {
+    await Cookies.set("refresh", json.refresh, {
       expires: 7,
       secure: false,
       sameSite: "Lax",
@@ -24,7 +24,7 @@ const register = async (
   try {
     return await request(
       "POST",
-      "/users/register",
+      "/users/login",
       false,
       onAuthFail,
       storeToken,
@@ -38,4 +38,4 @@ const register = async (
   }
 };
 
-export default register;
+export default login;
