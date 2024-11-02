@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import login from "../actions/auth/login";
+import { PrimaryButton, SecondaryButton } from "../components/Buttons";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -70,30 +71,11 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button
-          type="submit"
-          className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          Login
-        </button>
-        <button
-          type="button"
-          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          onClick={() => {
-            goRegister();
-          }}
-        >
-          Register
-        </button>
-        <button
-          type="button"
-          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          onClick={() => {
-            goHome();
-          }}
-        >
-          Cancel
-        </button>
+        <div className="flex gap-2">
+          <PrimaryButton type="submit">Login</PrimaryButton>
+          <SecondaryButton onClick={goRegister}>Register</SecondaryButton>
+          <SecondaryButton onClick={goHome}>Cancel</SecondaryButton>
+        </div>
         {error && <div className="text-red-400">{error}</div>}
       </form>
     </div>

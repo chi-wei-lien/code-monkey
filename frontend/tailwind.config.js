@@ -8,6 +8,9 @@ module.exports = {
       colors: {
         ...colors,
       },
+      fontFamily: {
+        monofett: ["Monofett", "monospace"],
+      },
     },
   },
   plugins: [],

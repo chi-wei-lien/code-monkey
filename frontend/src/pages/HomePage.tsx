@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 import JwtPayload from "../types/JwtPayload";
 import Auth from "../components/Auth";
 import Done from "../components/Done";
+import BaseLayout from "../components/BaseLayout";
+import { PrimaryButton } from "../components/Buttons";
 
 function HomePage() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -43,27 +45,18 @@ function HomePage() {
 
   return (
     <div>
-      <div className="flex flex-col p-10">
-        <div className="-m-1.5 overflow-x-auto">
-          <div className="p-1.5 min-w-full inline-block align-middle">
-            <div className="border divide-y divide-gray-200 rounded-lg">
-              <div className="flex justify-between px-4 py-3">
-                {myId !== -1 ? (
-                  <button
-                    type="button"
-                    className="px-4 py-3 mb-2 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200"
-                    onClick={() => handleAddQuestion()}
-                  >
-                    Add Question
-                  </button>
-                ) : (
-                  <div />
-                )}
-
-                <Auth />
-              </div>
-              <div className="gap-3 px-4 py-3">
-                <div className="relative max-w-xs">
+      <BaseLayout
+        Header={
+          <div>
+            <div className="flex items-center justify-between">
+              {/* <div className="flex"> */}
+              {myId !== -1 && (
+                <PrimaryButton type="button" onClick={handleAddQuestion}>
+                  Add Question
+                </PrimaryButton>
+              )}
+              <div className="py-3">
+                <div className="relative max-w-xs border rounded-lg">
                   <label className="sr-only">Search</label>
                   <input
                     type="text"
@@ -93,77 +86,76 @@ function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
-                      >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
-                      >
-                        Posted By
-                      </th>
-                      {myId !== -1 && (
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
-                        >
-                          Completed
-                        </th>
-                      )}
-                      {users &&
-                        users.map((user) => {
-                          return (
-                            <th
-                              key={user.id}
-                              scope="col"
-                              className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
-                            >
-                              {user.username}
-                            </th>
-                          );
-                        })}
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start"
-                      >
-                        Solution
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-end"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {questions.map((question) => {
-                      return (
-                        <Done
-                          question={question}
-                          users={users}
-                          myId={myId}
-                          key={question.q_id}
-                        />
-                      );
-                    })}
-                    <tr>
-                      <td className="px-6 text-sm font-medium py-9 whitespace-nowrap text-end"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {/* </div> */}
+              <Auth />
             </div>
           </div>
-        </div>
-      </div>
+        }
+        Content={
+          <table className="min-w-full border divide-y divide-gray-200">
+            <thead className="bg-red-400">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                >
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                >
+                  Posted By
+                </th>
+                {myId !== -1 && (
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  >
+                    Completed
+                  </th>
+                )}
+                {users &&
+                  users.map((user) => {
+                    return (
+                      <th
+                        key={user.id}
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                      >
+                        {user.username}
+                      </th>
+                    );
+                  })}
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                >
+                  Solution
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="overflow-visible divide-y divide-gray-200">
+              {questions.map((question) => {
+                return (
+                  <Done
+                    question={question}
+                    users={users}
+                    myId={myId}
+                    key={question.q_id}
+                  />
+                );
+              })}
+            </tbody>
+          </table>
+        }
+      />
     </div>
   );
 }
