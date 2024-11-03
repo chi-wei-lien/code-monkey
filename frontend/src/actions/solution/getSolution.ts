@@ -1,13 +1,13 @@
 import request from "../request";
 
-const deleteQuestion = async (s_id: number) => {
+const getSolution = async (s_id: number) => {
   const searchParams = new URLSearchParams();
   searchParams.append("s_id", s_id.toString());
 
   try {
     const json = await request(
-      "DELETE",
-      `/solutions/delete-solution?${searchParams.toString()}`,
+      "GET",
+      `/solutions/get-solution?${searchParams.toString()}`,
       false
     );
     return json.data;
@@ -18,4 +18,4 @@ const deleteQuestion = async (s_id: number) => {
   }
 };
 
-export default deleteQuestion;
+export default getSolution;

@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import EditQuestionPage from "./pages/EditQuestionPage";
 import SolutionPage from "./pages/SolutionsPage";
 import AddSolutionPage from "./pages/AddSolutionPage";
+import EditSolutionPage from "./pages/EditSolutionPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/solutions/:q_id" element={<SolutionPage />} />
       <Route path="/add-question" element={<AddQuestion />} />
       <Route path="/add-solution/:q_id" element={<AddSolutionPage />} />
+      <Route path="/edit-solution/:s_id" element={<EditSolutionPage />} />
       <Route path="/edit-question" element={<EditQuestionPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

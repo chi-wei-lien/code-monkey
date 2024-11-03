@@ -1,115 +1,77 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import getQuestion from "../actions/question/getQuestion";
-import updateQuestion from "../actions/question/updateQuestion";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import addSolution from "../actions/solution/addSolution";
+import ModifySolutionForm from "../types/ModifySolutionForm";
+import ModifySolution from "../components/ModifySolution";
+import getSolution from "../actions/solution/getSolution";
+import Solution from "../types/Solution";
+import updateSolution from "../actions/solution/updateSolution";
+
+const DEFAULT_LANG = "Language";
 
 const EditSolutionPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [formData, setFormData] = useState({
+  const { s_id } = useParams();
+  const [error, setError] = useState<string | undefined>();
+  const [formData, setFormData] = useState<ModifySolutionForm>({
     q_id: -1,
-    name: "",
-    link: "",
+    title: "",
+    language: DEFAULT_LANG,
+    tc: "",
+    sc: "",
+    notes: "",
+    code: `function add(a, b) {\n  return a + b;\n}`,
   });
 
   useEffect(() => {
-    const sessionId = Cookies.get("sessionId");
-    if (!sessionId) {
-      navigate("/login");
-    }
-
-    const loadQuestion = async () => {
-      const question = (await getQuestion(location.state.q_id))[0];
-      setFormData({
-        q_id: question.q_id,
-        name: question.name,
-        link: question.link,
-      });
+    const load = async () => {
+      if (s_id) {
+        const solution = (await getSolution(parseInt(s_id))) as Solution;
+        setFormData({
+          q_id: solution.q_id,
+          title: solution.name,
+          language: solution.lang_name,
+          tc: solution.tc,
+          sc: solution.tc,
+          notes: solution.notes,
+          code: solution.code,
+        });
+      }
     };
-    loadQuestion();
+    load();
   }, []);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    let newData = {
-      ...formData,
-      [e.target.name]: e.target.value,
-    };
-    if (e.target.name == "link") {
-      const regex = /\/([^\/]+)\/$/;
-      const match = e.target.value.match(regex);
-      const lastPart = match ? match[1] : "";
-      newData = {
-        ...newData,
-        name: lastPart,
-      };
-    }
-
-    setFormData(newData);
-  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const add = async () => {
-      updateQuestion(() => {
-        navigate("/login");
-      }, formData);
-      navigate("/");
+    if (formData.language === DEFAULT_LANG) {
+      setError("Please select the language of your code");
+      return;
+    }
+    const update = async () => {
+      await updateSolution(() => navigate("/login"), {
+        s_id: parseInt(s_id ?? "-1"),
+        title: formData.title,
+        language: formData.language,
+        tc: formData.tc,
+        sc: formData.sc,
+        code: formData.code,
+        notes: formData.notes,
+      });
+      navigate(-1);
     };
-    add();
-  };
-
-  const handleCancel = () => {
-    navigate("/");
+    update();
   };
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen">
-      <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
-        <div className="mb-5">
-          <label className="block mb-2 text-sm font-medium text-gray-900">
-            Question Link
-          </label>
-          <input
-            name="link"
-            value={formData.link}
-            onChange={handleChange}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            required
-          />
-        </div>
-        <div className="mb-5">
-          <label className="block mb-2 text-sm font-medium text-gray-900">
-            Question Name
-          </label>
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            required
-            placeholder="Two Sum"
-          />
-        </div>
-        <button
-          type="submit"
-          className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          Edit question
-        </button>
-        <button
-          type="button"
-          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          onClick={() => {
-            handleCancel();
-          }}
-        >
-          Cancel
-        </button>
-      </form>
-    </div>
+    <ModifySolution
+      handleSubmit={handleSubmit}
+      formData={formData}
+      setFormData={setFormData}
+      error={error}
+      setError={setError}
+      buttonText="Edit solution"
+      q_id={formData.q_id}
+    />
   );
 };
 

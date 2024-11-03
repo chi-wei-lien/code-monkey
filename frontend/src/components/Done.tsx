@@ -80,7 +80,7 @@ const Done = ({ question, myId, users }: DoneProps) => {
           className="hover:cursor-pointer"
           onClick={() => navigate(`/solutions/${question.q_id}`)}
         >
-          Solution
+          Solutions
         </a>
       </td>
       <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
@@ -110,7 +110,10 @@ const Done = ({ question, myId, users }: DoneProps) => {
             </span>
           </button>
           <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
-            <a className="hover:cursor-pointer" onClick={() => {}}>
+            <a
+              className="hover:cursor-pointer"
+              href={`/add-solution/${question.q_id}`}
+            >
               <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
                 Add Solution
               </li>
