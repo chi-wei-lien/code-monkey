@@ -13,7 +13,8 @@ from questions.models import Question
 def get_solutions(request):
     sql = """
         SELECT s.s_id, s.name, s.q_id_id AS q_id, q.name AS q_name, s.lang_name_id AS lang_name, 
-        s.code, s.posted_time, s.posted_by_id AS posted_by_id, u.username AS posted_by 
+        s.code, s.posted_time, s.posted_by_id AS posted_by_id, u.username AS posted_by, s.tc, s.sc,
+        s.notes, q.link AS q_link
         FROM solutions_solution s JOIN questions_question q ON s.q_id_id = q.q_id
             JOIN users_user u ON s.posted_by_id = u.id
         WHERE q_id_id = %s
@@ -37,7 +38,7 @@ def get_solution(request):
     sql = """
         SELECT s.s_id, s.name, s.q_id_id AS q_id, q.name AS q_name, s.lang_name_id AS lang_name, 
         s.code, s.posted_time, s.posted_by_id AS posted_by_id, u.username AS posted_by, s.tc, s.sc,
-        s.notes 
+        s.notes, q.link AS q_link
         FROM solutions_solution s JOIN questions_question q ON s.q_id_id = q.q_id
             JOIN users_user u ON s.posted_by_id = u.id
         WHERE s_id = %s

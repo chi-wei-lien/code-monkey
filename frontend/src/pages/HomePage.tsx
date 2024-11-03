@@ -24,6 +24,8 @@ function HomePage() {
       const q_data = await getQuestions(qNameQuery);
       const u_data = await getUsers(() => {
         Cookies.remove("sessionId");
+        Cookies.remove("refresh");
+        window.location.reload();
       });
       setQuestions(q_data);
       setUsers(u_data);

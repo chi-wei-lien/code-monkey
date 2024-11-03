@@ -8,11 +8,15 @@ import { useNavigate } from "react-router-dom";
 import getQuestion from "../actions/question/getQuestion";
 import Editor from "react-simple-code-editor";
 import Prism, { highlight, languages } from "prismjs";
-import "prismjs/components/prism-clike";
+import { PrimaryButton, SecondaryButton } from "./Buttons";
+import { DEFAULT_LANG, LANGUAGE_MAP } from "../constants";
+
+import "prismjs/components/prism-java";
 import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-clike";
 import "prismjs/themes/prism.css";
 import "prismjs/components/prism-markdown.js";
-import { PrimaryButton, SecondaryButton } from "./Buttons";
 
 interface ModifySolutionProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -189,9 +193,17 @@ const ModifySolution = (props: ModifySolutionProps) => {
             <Editor
               value={formData.code}
               onValueChange={(code) => setFormData({ ...formData, code: code })}
-              highlight={(code) =>
-                highlight(code, Prism.languages.javascript, "javascript")
-              }
+              highlight={(code) => {
+                if (formData.language === DEFAULT_LANG) {
+                  return highlight(
+                    code,
+                    Prism.languages.javascript,
+                    "javascript"
+                  );
+                }
+                const [name, grammar] = LANGUAGE_MAP[formData.language];
+                return highlight(code, grammar, name);
+              }}
               padding={10}
               style={{
                 fontFamily: '"Fira code", "Fira Mono", monospace',

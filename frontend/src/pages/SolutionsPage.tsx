@@ -14,7 +14,7 @@ import getQuestion from "../actions/question/getQuestion";
 import BaseLayout from "../components/BaseLayout";
 import { PrimaryButton, SecondaryButton } from "../components/Buttons";
 
-function SolutionPage() {
+function SolutionsPage() {
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [question, setQuestion] = useState<Question>();
   const [users, setUsers] = useState<User[]>([]);
@@ -116,9 +116,7 @@ function SolutionPage() {
               return (
                 <tr>
                   <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
-                    <a href={""} target="_blank">
-                      {solution.name}
-                    </a>
+                    <a href={`/solution/${solution.s_id}`}>{solution.name}</a>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                     {solution.posted_by}
@@ -182,4 +180,4 @@ function SolutionPage() {
   );
 }
 
-export default SolutionPage;
+export default SolutionsPage;

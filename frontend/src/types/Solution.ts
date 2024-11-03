@@ -1,6 +1,7 @@
 interface Solution {
   name: string;
   q_name: string;
+  q_link: string;
   q_id: number;
   s_id: number;
   lang_name: string;

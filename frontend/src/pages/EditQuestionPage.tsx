@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import getQuestion from "../actions/question/getQuestion";
 import updateQuestion from "../actions/question/updateQuestion";
+import { PrimaryButton, SecondaryButton } from "../components/Buttons";
 
 const EditQuestionPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const EditQuestionPage = () => {
     name: "",
     link: "",
   });
+  const { q_id } = useParams();
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -20,7 +22,7 @@ const EditQuestionPage = () => {
     }
 
     const loadQuestion = async () => {
-      const question = (await getQuestion(location.state.q_id))[0];
+      const question = await getQuestion(parseInt(q_id ?? "-1"));
       setFormData({
         q_id: question.q_id,
         name: question.name,
@@ -93,21 +95,17 @@ const EditQuestionPage = () => {
             placeholder="Two Sum"
           />
         </div>
-        <button
-          type="submit"
-          className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          Edit question
-        </button>
-        <button
-          type="button"
-          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          onClick={() => {
-            handleCancel();
-          }}
-        >
-          Cancel
-        </button>
+        <div className="flex gap-2">
+          <PrimaryButton type="submit">Edit question</PrimaryButton>
+          <SecondaryButton
+            type="button"
+            onClick={() => {
+              handleCancel();
+            }}
+          >
+            Cancel
+          </SecondaryButton>
+        </div>
       </form>
     </div>
   );

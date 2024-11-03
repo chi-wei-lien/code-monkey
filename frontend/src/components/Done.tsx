@@ -124,9 +124,7 @@ const Done = ({ question, myId, users }: DoneProps) => {
                 <a
                   className="hover:cursor-pointer"
                   onClick={() => {
-                    navigate("/edit-question", {
-                      state: { q_id: question.q_id },
-                    });
+                    navigate(`/edit-question/${question.q_id}`);
                   }}
                 >
                   <li className="px-3 py-1 rounded-sm hover:bg-gray-100">

@@ -3,8 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import addSolution from "../actions/solution/addSolution";
 import ModifySolutionForm from "../types/ModifySolutionForm";
 import ModifySolution from "../components/ModifySolution";
-
-const DEFAULT_LANG = "Language";
+import { DEFAULT_LANG } from "../constants";
 
 const AddSolutionPage = () => {
   const navigate = useNavigate();
