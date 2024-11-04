@@ -10,9 +10,7 @@ import Auth from "../components/Auth";
 import Solution from "../types/Solution";
 import getSolution from "../actions/solution/getSolution";
 import Code from "../components/Code";
-import React from "react";
 import ReactMarkdown from "react-markdown";
-import ReactDom from "react-dom";
 
 const SolutionPage = () => {
   const { s_id } = useParams();

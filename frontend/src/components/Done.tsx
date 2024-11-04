@@ -9,9 +9,17 @@ interface DoneProps {
   question: Question;
   myId: number;
   users: User[];
+  completed: number;
+  setCompleted: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Done = ({ question, myId, users }: DoneProps) => {
+const Done = ({
+  question,
+  myId,
+  users,
+  setCompleted,
+  completed,
+}: DoneProps) => {
   const navigate = useNavigate();
   const [checked, setChecked] = useState<boolean>(
     question[myId.toString()] as boolean
@@ -29,6 +37,25 @@ const Done = ({ question, myId, users }: DoneProps) => {
       window.location.reload();
     }
   };
+
+  const onMark = (event: ChangeEvent<HTMLInputElement>) => {
+    const newChecked = event.target.checked;
+    markQuestion(
+      {
+        done: newChecked,
+        q_id: question.q_id,
+        difficulty: 0,
+      },
+      onAuthFail
+    );
+    setChecked(newChecked);
+    if (!newChecked) {
+      setCompleted(completed - 1);
+    } else {
+      setCompleted(completed + 1);
+    }
+  };
+
   return (
     <tr>
       <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
@@ -47,34 +74,25 @@ const Done = ({ question, myId, users }: DoneProps) => {
               type="checkbox"
               className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
               checked={checked}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                const newChecked = event.target.checked;
-                markQuestion(
-                  {
-                    done: newChecked,
-                    q_id: question.q_id,
-                    difficulty: 0,
-                  },
-                  onAuthFail
-                );
-                setChecked(newChecked);
-              }}
+              onChange={onMark}
             />
             <label className="sr-only">Checkbox</label>
           </div>
         </td>
       )}
       {users &&
-        users.map((user) => {
-          return (
-            <td
-              className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap"
-              key={user.id}
-            >
-              {question[user.id] ? "✅" : ""}
-            </td>
-          );
-        })}
+        users
+          .filter((user) => user.id !== myId)
+          .map((user) => {
+            return (
+              <td
+                className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap"
+                key={user.id}
+              >
+                {question[user.id] ? "✅" : ""}
+              </td>
+            );
+          })}
       <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a
           className="hover:cursor-pointer"

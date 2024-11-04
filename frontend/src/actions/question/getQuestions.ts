@@ -1,9 +1,12 @@
 import request from "../request";
 
-const getQuestions = async (qNameQuery: string) => {
+const getQuestions = async (qNameQuery: string, selectedUser?: number) => {
   const searchParams = new URLSearchParams();
   if (qNameQuery !== "") {
     searchParams.append("q_name", qNameQuery);
+  }
+  if (selectedUser) {
+    searchParams.append("u_id", selectedUser.toString());
   }
 
   try {

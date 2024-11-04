@@ -147,8 +147,18 @@ function SolutionsPage() {
                           </svg>
                         </span>
                       </button>
-                      {myId === solution.posted_by_id && (
-                        <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
+                      <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
+                        <a
+                          className="hover:cursor-pointer"
+                          onClick={() => {
+                            navigate(`/solution/${solution.s_id}`);
+                          }}
+                        >
+                          <li className="px-3 py-1 rounded-sm hover:bg-gray-100">
+                            View
+                          </li>
+                        </a>
+                        {myId === solution.posted_by_id && (
                           <>
                             <a
                               className="hover:cursor-pointer"
@@ -166,8 +176,8 @@ function SolutionsPage() {
                               </li>
                             </a>
                           </>
-                        </ul>
-                      )}
+                        )}
+                      </ul>
                     </div>
                   </td>
                 </tr>

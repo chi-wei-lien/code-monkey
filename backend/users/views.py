@@ -36,8 +36,6 @@ def register(request):
 @api_view(['GET'])
 def get_users(request):
     users = User.objects.exclude(username='admin')
-    if request.user.is_authenticated:
-        users = users.exclude(username=request.user.username)
     serializer = UserSerializer(users, many=True)
     return JsonResponse({'data': serializer.data})
 

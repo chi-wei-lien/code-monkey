@@ -40,10 +40,14 @@ def get_questions(request):
     params = []
 
     q_name = request.GET.get('q_name')
+    u_id = request.GET.get('u_id')
     if q_name:
         # using prepared statement
         sql += " AND name LIKE %s"
         params.append(f"%{q_name}%")
+    if u_id:
+        sql += " AND u.id = %s"
+        params.append(u_id)
     
     sql += " ORDER BY q.posted_time DESC"
     result = []
@@ -67,6 +71,13 @@ def get_mark_questions(request):
     mark_qs = MarkQuestion.objects.all()
     serializer = MarkQuestionSerializer(mark_qs, many=True)
     return JsonResponse({'data': serializer.data})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_statistics(request):
+    qs_count = Question.objects.count()
+    mark_qs_count = MarkQuestion.objects.filter(user_id=request.user.id, done=True).count()
+    return JsonResponse({'question_count': qs_count, 'completed_count': mark_qs_count})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
