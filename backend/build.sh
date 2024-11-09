@@ -1,3 +1,6 @@
+HEROKU_PROJ=hidden-dusk-88069
+CONTAINER_NAME=grind-hub-backend
+
 clear() {
   find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
   find . -path "*/migrations/*.pyc" -delete
@@ -8,7 +11,8 @@ migrate() {
   poetry run python manage.py migrate
 }
 
-start() {
+dev() {
+  stop
   poetry run python manage.py runserver
 }
 
@@ -24,14 +28,25 @@ gen_req() {
   poetry export --without-hashes --format=requirements.txt > requirements.txt
 }
 
-docker_build() {
-  gen_req
-  docker stop grind-hub-backend
-  docker rm grind-hub-backend
-  docker build -t web:latest .
-  docker run -d --name grind-hub-backend -e "PORT=8765" -e "DEBUG=1" -p 8007:8765 web:latest
+deploy() {
+  git subtree push --prefix backend heroku main
+  heroku run python manage.py makemigrations -a hidden-dusk-88069
+  heroku run python manage.py migrate -a ${HEROKU_PROJ}
 }
 
+stop() {
+  docker stop ${CONTAINER_NAME}
+  docker rm ${CONTAINER_NAME}
+}
+
+
+start() {
+  stop
+  gen_req
+  docker image rm web
+  docker build -t web:latest .
+  docker run -d --name ${CONTAINER_NAME} -e "PORT=8765" -e "DEBUG=1" -p 8000:8765 web:latest
+}
 
 case "$1" in
   clear)
@@ -49,11 +64,14 @@ case "$1" in
   db_init)
     db_init
     ;;
-  docker_build)
-    docker_build
+  dev)
+    dev
     ;;
   gen_req)
     gen_req
+    ;;
+  stop)
+    stop
     ;;
   *)
     echo "Usage: $0 {clear|migrate|start|create_super_user|db_init|docker_build|gen_req}"
