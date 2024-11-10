@@ -7,9 +7,15 @@ class MarkQuestion(models.Model):
     difficulty = models.IntegerField(default=NONE, choices=DIFF_CHOICES)
     done = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.user_id} marked {self.q_id}"
+
 class Question(models.Model):    
     q_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     link = models.CharField(max_length=255)
     posted_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=True)
     posted_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
