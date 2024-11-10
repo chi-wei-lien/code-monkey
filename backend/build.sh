@@ -29,7 +29,8 @@ gen_req() {
 }
 
 deploy() {
-  git subtree push --prefix backend heroku main
+  gen_req
+  cd .. && git subtree push --prefix backend heroku main
   heroku run python manage.py makemigrations -a hidden-dusk-88069
   heroku run python manage.py migrate -a ${HEROKU_PROJ}
 }
@@ -72,6 +73,9 @@ case "$1" in
     ;;
   stop)
     stop
+    ;;
+  deploy)
+    deploy
     ;;
   *)
     echo "Usage: $0 {clear|migrate|start|create_super_user|db_init|docker_build|gen_req}"
