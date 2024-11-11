@@ -39,8 +39,12 @@ function HomePage() {
         Cookies.remove("refresh");
         window.location.reload();
       });
-      setQuestions(q_data);
-      setUsers(u_data);
+      if (q_data) {
+        setQuestions(q_data);
+      }
+      if (u_data) {
+        setUsers(u_data);
+      }
     };
     onLoad();
   }, [qNameQuery, selectedUser]);
@@ -165,7 +169,7 @@ function HomePage() {
                     onClick={() => {
                       setSelectedUser(undefined);
                       setShowUserDropdown(!showUserDropdown);
-                      setUserDropdownText("Posted by");
+                      setUserDropdownText("Posted By");
                     }}
                   >
                     -

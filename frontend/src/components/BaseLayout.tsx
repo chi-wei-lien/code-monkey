@@ -12,10 +12,14 @@ const BaseLayout = ({ Header, Content }: BaseLayoutProps) => {
       <div className="min-h-screen">
         <Banner />
         <div className="flex flex-col p-10 mb-20">
+          <div className="p-1.5 min-w-full flex justify-center">
+            <div className="w-full rounded-lg max-w-3/4 md:max-w-screen-lg">
+              {Header}
+            </div>
+          </div>
           <div className="-m-1.5 overflow-x-auto">
             <div className="p-1.5 min-w-full flex justify-center">
               <div className="w-full rounded-lg max-w-3/4 md:max-w-screen-lg">
-                <div className="">{Header}</div>
                 <div className="min-h-60">{Content}</div>
               </div>
             </div>
