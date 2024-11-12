@@ -17,9 +17,9 @@ const BaseLayout = ({ Header, Content }: BaseLayoutProps) => {
               {Header}
             </div>
           </div>
-          <div className="-m-1.5 overflow-x-auto">
+          <div className="-m-1.5">
             <div className="p-1.5 min-w-full flex justify-center">
-              <div className="w-full rounded-lg max-w-3/4 md:max-w-screen-lg">
+              <div className="w-full overflow-x-auto rounded-lg max-w-3/4 md:max-w-screen-lg">
                 <div className="min-h-60">{Content}</div>
               </div>
             </div>

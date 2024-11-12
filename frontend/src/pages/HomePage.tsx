@@ -12,6 +12,8 @@ import Done from "../components/Done";
 import BaseLayout from "../components/BaseLayout";
 import { PrimaryButton } from "../components/Buttons";
 import getQuestionStatistics from "../actions/question/getQuestionStatistics";
+import shortenUsername from "../lib/shortenUsername";
+import checkLogin from "../lib/checkLogin";
 
 function HomePage() {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -59,7 +61,7 @@ function HomePage() {
 
   useEffect(() => {
     const authLoad = async () => {
-      if (myId !== -1) {
+      if (checkLogin(myId)) {
         const stat = await getQuestionStatistics();
         setCompleted(stat.completed_count);
         setQsCount(stat.question_count);
@@ -77,7 +79,7 @@ function HomePage() {
       Header={
         <div>
           <div className="flex items-center justify-between">
-            {myId !== -1 && (
+            {checkLogin(myId) && (
               <PrimaryButton type="button" onClick={handleAddQuestion}>
                 Add Question
               </PrimaryButton>
@@ -115,7 +117,7 @@ function HomePage() {
             </div>
             <Auth />
           </div>
-          {myId !== -1 && (
+          {checkLogin(myId) && (
             <div className="mb-4">
               <div className="flex justify-between mb-1">
                 <span className="text-base font-medium text-red-400">
@@ -207,11 +209,11 @@ function HomePage() {
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                className="px-6 py-3 text-xs font-medium text-white uppercase text-start text-nowrap"
               >
                 Posted By
               </th>
-              {myId !== -1 && (
+              {checkLogin(myId) && (
                 <th
                   scope="col"
                   className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
@@ -227,9 +229,14 @@ function HomePage() {
                       <th
                         key={user.id}
                         scope="col"
-                        className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                        className="px-6 py-3 text-xs font-medium text-white text-start"
                       >
-                        {user.username}
+                        <div className="relative flex justify-center group">
+                          <button>{shortenUsername(user.username)}</button>
+                          <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+                            {user.username}
+                          </span>
+                        </div>
                       </th>
                     );
                   })}
@@ -239,12 +246,14 @@ function HomePage() {
               >
                 Solution
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
-              >
-                Action
-              </th>
+              {checkLogin(myId) && (
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
+                >
+                  Action
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="overflow-visible divide-y divide-gray-200">
