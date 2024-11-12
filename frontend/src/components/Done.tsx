@@ -60,12 +60,15 @@ const Done = ({
   return (
     <tr>
       <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
-        <a
-          className="block w-48 overflow-hidden text-ellipsis whitespace-nowrap"
-          href={question.link}
-          target="_blank"
-        >
-          {question.name}
+        <a className="block w-48" href={question.link} target="_blank">
+          <div className="relative flex justify-start group">
+            <button className="overflow-hidden text-ellipsis whitespace-nowrap">
+              {question.name}
+            </button>
+            <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+              {question.name}
+            </span>
+          </div>
         </a>
       </td>
       <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
