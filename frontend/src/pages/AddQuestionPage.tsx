@@ -22,16 +22,17 @@ const AddQuestionPage = () => {
   const autoFill = (url: string) => {
     const pathSegments = url.split("/").filter(Boolean);
     let lastSegment = pathSegments[pathSegments.length - 1];
+    let targetSegmentIndex = pathSegments.length - 1;
 
     if (lastSegment[0] === "?") {
-      lastSegment = pathSegments[pathSegments.length - 2];
+      targetSegmentIndex -= 1;
     }
 
-    if (lastSegment === "description") {
-      return pathSegments[pathSegments.length - 3] || "";
+    if (pathSegments[targetSegmentIndex] === "description") {
+      targetSegmentIndex -= 1;
     }
 
-    return lastSegment || "";
+    return pathSegments[targetSegmentIndex] || "";
   };
 
   const handleChange = (
