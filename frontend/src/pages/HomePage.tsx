@@ -72,8 +72,10 @@ function HomePage() {
     const authLoad = async () => {
       if (checkLogin(myId)) {
         const stat = await getQuestionStatistics();
-        setCompleted(stat.completed_count);
-        setQsCount(stat.question_count);
+        if (stat) {
+          setCompleted(stat.completed_count);
+          setQsCount(stat.question_count);
+        }
       }
     };
     authLoad();
@@ -204,23 +206,25 @@ function HomePage() {
                 </div>
               )}
             </div>
-            <div className="relative mt-5 mb-3">
-              <button
-                onClick={() => setQueryNotCompleted(!queryNotCompleted)}
-                className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                <div className="flex items-center h-5">
-                  <input
-                    id="hs-table-search-checkbox-1"
-                    type="checkbox"
-                    className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
-                    checked={queryNotCompleted}
-                  />
-                  <label className="sr-only">Checkbox</label>
-                </div>
-                Not Completed
-              </button>
-            </div>
+            {checkLogin(myId) && (
+              <div className="relative mt-5 mb-3">
+                <button
+                  onClick={() => setQueryNotCompleted(!queryNotCompleted)}
+                  className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                >
+                  <div className="flex items-center h-5">
+                    <input
+                      id="hs-table-search-checkbox-1"
+                      type="checkbox"
+                      className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                      checked={queryNotCompleted}
+                    />
+                    <label className="sr-only">Checkbox</label>
+                  </div>
+                  Not Completed
+                </button>
+              </div>
+            )}
           </div>
         </div>
       }
