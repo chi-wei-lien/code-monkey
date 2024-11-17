@@ -10,6 +10,7 @@ const AddQuestionPage = () => {
     name: "",
     link: "",
   });
+  const [changed, setChanged] = useState(false);
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -18,6 +19,21 @@ const AddQuestionPage = () => {
     }
   }, []);
 
+  const autoFill = (url: string) => {
+    const pathSegments = url.split("/").filter(Boolean);
+    let lastSegment = pathSegments[pathSegments.length - 1];
+
+    if (lastSegment[0] === "?") {
+      lastSegment = pathSegments[pathSegments.length - 2];
+    }
+
+    if (lastSegment === "description") {
+      return pathSegments[pathSegments.length - 3] || "";
+    }
+
+    return lastSegment || "";
+  };
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -25,16 +41,19 @@ const AddQuestionPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     };
-    if (e.target.name == "link") {
-      const regex = /\/([^\/]+)\/$/;
-      const match = e.target.value.match(regex);
-      const lastPart = match ? match[1] : "";
+    if (!changed) {
+      setChanged(true);
+      if (e.target.name == "link") {
+        newData = {
+          ...newData,
+          name: autoFill(e.target.value),
+        };
+      }
+    } else {
       newData = {
         ...newData,
-        name: lastPart,
       };
     }
-
     setFormData(newData);
   };
 
