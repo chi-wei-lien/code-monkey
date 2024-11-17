@@ -34,13 +34,15 @@ def get_questions(request):
 
     sql = """
         SELECT q.q_id, q.name, q.link, u.username AS posted_by, u.id AS posted_by_id 
-        FROM questions_question q JOIN users_user u ON q.posted_by_id=u.id 
+        FROM questions_question q JOIN users_user u ON q.posted_by_id=u.id
         WHERE 1 = 1
     """
     params = []
 
     q_name = request.GET.get('q_name')
     u_id = request.GET.get('u_id')
+    completed = request.GET.get('completed')
+
     if q_name:
         # using prepared statement
         sql += " AND name LIKE %s"
@@ -48,8 +50,9 @@ def get_questions(request):
     if u_id:
         sql += " AND u.id = %s"
         params.append(u_id)
-    
+
     sql += " ORDER BY q.posted_time DESC"
+
     result = []
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
@@ -57,6 +60,10 @@ def get_questions(request):
         results = cursor.fetchall()
         rows = [dict(zip(columns, row)) for row in results]
         for row in rows:
+            if request.user:
+                my_marked = MarkQuestion.objects.filter(user_id=request.user.id, q_id=row['q_id'])
+                if completed == "false" and (len(my_marked) > 0 and my_marked[0].done == True):
+                    continue 
             for user in users:
                 marked = MarkQuestion.objects.filter(user_id=user['id'], q_id=row['q_id'])
                 if marked:

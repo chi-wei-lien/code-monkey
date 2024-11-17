@@ -26,6 +26,7 @@ function HomePage() {
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [userDropdownText, setUserDropdownText] = useState("Posted By");
+  const [queryNotCompleted, setQueryNotCompleted] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number>();
 
   const completeness = useMemo(() => {
@@ -35,21 +36,29 @@ function HomePage() {
 
   useEffect(() => {
     const onLoad = async () => {
-      const q_data = await getQuestions(qNameQuery, selectedUser);
       const u_data = await getUsers(() => {
         Cookies.remove("sessionId");
         Cookies.remove("refresh");
         window.location.reload();
       });
-      if (q_data) {
-        setQuestions(q_data);
-      }
+
       if (u_data) {
         setUsers(u_data);
       }
+
+      const q_data = await getQuestions(
+        qNameQuery,
+        myId,
+        queryNotCompleted,
+        selectedUser
+      );
+
+      if (q_data) {
+        setQuestions(q_data);
+      }
     };
     onLoad();
-  }, [qNameQuery, selectedUser]);
+  }, [qNameQuery, selectedUser, queryNotCompleted]);
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -135,65 +144,83 @@ function HomePage() {
               </div>
             </div>
           )}
-
-          <div className="relative mt-5 mb-3">
-            <button
-              type="button"
-              onClick={() => setShowUserDropdown(!showUserDropdown)}
-              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              {userDropdownText}
-              <svg
-                className="w-5 h-5 -mr-1 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-                data-slot="icon"
+          <div className="flex justify-center gap-4">
+            <div className="relative mt-5 mb-3">
+              <button
+                type="button"
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </button>
-            {showUserDropdown && (
-              <div
-                className="absolute left-0 z-10 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-              >
-                <div className="py-1" role="none">
-                  <a
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
-                    role="menuitem"
-                    onClick={() => {
-                      setSelectedUser(undefined);
-                      setShowUserDropdown(!showUserDropdown);
-                      setUserDropdownText("Posted By");
-                    }}
-                  >
-                    -
-                  </a>
-                  {users.map((user) => {
-                    return (
-                      <a
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
-                        role="menuitem"
-                        onClick={() => {
-                          setSelectedUser(user.id);
-                          setShowUserDropdown(!showUserDropdown);
-                          setUserDropdownText(user.username);
-                        }}
-                      >
-                        {user.username}
-                      </a>
-                    );
-                  })}
+                {userDropdownText}
+                <svg
+                  className="w-5 h-5 -mr-1 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  data-slot="icon"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              {showUserDropdown && (
+                <div
+                  className="absolute left-0 z-10 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="menu-button"
+                >
+                  <div className="py-1" role="none">
+                    <a
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
+                      role="menuitem"
+                      onClick={() => {
+                        setSelectedUser(undefined);
+                        setShowUserDropdown(!showUserDropdown);
+                        setUserDropdownText("Posted By");
+                      }}
+                    >
+                      -
+                    </a>
+                    {users.map((user) => {
+                      return (
+                        <a
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
+                          role="menuitem"
+                          onClick={() => {
+                            setSelectedUser(user.id);
+                            setShowUserDropdown(!showUserDropdown);
+                            setUserDropdownText(user.username);
+                          }}
+                        >
+                          {user.username}
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="relative mt-5 mb-3">
+              <button
+                onClick={() => setQueryNotCompleted(!queryNotCompleted)}
+                className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              >
+                <div className="flex items-center h-5">
+                  <input
+                    id="hs-table-search-checkbox-1"
+                    type="checkbox"
+                    className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                    checked={queryNotCompleted}
+                  />
+                  <label className="sr-only">Checkbox</label>
+                </div>
+                Not Completed
+              </button>
+            </div>
           </div>
         </div>
       }
