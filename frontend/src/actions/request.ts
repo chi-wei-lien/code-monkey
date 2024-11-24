@@ -43,7 +43,7 @@ const request = async (
         await request(
           "POST",
           "/users/refresh",
-          false,
+          true,
           onAuthFail,
           storeToken,
           { refresh: refreshToken },

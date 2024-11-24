@@ -20,8 +20,12 @@ create_super_user() {
   poetry run python manage.py createsuperuser
 }
 
-db_init() {
+dev_db_init() {
   poetry run python manage.py insert_init_languages
+}
+
+db_init() {
+  heroku run python manage.py insert_init_languages
 }
 
 gen_req() {
@@ -33,6 +37,7 @@ deploy() {
   cd .. && git subtree push --prefix backend heroku main
   heroku run python manage.py makemigrations -a hidden-dusk-88069
   heroku run python manage.py migrate -a ${HEROKU_PROJ}
+  heroku run python manage.py insert_init_languages
 }
 
 stop() {
@@ -65,6 +70,9 @@ case "$1" in
   db_init)
     db_init
     ;;
+  dev_db_init)
+    dev_db_init
+    ;;
   dev)
     dev
     ;;
@@ -78,6 +86,6 @@ case "$1" in
     deploy
     ;;
   *)
-    echo "Usage: $0 {clear|migrate|start|create_super_user|db_init|docker_build|gen_req}"
+    echo "Usage: $0 {clear|migrate|start|create_super_user|dev_db_init|db_init|docker_build|gen_req}"
     exit 1
 esac
