@@ -132,7 +132,7 @@ function HomePage() {
             <div className="mb-4">
               <div className="flex justify-between mb-1">
                 <span className="text-base font-medium text-red-400">
-                  Completed
+                  Completed ({completed}/{qsCount})
                 </span>
                 <span className="text-sm font-medium text-red-400">
                   {completeness}%
