@@ -5,6 +5,7 @@ import User from "../types/User";
 import { useNavigate } from "react-router-dom";
 import deleteQuestion from "../actions/question/deleteQuestion";
 import checkLogin from "../lib/checkLogin";
+import shortenUsername from "../lib/shortenUsername";
 
 interface DoneProps {
   number: number;
@@ -77,7 +78,12 @@ const Done = ({
         </a>
       </td>
       <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-        {question.posted_by}
+        <div className="relative flex justify-center group">
+          <button>{shortenUsername(question.posted_by)}</button>
+          <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+            {question.posted_by}
+          </span>
+        </div>
       </td>
       {myId !== -1 && (
         <td className="py-3 ps-4">
