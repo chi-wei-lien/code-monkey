@@ -7,6 +7,7 @@ import deleteQuestion from "../actions/question/deleteQuestion";
 import checkLogin from "../lib/checkLogin";
 
 interface DoneProps {
+  number: number;
   question: Question;
   myId: number;
   users: User[];
@@ -18,6 +19,7 @@ const Done = ({
   question,
   myId,
   users,
+  number,
   setCompleted,
   completed,
 }: DoneProps) => {
@@ -59,6 +61,9 @@ const Done = ({
 
   return (
     <tr>
+      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+        {number}
+      </td>
       <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a className="block w-48" href={question.link} target="_blank">
           <div className="relative flex justify-start group">

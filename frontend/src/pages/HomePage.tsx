@@ -236,6 +236,12 @@ function HomePage() {
                 scope="col"
                 className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
               >
+                No.
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+              >
                 Name
               </th>
               <th
@@ -288,7 +294,7 @@ function HomePage() {
             </tr>
           </thead>
           <tbody className="overflow-visible divide-y divide-gray-200">
-            {questions.map((question) => {
+            {questions.map((question, index) => {
               return (
                 <Done
                   question={question}
@@ -297,6 +303,7 @@ function HomePage() {
                   key={question.q_id}
                   completed={completed}
                   setCompleted={setCompleted}
+                  number={questions.length - index}
                 />
               );
             })}
