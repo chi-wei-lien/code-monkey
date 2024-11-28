@@ -37,7 +37,6 @@ def get_question(request):
         rows = [dict(zip(columns, row)) for row in results]
         for row in rows:
             result.append(row)
-    print(result)
     if len(result) == 0:
         return JsonResponse({'data': None})
     return JsonResponse({'data': result[0]})

@@ -4,6 +4,8 @@ import addQuestion from "../actions/question/addQuestion";
 import Cookies from "js-cookie";
 import { PrimaryButton, SecondaryButton } from "../components/Buttons";
 import { getQuestionByName } from "../actions/question/getQuestion";
+import markQuestion from "../actions/question/markQuestion";
+import Question from "../types/Question";
 
 const AddQuestionPage = () => {
   const navigate = useNavigate();
@@ -13,7 +15,9 @@ const AddQuestionPage = () => {
   });
   const [changed, setChanged] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [error, setError] = useState("");
+  const [existedQuestoin, setExistedQuestion] = useState<Question>();
+  const [questionExists, setQuestionExists] = useState(false);
+  // const [error, setError] = useState("");
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -41,8 +45,9 @@ const AddQuestionPage = () => {
   const checkIfQuestionExists = async (questionName: string) => {
     const existingQuestion = await getQuestionByName(questionName);
     if (existingQuestion != null) {
+      setExistedQuestion(existingQuestion);
       setDisabled(true);
-      setError("question already exists!");
+      setQuestionExists(true);
     } else {
       setDisabled(false);
     }
@@ -55,7 +60,7 @@ const AddQuestionPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     };
-    setError("");
+    setQuestionExists(false);
     if (!changed) {
       setChanged(true);
       if (e.target.name == "link") {
@@ -88,6 +93,33 @@ const AddQuestionPage = () => {
 
   const handleCancel = () => {
     navigate("/");
+  };
+
+  const [checked, setChecked] = useState<boolean>(false);
+
+  const onAuthFail = () => {
+    navigate("/login");
+  };
+
+  const onMark = (event: ChangeEvent<HTMLInputElement>) => {
+    if (existedQuestoin) {
+      const newChecked = event.target.checked;
+      console.log("yoooo", {
+        done: newChecked,
+        q_id: existedQuestoin.q_id,
+        difficulty: 0,
+      });
+      markQuestion(
+        {
+          done: newChecked,
+          q_id: existedQuestoin.q_id,
+          difficulty: 0,
+        },
+        onAuthFail
+      );
+      setChecked(newChecked);
+      handleCancel();
+    }
   };
 
   return (
@@ -126,7 +158,24 @@ const AddQuestionPage = () => {
             Cancel
           </SecondaryButton>
         </div>
-        {error && <div className="mt-2 text-red-400">{error}</div>}
+        {questionExists && (
+          <div>
+            <div className="mt-2 text-red-400">Question already exists!</div>
+            <div className="flex">
+              <div className="mt-2 text-red-400">Mark as compeleted?</div>
+              <div className="p-1.5">
+                <input
+                  id="hs-table-search-checkbox-1"
+                  type="checkbox"
+                  className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                  checked={checked}
+                  onChange={onMark}
+                />
+                <label className="sr-only">Checkbox</label>
+              </div>
+            </div>
+          </div>
+        )}
       </form>
     </div>
   );

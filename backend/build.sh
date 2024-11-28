@@ -37,7 +37,6 @@ deploy() {
   cd .. && git subtree push --prefix backend heroku main
   heroku run python manage.py makemigrations -a hidden-dusk-88069
   heroku run python manage.py migrate -a ${HEROKU_PROJ}
-  heroku run python manage.py insert_init_languages
 }
 
 stop() {
