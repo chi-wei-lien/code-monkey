@@ -99,6 +99,14 @@ const Done = ({
           </div>
         </td>
       )}
+      <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
+        <a
+          className="hover:cursor-pointer"
+          onClick={() => navigate(`/question/${question.q_id}/solutions`)}
+        >
+          Solutions
+        </a>
+      </td>
       {users &&
         users
           .filter((user) => user.id !== myId)
@@ -112,16 +120,9 @@ const Done = ({
               </td>
             );
           })}
-      <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
-        <a
-          className="hover:cursor-pointer"
-          onClick={() => navigate(`/question/${question.q_id}/solutions`)}
-        >
-          Solutions
-        </a>
-      </td>
+
       {checkLogin(myId) && (
-        <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
+        <td className="px-6 py-4 text-sm font-medium bg-white border-b last:sticky last:right-0 whitespace-nowrap text-end">
           <div className="relative inline-block group">
             <button className="flex items-center w-10 h-10 px-2 py-1 bg-white rounded-sm outline-none focus:outline-none">
               <span className="flex-1 pr-1">

@@ -258,6 +258,12 @@ function HomePage() {
                   Completed
                 </th>
               )}
+              <th
+                scope="col"
+                className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+              >
+                Solution
+              </th>
               {users &&
                 users
                   .filter((user) => user.id !== myId)
@@ -277,19 +283,10 @@ function HomePage() {
                       </th>
                     );
                   })}
-              <th
-                scope="col"
-                className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
-              >
-                Solution
-              </th>
               {checkLogin(myId) && (
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
-                >
+                <td className="px-6 py-3 text-xs font-medium text-white uppercase bg-red-400 last:sticky last:right-0 text-end">
                   Action
-                </th>
+                </td>
               )}
             </tr>
           </thead>
