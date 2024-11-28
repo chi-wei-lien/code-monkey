@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import addQuestion from "../actions/question/addQuestion";
 import Cookies from "js-cookie";
 import { PrimaryButton, SecondaryButton } from "../components/Buttons";
+import { getQuestionByName } from "../actions/question/getQuestion";
 
 const AddQuestionPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const AddQuestionPage = () => {
     link: "",
   });
   const [changed, setChanged] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
@@ -35,6 +38,16 @@ const AddQuestionPage = () => {
     return pathSegments[targetSegmentIndex] || "";
   };
 
+  const checkIfQuestionExists = async (questionName: string) => {
+    const existingQuestion = await getQuestionByName(questionName);
+    if (existingQuestion != null) {
+      setDisabled(true);
+      setError("question already exists!");
+    } else {
+      setDisabled(false);
+    }
+  };
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -42,18 +55,22 @@ const AddQuestionPage = () => {
       ...formData,
       [e.target.name]: e.target.value,
     };
+    setError("");
     if (!changed) {
       setChanged(true);
       if (e.target.name == "link") {
+        const questionName = autoFill(e.target.value);
         newData = {
           ...newData,
-          name: autoFill(e.target.value),
+          name: questionName,
         };
+        checkIfQuestionExists(questionName);
       }
     } else {
       newData = {
         ...newData,
       };
+      setDisabled(false);
     }
     setFormData(newData);
   };
@@ -102,11 +119,14 @@ const AddQuestionPage = () => {
           />
         </div>
         <div className="flex gap-2">
-          <PrimaryButton type="submit">Add a question</PrimaryButton>
+          <PrimaryButton type="submit" disabled={disabled}>
+            Add a question
+          </PrimaryButton>
           <SecondaryButton type="button" onClick={handleCancel}>
             Cancel
           </SecondaryButton>
         </div>
+        {error && <div className="mt-2 text-red-400">{error}</div>}
       </form>
     </div>
   );

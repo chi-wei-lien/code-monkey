@@ -13,19 +13,33 @@ from itertools import product
 @api_view(['GET'])
 def get_question(request):
     q_id = request.GET.get('q_id')
+    q_name = request.GET.get('q_name')
     sql = """
         SELECT * 
         FROM questions_question
-        WHERE q_id = %s
+        WHERE 1 = 1
     """
+    params = []
+
+    if q_id:
+        sql += " AND q_id = %s"
+        params.append(q_id)
+    
+    if q_name:
+        sql += " AND questions_question.name LIKE %s"
+        params.append(f"%{q_name}%")
+
     result = []
     with connection.cursor() as cursor:
-        cursor.execute(sql, [q_id])
+        cursor.execute(sql, params)
         columns = [col[0] for col in cursor.description]
         results = cursor.fetchall()
         rows = [dict(zip(columns, row)) for row in results]
         for row in rows:
             result.append(row)
+    print(result)
+    if len(result) == 0:
+        return JsonResponse({'data': None})
     return JsonResponse({'data': result[0]})
 
 @api_view(['GET'])
