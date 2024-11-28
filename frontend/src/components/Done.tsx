@@ -104,7 +104,7 @@ const Done = ({
       <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a
           className="hover:cursor-pointer"
-          onClick={() => navigate(`/solutions/${question.q_id}`)}
+          onClick={() => navigate(`/question/${question.q_id}/solutions`)}
         >
           Solutions
         </a>

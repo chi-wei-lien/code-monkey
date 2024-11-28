@@ -13,7 +13,7 @@ import Code from "../components/Code";
 import ReactMarkdown from "react-markdown";
 
 const SolutionPage = () => {
-  const { s_id } = useParams();
+  const { q_id, s_id } = useParams();
   const [solution, setSolution] = useState<Solution>();
   const navigate = useNavigate();
   useEffect(() => {
@@ -30,7 +30,11 @@ const SolutionPage = () => {
       Header={
         <div className="flex items-center justify-between py-3">
           <div className="flex gap-2">
-            <SecondaryButton onClick={() => navigate(-1)}>Back</SecondaryButton>
+            <SecondaryButton
+              onClick={() => navigate(`/question/${q_id}/solutions`)}
+            >
+              Back
+            </SecondaryButton>
           </div>
           <div className="absolute transform -translate-x-1/2 left-1/2">
             <PrimaryButton

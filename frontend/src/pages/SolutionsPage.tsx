@@ -72,7 +72,9 @@ function SolutionsPage() {
                 Add Solution
               </PrimaryButton>
             )}
-            <SecondaryButton onClick={() => navigate(-1)}>Back</SecondaryButton>
+            <SecondaryButton onClick={() => navigate("/")}>
+              Back
+            </SecondaryButton>
           </div>
           <div className="absolute transform -translate-x-1/2 left-1/2">
             <PrimaryButton
@@ -116,7 +118,9 @@ function SolutionsPage() {
               return (
                 <tr>
                   <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
-                    <a href={`/solution/${solution.s_id}`}>{solution.name}</a>
+                    <a href={`/question/${q_id}/solution/${solution.s_id}`}>
+                      {solution.name}
+                    </a>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                     {solution.posted_by}
@@ -151,7 +155,9 @@ function SolutionsPage() {
                         <a
                           className="hover:cursor-pointer"
                           onClick={() => {
-                            navigate(`/solution/${solution.s_id}`);
+                            navigate(
+                              `/question/${q_id}/solution/${solution.s_id}`
+                            );
                           }}
                         >
                           <li className="px-3 py-1 rounded-sm hover:bg-gray-100">

@@ -14,8 +14,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/solutions/:q_id" element={<SolutionsPage />} />
-      <Route path="/solution/:s_id" element={<SolutionPage />} />
+      <Route path="/question/:q_id/solutions" element={<SolutionsPage />} />
+      <Route path="/question/:q_id/solution/:s_id" element={<SolutionPage />} />
       <Route path="/add-question" element={<AddQuestion />} />
       <Route path="/add-solution/:q_id" element={<AddSolutionPage />} />
       <Route path="/edit-solution/:s_id" element={<EditSolutionPage />} />
