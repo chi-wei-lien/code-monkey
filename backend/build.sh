@@ -11,10 +11,13 @@ migrate() {
   poetry run python manage.py migrate
 }
 
+collectstatic() {
+  poetry run python manage.py collectstatic
+}
+
 dev() {
   stop
   poetry add $(cat requirements.txt)
-  poetry run python manage.py collectstatic
   poetry run python manage.py runserver
 }
 
@@ -85,7 +88,10 @@ case "$1" in
   deploy)
     deploy
     ;;
+  collectstatic)
+    collectstatic
+    ;;
   *)
-    echo "Usage: $0 {clear|migrate|start|create_super_user|dev_db_init|db_init|docker_build|gen_req}"
+    echo "Usage: $0 {clear|migrate|start|create_super_user|dev_db_init|db_init|docker_build|gen_req|collectstatic}"
     exit 1
 esac
