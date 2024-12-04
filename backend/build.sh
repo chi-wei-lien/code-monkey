@@ -13,6 +13,8 @@ migrate() {
 
 dev() {
   stop
+  poetry add $(cat requirements.txt)
+  poetry run python manage.py collectstatic
   poetry run python manage.py runserver
 }
 
@@ -47,7 +49,6 @@ stop() {
 
 start() {
   stop
-  gen_req
   docker image rm web
   docker build -t web:latest .
   docker run -d --name ${CONTAINER_NAME} -e "PORT=8765" -e "DEBUG=1" -p 8000:8765 web:latest

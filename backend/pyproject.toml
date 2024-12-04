@@ -7,14 +7,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-django = "5.1.2"
-djangorestframework = "3.15.1"
-djangorestframework-simplejwt = "5.3.1"
-rest-framework-simplejwt = "0.0.2"
-gunicorn = "20.1.0"
-django-cors-headers = "4.4.0"
-whitenoise = "^6.8.2"
-dj-database-url = "^2.3.0"
+django = {version = "5.1.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+djangorestframework = {version = "3.15.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+djangorestframework-simplejwt = {version = "5.3.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+rest-framework-simplejwt = {version = "0.0.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+gunicorn = {version = "20.1.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+django-cors-headers = {version = "4.4.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+whitenoise = {version = "6.8.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+dj-database-url = {version = "2.3.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+asgiref = {version = "3.8.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+pyjwt = {version = "2.9.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+setuptools = {version = "75.3.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+sqlparse = {version = "0.5.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+typing-extensions = {version = "4.12.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+tzdata = {version = "2024.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\" and sys_platform == \"win32\""}
 
 
 [build-system]
