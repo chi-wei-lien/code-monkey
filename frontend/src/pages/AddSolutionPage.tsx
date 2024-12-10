@@ -27,9 +27,9 @@ const AddSolutionPage = () => {
     }
     const add = async () => {
       await addSolution(() => {
-        navigate(`/solutions/${q_id}`);
+        navigate(`/question/${q_id}/solutions`);
       }, formData);
-      navigate(`/solutions/${q_id}`);
+      navigate(`/question/${q_id}/solutions`);
     };
     add();
   };
