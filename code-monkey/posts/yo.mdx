@@ -1,0 +1,627 @@
+---
+title: Python Coding Interview Cheat Sheet
+date: 2021-12-24
+---
+
+If you're just getting started with technical interview prep and don't have a strong preference for a programming language, I highly recommend using Python. Here are three simple reasons why:
+
+1. Its syntax is simple, easy to memorize, and concise.
+2. Python's error messages are much easier to understand compared to C++ error messages (in my experience).
+3. Most interviews and online assessments allow you to use Python.
+
+Now that you're convinced, here's a cheatsheet to help you transition to coding in Python. Please note that this is not a comprehensive guide to writing Python code, but rather a handy reference covering the most common syntax used in technical interviews. I hope you find it helpful!
+
+# Control flow
+
+## For loop
+
+If you want to iterate from a starting value to an ending value, you can use a `for` loop with the `range()` function. Here's how it works:
+
+```python
+start_val = 1
+end_val = 5
+step = 2
+
+""" Loop from start_val to end_val (inclusive) """
+for i in range(start_val, end_val + 1):
+    print(i)
+
+""" Output
+1
+2
+3
+4
+5
+"""
+
+""" Loop from start_val to end_val with a step size """
+for i in range(start_val, end_val + 1, step):
+    print(i)
+
+""" Output
+1
+3
+5
+"""
+
+""" Loop from 0 to a given value (exclusive) if only one parameter is provided """
+for i in range(3):
+    print(i)
+
+""" Output
+0
+1
+2
+"""
+
+""" Loop in reverse (counting down) using a negative step """
+for i in range(5, -1, -1):
+    print(i)
+
+""" Output
+5
+4
+3
+2
+1
+0
+```
+
+<ImportantMessage>
+  Notice that the second parameter of the `range()` function is **exclusive**.
+  This means the loop stops before reaching the specified `end_val`. To include
+  `end_val` in the loop, you must add `+1` to it.
+</ImportantMessage>
+
+## Iterating over a list
+
+Here are three common ways to iterate over a list. Using `enumerate()` is particularly helpful when you need both the index and the current item.
+
+```python
+animals = ['dog', 'cat', 'rabbit']
+
+""" Method 1: Using enumerate() to get both index and item """
+for index, animal in enumerate(animals):
+    print(f"Index: {index}, Animal: {animal}")
+
+""" Output
+Index: 0, Animal: dog
+Index: 1, Animal: cat
+Index: 2, Animal: rabbit
+"""
+
+""" Method 2: Using range() and len() """
+for i in range(len(animals)):
+    print(animals[i])
+
+""" Output
+dog
+cat
+rabbit
+"""
+
+""" Method 3: Direct iteration over the list """
+for animal in animals:
+    print(animal)
+
+""" Output
+dog
+cat
+rabbit
+"""
+```
+
+## While loop
+
+The `while` loop in Python works similarly to other programming languages. It repeatedly executes the block of code as long as the condition evaluates to `True`.
+
+```python
+i = 0
+while i < 5:
+    print(i)
+    i += 1
+
+""" Output
+0
+1
+2
+3
+4
+```
+
+# Sorting
+
+By default, sorting a list in Python arranges the elements in ascending (non-decreasing) order.
+
+<ImportantMessage>
+  Sorting in Python takes *O(nlogn)* time and *O(n)* space!
+</ImportantMessage>
+
+```python
+""" Using the sort() method to modify the original list """
+nums1 = [2, 3, 1, 5, 2]
+nums1.sort()
+print(nums1)
+
+""" Output
+[1, 2, 2, 3, 5]
+"""
+
+""" Using the sorted() function to return a new sorted list """
+nums2 = [2, 3, 1, 5, 2]
+sorted_nums = sorted(nums2)
+print(sorted_nums)
+
+""" Output
+[1, 2, 2, 3, 5]
+"""
+```
+
+<ImportantMessage>
+  Notice the difference: `sorted()` returns a **new** sorted list, while
+  `sort()` modifies the original list in place. Personally, I prefer using
+  `sorted()` for clarity. However, during an interview, always ask if modifying
+  the original list is acceptable. For the sake of simplicity, I will use
+  `sorted()` in the remaining examples.
+</ImportantMessage>
+
+## Sorting a list of collections
+
+Sometimes, our list can be more complex, such as a list of collections. Here, a collection refers to another list or a tuple. The important thing to understand is that, by default, Python will compare the first element of each collection to determine the order. If there's a tie, it will compare the second element, and if there's still a tie, it moves on to the third element, and so on.
+
+```python
+nums = [(5, 2), (1, 3), (2, 6), (2, 4)]
+sorted_nums = sorted(nums)
+print(sorted_nums)
+
+""" Output
+[(1, 3), (2, 4), (2, 6), (5, 2)]
+"""
+```
+
+## Sorting a list with custom comparison function
+
+Sometimes, you may need a custom comparison function. For example, if you want to sort a list based on the sum of each collection within it, you can use the key parameter in the `sorted()` function to define your custom logic.
+
+```python
+nums = [(5, 2), (1, 3), (2, 6), (2, 4)]
+
+""" Sorting based on the sum of elements in each tuple (ascending order) """
+sorted_nums = sorted(nums, key=lambda x: x[0] + x[1])
+print(sorted_nums)
+
+""" Output
+[(1, 3), (2, 4), (5, 2), (2, 6)]
+"""
+```
+
+<ImportantMessage>
+
+What if you want to sort in descending (non-increasing) order?
+
+```python
+nums = [(5, 2), (1, 3), (2, 6), (2, 4)]
+
+""" Sorting based on the sum of elements in each tuple (descending order) """
+sorted_nums = sorted(nums, key=lambda x: -(x[0] + x[1]))
+print(sorted_nums)
+
+""" Output
+[(2, 6), (5, 2), (2, 4), (1, 3)]
+"""
+```
+
+A simple negative sign in the `lambda` function is all you need! :D
+
+</ImportantMessage>
+
+# Basic data structure
+
+## Array
+
+In Python, arrays are implemented as lists, which are mutable collections of data.
+
+```python
+nums = [1, 2, 3, 4]
+print(nums)
+
+""" Output
+[1, 2, 3, 4]
+"""
+
+all_zeros = [0] * 4
+print(all_zeros)
+
+""" Output
+[0, 0, 0, 0]
+"""
+```
+
+### 2D Array
+
+To create a 2D array in Python, you can use a list comprehension to generate rows and columns.
+
+```python
+rows = 2
+cols = 3
+arr = [[0 for col in range(cols)] for row in range(rows)]
+print(arr)
+
+""" Output
+arr = [[0, 0, 0], [0, 0, 0]]
+"""
+```
+
+<ImportantMessage>
+  You cannot use `arr = ([0] * cols) * rows` to create a 2D array! This method
+  will create references to the same inner list, which can lead to unexpected
+  behavior.
+</ImportantMessage>
+
+## Stack (LIFO)
+
+A stack is a last-in-first-out (LIFO) data structure. In Python, there isn't a built-in stack data structure, but most people use a `deque` (double-ended queue) from the `collections` module to mimic a stack. For more information on stacks and their time complexities, please refer to the [Algo guide on stacks].
+
+```python
+from collections import deque
+
+arr = [1, 2, 3]
+stack = deque([])
+
+""" Pushing items onto the stack """
+for item in arr:
+    stack.append(item)
+
+""" Popping items from the stack """
+while stack:
+    print(stack.pop(), end=" ")
+
+""" Output
+3 2 1
+"""
+```
+
+## Queue (FIFO)
+
+A queue is a first-in-first-out (FIFO) data structure. Similar to a stack, there isn't a built-in queue data structure in Python, but most people use a `deque` (double-ended queue) from the `collections` module to mimic a queue. For more information on queues and their time complexities, please refer to the [Algo guide on queues].
+
+```python
+from collections import deque
+
+arr = [1, 2, 3]
+queue = deque([])
+
+""" Enqueue items """
+for item in arr:
+    queue.append(item)
+
+""" Dequeue items """
+while queue:
+    print(queue.popleft(), end=" ")
+
+""" Output
+1 2 3
+"""
+```
+
+## Hashmap
+
+Hashmaps allow fast lookups using a key. In Python, they are called dictionaries. Personally, I prefer using `defaultdict` over a traditional dictionary. You can read more about `defaultdict` in [Hashmap with initial value](#hashmap-with-initial-value).
+
+```python
+hashmap = {}
+key = 0
+value = 1
+
+""" Adding a key-value pair to the hashmap """
+hashmap[key] = value
+print(hashmap)
+
+""" Output
+{0: 1}
+"""
+
+""" Checking if a key is present in the hashmap """
+print(key in hashmap)
+""" Output
+True
+"""
+
+""" Removing a key-value pair """
+hashmap.pop(key)
+print(key in hashmap)
+""" Output
+False
+"""
+
+""" Accessing a key that doesn't exist will raise a KeyError """
+try:
+    print(hashmap[3])
+except KeyError:
+    print("Key not found!")
+
+""" Output
+Key not found!
+"""
+```
+
+### Hashmap with initial value
+
+Looking up a non-existing key can sometimes be annoying, especially in cases where you need to check if the key exists, and if not, initialize its value. Consider the following scenario: you want to count how many times each letter appears in a string. While iterating through the string, you would normally check if the current character exists in the dictionary. If it does, you increment its value, and if it doesn't, you initialize the value. However, you can simplify this process using a `defaultdict`.
+
+A `defaultdict` automatically initializes the value when a key does not exist, based on the default value you provide in the `lambda`.
+
+```python
+from collections import defaultdict
+
+""" Create a defaultdict with default value 0 """
+hashmap = defaultdict(lambda: 0)
+
+hashmap['a'] += 1
+print(hashmap['a'])  # This will return 1
+print(hashmap['b'])  # This will return 0, since 'b' doesn't exist yet
+
+""" Removing a key from the hashmap """
+hashmap.pop('b')
+```
+
+<ImportantMessage>
+  The key used in **both** dictionaries and `defaultdict` must be hashable.
+  Hashable types include `int`, `float`, `string`, `boolean`, and `tuple`. It's
+  important to note that tuples are hashable, while lists are not. This is
+  because tuples are immutable (you can't change their elements once they are
+  created), while lists are mutable. Strings, being immutable, are also
+  hashable, and we will discuss them more in the [string section](#string).
+</ImportantMessage>
+
+### Iterating over hashmap
+
+The two most common ways to iterate over a dictionary or a `defaultdict` are shown below:
+
+```python
+""" traditionaly dictionary """
+my_dict = {
+    'a': 1,
+    'b': 2,
+    'c': 1
+}
+
+""" Initialize a defaultdict with a normal dictionary """
+my_default_dict = defaultdict(int, my_dict)
+
+""" Iterating over the defaultdict """
+for key, value in my_default_dict.items():
+    print(key, value)
+
+""" Output
+a 1
+b 2
+c 1
+"""
+```
+
+## Hashset
+
+Hashsets are called **sets** in Python. They allow you to perform fast lookups from a collection of unique elements (no duplicates).
+
+```python
+""" Creating a set with an initial element """
+hashset = set([2])
+item = 1
+
+""" Adding an item to the set """
+hashset.add(item)
+print(hashset)
+
+""" Output
+{1, 2}
+"""
+
+""" Checking if an item exists in the set """
+print(item in hashset)
+""" Output
+True
+"""
+
+""" Removing an item from the set """
+hashset.remove(item)
+print(hashset)
+
+""" Output
+{2}
+"""
+```
+
+## Heap
+
+By default, all heaps in Python are min-heaps, meaning that the smallest element is returned when you call `heappop()`.
+
+```python
+import heapq
+
+arr1 = [1, 3, 2, 5, 4]
+heapq.heapify(arr1)  # Convert arr1 into a min heap
+
+minHeap = []
+arr2 = [1, 5, 9, 10, 7]
+for item in arr2:
+    heapq.heappush(minHeap, item)  # Push items into the min heap
+
+while minHeap:
+    popped = heapq.heappop(minHeap)  # Pop from min heap (get the smallest item)
+    print(popped, end=" ")
+
+""" Output
+1 5 7 9 10
+"""
+```
+
+<ImportantMessage>
+  If you already have a list of elements that you want to convert into a heap,
+  using the `heapq.heapify()` function is the fastest method, with a time
+  complexity of O(n). In contrast, adding elements one by one using `heappush()`
+  has a time complexity of O(n log n).
+</ImportantMessage>
+
+### Max (Custom) Heap
+
+There are generally two methods to create a max heap in Python.
+
+1. Using a Min Heap with Reversed Elements
+
+You can still use a min heap by pushing the negative (reversed) value of each element to simulate a max heap. When popping from the heap, reverse the value again.
+
+```python
+import heapq
+
+min_heap = []
+arr = [1, 5, 9, 10, 7]
+for item in arr:
+    heapq.heappush(min_heap, -item)  # Push the negative value to the min heap
+
+while min_heap:
+    popped = -heapq.heappop(min_heap)  # Pop from min heap and reverse the value
+    print(popped, end=" ")
+
+""" Output
+10 9 7 5 1
+"""
+```
+
+2. Using a Custom Object with the `__lt__()` Comparison Function
+
+You can also create a custom object with the `__lt__()` method to define how the elements should be compared. This method is more flexible but more complex.
+
+```python
+import heapq
+
+class HeapObject:
+    """ Constructor with additional values if needed """
+    def __init__(self, value1, value2):
+        self.value1 = value1
+        self.value2 = value2
+
+    def __lt__(self, other):
+        """ To make it a max heap, we use greater than comparison """
+        return self.get_value() > other.get_value()
+
+        """ To make it a min heap, we use less than comparison
+        return self.get_value() < other.get_value() """
+
+    def get_value(self):
+        """ Customize this method as needed """
+        return self.value1 + self.value2
+
+
+min_heap = []
+arr = [(1, 2), (1, 7), (2, 4)]
+for a, b in arr:
+    heapq.heappush(min_heap, HeapObject(a, b))  # Push custom objects to the heap
+
+while min_heap:
+    popped = heapq.heappop(min_heap)
+    print(popped.get_value(), end=" ")
+
+""" Output
+8 6 3
+"""
+```
+
+## Graph
+
+There are two common graph representations: the adjacency list and adjacency matrix.
+
+### Adjacent List (Unweighted)
+
+The following example demonstrates an unweighted graph where edges have no weights.
+
+```python
+from collections import defaultdict
+
+edges = [
+    [0, 1],
+    [2, 3],
+    [0, 4],
+    [2, 4]
+]
+adj_list = defaultdict(lambda: [])  # Using defaultdict to create an empty list for each node
+
+for n1, n2 in edges:
+    adj_list[n1].append(n2)  # Add directed edge from n1 to n2
+    """ If the graph is undirected, add the reverse edge too
+    adj_list[n2].append(n1) """
+
+for v, adj in adj_list.items():
+    print(f"{v} -> {adj}")
+
+""" Output
+0 -> [1, 4]
+2 -> [3, 4]
+"""
+```
+
+### Adjacent List (Weighted)
+
+For a weighted graph, each edge contains a weight, which is added along with the destination node.
+
+```python
+from collections import defaultdict
+
+edges = [
+    # n1, n2, weight
+    [0, 1, 5],
+    [2, 3, 2],
+    [0, 4, 7],
+    [2, 4, 9]
+]
+adj_list = defaultdict(lambda: [])  # Using defaultdict to create an empty list for each node
+
+for n1, n2, weight in edges:
+    adj_list[n1].append((n2, weight))  # Add weighted edge (n2, weight)
+    """ If the graph is undirected, add the reverse edge too
+    adj_list[n2].append((n1, weight)) """
+
+for v, adj in adj_list.items():
+    print(f"{v} -> {adj}")
+
+""" Output
+0 -> [(1, 5), (4, 7)]
+2 -> [(3, 2), (4, 9)]
+"""
+```
+
+### Adjacent Matrix
+
+An adjacency matrix is a 2D array used to represent a graph, where each cell `adj_matrix[i][j]` holds the weight of the edge from node `i` to node `j`. For a graph with `n` nodes (labeled from 0 to `n - 1`), this matrix has dimensions `n x n`.
+
+```python
+n = 6  # Number of nodes
+
+edges = [
+    # n1, n2, weight
+    [0, 1, 1],
+    [2, 3, 2],
+    [0, 4, 3],
+    [2, 4, 5]
+]
+
+""" Initialize adjacency matrix with zeros """
+adj_mat = [[0 for col in range(n)] for row in range(n)]
+
+for n1, n2, weight in edges:
+    adj_mat[n1][n2] = weight  # Add directed edge with weight
+    """ If the graph is undirected, add the reverse edge too:
+    adj_mat[n2][n1] = weight """
+
+for row in range(n):
+    print(adj_mat[row])
+
+""" Output
+[0, 1, 0, 0, 3, 0]
+[0, 0, 0, 0, 0, 0]
+[0, 0, 0, 2, 5, 0]
+[0, 0, 0, 0, 0, 0]
+[0, 0, 0, 0, 0, 0]
+[0, 0, 0, 0, 0, 0]
+"""
+```
