@@ -18,7 +18,10 @@ const TestPage = () => {
       <article className="p-8">
         <div className="flex justify-center">
           <div className={`prose text-black mt-5 text-sm`}>
-            <h1 className={`mt-6 text-fontLogo ${pacifico.className}`}>
+            <h1
+              className={`mt-6 text-fontLogo ${pacifico.className}`}
+              id="title"
+            >
               {post.title}
             </h1>
             <div className="border-dashed border-2 border-sky-500 p-4">
@@ -50,6 +53,12 @@ const TestPage = () => {
             />
           </div>
         </div>
+        <a
+          href="#title"
+          className="fixed bottom-14 right-16 bg-slate-700 text-white p-3 rounded-full shadow-lg hover:bg-slate-800 transition"
+        >
+          Back to Top
+        </a>
       </article>
     </div>
   );
