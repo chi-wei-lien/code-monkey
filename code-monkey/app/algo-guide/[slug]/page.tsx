@@ -14,9 +14,9 @@ const TestPage = () => {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <div className="h-[95%] w-[100%] ml-10 mr-10 overflow-y-scroll bg-cardPrimary rounded-md shadow">
+    <div className="h-[95%] w-[100%] no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
       <article className="p-8">
-        <div className="flex justify-center">
+        <div className="">
           <div className={`prose text-black mt-5 text-sm`}>
             <h1
               className={`mt-6 text-fontLogo ${pacifico.className}`}

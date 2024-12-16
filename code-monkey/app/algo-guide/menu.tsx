@@ -1,13 +1,21 @@
-// import MenuContent from "./menu.mdx";
-import { robotoMono } from "../fonts";
+import { allPosts } from "contentlayer/generated";
 
 const Menu = () => {
+  const postUrls = allPosts.map((post) => {
+    return [post.title, post._raw.flattenedPath];
+  });
   return (
-    <div className="h-[95%] w-[30rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
+    <div className="min-h-28 md:h-[95%] no-scrollbar overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
       <div
-        className={`prose-menu prose-ul:list-none text-fontMenu text-sm list-none ${robotoMono.className} font-medium`}
+        className={`prose-menu prose-ul:list-none text-fontMenu text-sm list-none font-medium pr-4`}
       >
-        {/* <MenuContent /> */}
+        <ul>
+          {postUrls.map(([title, postUrl]) => (
+            <li key={postUrl}>
+              <a href={`/algo-guide/${postUrl}`}>{title}</a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
