@@ -7,6 +7,7 @@ import { pacifico } from "@/app/fonts";
 import ImportantMessage from "@/components/mdx/ImportantMessage";
 import comparePathWithSlug from "@/lib/comparePathWithSlug";
 import InlineCode from "@/components/mdx/InlineCode";
+import { useMDXComponents } from "@/mdx-components";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -28,16 +29,31 @@ const TestPage = () => {
             >
               {post.title}
             </h1>
-            <div className="mb-2">
+            <span className="inline-flex items-center align-middle h-12">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span className="mx-1">{">"}</span>
               {post._raw.flattenedPath
                 .split("/")
                 .map((pathComponent, i, arr) => (
                   <span key={i}>
                     {pathComponent}
-                    {i < arr.length - 1 && " > "}
+                    {i < arr.length - 1 && <span className="mx-1">{">"}</span>}
                   </span>
                 ))}
-            </div>
+            </span>
             <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
               <div className="text-lg font-bold text-fontLogo">
                 On this page
@@ -61,10 +77,7 @@ const TestPage = () => {
               </div>
             </div>
             <MDXContent
-              components={{
-                ImportantMessage,
-                InlineCode,
-              }}
+              components={useMDXComponents({ ImportantMessage, InlineCode })}
             />
           </div>
         </div>
