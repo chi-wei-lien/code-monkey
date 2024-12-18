@@ -5,7 +5,7 @@ const Menu = () => {
     return [post.title, post._raw.flattenedPath];
   });
   return (
-    <div className="min-h-28 md:h-[95%] no-scrollbar overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
+    <div className="min-h-28 md:h-[95%] no-scrollbar md:w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
       <div
         className={`prose-menu prose-ul:list-none text-fontMenu text-sm list-none font-medium pr-4`}
       >
