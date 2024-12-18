@@ -28,7 +28,17 @@ const TestPage = () => {
             >
               {post.title}
             </h1>
-            <div className="border-dashed border-2 border-sky-500 p-4">
+            <div className="mb-2">
+              {post._raw.flattenedPath
+                .split("/")
+                .map((pathComponent, i, arr) => (
+                  <span key={i}>
+                    {pathComponent}
+                    {i < arr.length - 1 && " > "}
+                  </span>
+                ))}
+            </div>
+            <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
               <div className="text-lg font-bold text-fontLogo">
                 On this page
               </div>

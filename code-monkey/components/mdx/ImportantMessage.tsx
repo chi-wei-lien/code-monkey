@@ -6,7 +6,7 @@ interface ImportantMessageProps {
 
 const ImportantMessage: React.FC<ImportantMessageProps> = ({ children }) => {
   return (
-    <div className="bg-yellow-200 border-2 border-fontLogo border-dashed p-4">
+    <div className="bg-yellow-200 border-2 border-fontLogo border-dashed p-4 rounded-md">
       <div className="font-bold">Important!</div>
       {children}
     </div>
