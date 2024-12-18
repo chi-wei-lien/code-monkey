@@ -5,10 +5,14 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { notFound, useParams } from "next/navigation";
 import { pacifico } from "@/app/fonts";
 import ImportantMessage from "@/components/mdx/ImportantMessage";
+import comparePathWithSlug from "@/lib/comparePathWithSlug";
+import InlineCode from "@/components/mdx/InlineCode";
 
 const TestPage = () => {
-  const params = useParams<{ slug: string }>();
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
+  const params = useParams<{ slug: string[] }>();
+  const post = allPosts.find((post) =>
+    comparePathWithSlug(post._raw.flattenedPath, params.slug)
+  );
   if (!post) notFound();
 
   const MDXContent = useMDXComponent(post.body.code);
@@ -49,6 +53,7 @@ const TestPage = () => {
             <MDXContent
               components={{
                 ImportantMessage,
+                InlineCode,
               }}
             />
           </div>

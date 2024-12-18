@@ -1,0 +1,70 @@
+---
+title: Dijkstra
+date: 2024-12-16
+---
+
+Dijkstra is an important algorithm to help you find the shortest path when weights are **non-negative**. Here is a template for the algorithm. If this is your first time hearing about this algorithm, I recommend learning what it is first (Here's a [tutorial](https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/) from freecodecamp and another [tutorial](https://cp-algorithms.com/graph/dijkstra_sparse.html) from Algorithms for Competitive Programming). This post only cover the general idea and more for providing a template for you to memorize.
+
+<ImportantMessage>
+
+Here are some important things to know about dikstra and this template
+
+- Dijkstra will **only** guarantee to work if the weights are **non-negative**
+- Time complexity of the given template: <InlineCode>O((E + V) \* log(E))</InlineCode>
+  - If you are curious about why this is the case, please read
+- Best time complexity of Dijkstra implemented with a **Fibonacci heap**: `O(V * log(V) + E)`
+  - Too difficult to implement during an interview
+- Space complexity of the given template: `O(E + V)`
+
+</ImportantMessage>
+
+```python
+from collections import defaultdict
+import heapq
+
+adj_list = {
+    0: [(1, 1), (2, 5)], # ex: edge pointing to node 2 with weight 5
+    1: [(3, 100)],
+    2: [(3, 6), (4, 8)],
+    3: [(5, 2)],
+    4: [(5, 3)]
+}
+
+def dijkstra(adj_list):
+    """In the beginning, we initialize so that each node will require inifinite dist to reach"""
+    dist_to_reach_node = defaultdict(lambda: float('inf'))
+
+    """Assuming that we start at node 0 with 0 dist to reach node 0"""
+    start_dist = 0
+    start_node = 0
+    dist_to_reach_node[start_node] = start_dist
+
+    """We are trying to find the shortest path to reach node 5"""
+    end_node = 5
+
+    min_heap = [(start_dist, start_node)]
+
+    while min_heap:
+        """curr_dist must be the shortest distance to reach curr_dist"""
+        curr_dist, curr_node  = heapq.heappop(min_heap)
+
+        """If the curr dist is different from what is stored in dist_to_reach_node, curr dist is outdated, so we ignore
+        Another way to do this is to use a separate set to store visited node, but this method is more memory efficient"""
+        if curr_dist != dist_to_reach_node[curr_node]:
+            continue
+
+        if curr_node == end_node:
+            return dist_to_reach_node[end_node]
+
+        for neighbor, weight in adj_list[curr_node]:
+            new_dist = curr_dist + weight
+
+            """If the new_dist is better than what we currently have, update our dictionary, push it back to the heap"""
+            if new_dist < dist_to_reach_node[neighbor]:
+                dist_to_reach_node[neighbor] = new_dist
+                heapq.heappush(min_heap, (new_dist, neighbor))
+
+    return -1 # impossible to reach end_node
+
+print(dijkstra(adj_list))
+```

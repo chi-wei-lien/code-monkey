@@ -1,6 +1,6 @@
 ---
 title: Python Coding Interview Cheat Sheet
-date: 2021-12-24
+date: 2024-12-16
 ---
 
 If you're just getting started with technical interview prep and don't have a strong preference for a programming language, I highly recommend using Python. Here are three simple reasons why:
@@ -15,7 +15,7 @@ Now that you're convinced, here's a cheatsheet to help you transition to coding 
 
 ## For loop
 
-If you want to iterate from a starting value to an ending value, you can use a `for` loop with the `range()` function. Here's how it works:
+If you want to iterate from a starting value to an ending value, you can use a <InlineCode>for</InlineCode> loop with the <InlineCode>range()</InlineCode> function. Here's how it works:
 
 ```python
 start_val = 1
@@ -68,14 +68,16 @@ for i in range(5, -1, -1):
 ```
 
 <ImportantMessage>
-  Notice that the second parameter of the `range()` function is **exclusive**.
-  This means the loop stops before reaching the specified `end_val`. To include
-  `end_val` in the loop, you must add `+1` to it.
+  Notice that the second parameter of the <InlineCode>range()</InlineCode>{" "}
+  function is **exclusive**. This means the loop stops before reaching the
+  specified <InlineCode>end_val</InlineCode>. To include
+  <InlineCode>end_val</InlineCode> in the loop, you must add
+  <InlineCode>+1</InlineCode> to it.
 </ImportantMessage>
 
 ## Iterating over a list
 
-Here are three common ways to iterate over a list. Using `enumerate()` is particularly helpful when you need both the index and the current item.
+Here are three common ways to iterate over a list. Using <InlineCode>enumerate()</InlineCode> is particularly helpful when you need both the index and the current item.
 
 ```python
 animals = ['dog', 'cat', 'rabbit']
@@ -113,7 +115,7 @@ rabbit
 
 ## While loop
 
-The `while` loop in Python works similarly to other programming languages. It repeatedly executes the block of code as long as the condition evaluates to `True`.
+The <InlineCode>while</InlineCode> loop in Python works similarly to other programming languages. It repeatedly executes the block of code as long as the condition evaluates to <InlineCode>True</InlineCode>.
 
 ```python
 i = 0
@@ -158,11 +160,14 @@ print(sorted_nums)
 ```
 
 <ImportantMessage>
-  Notice the difference: `sorted()` returns a **new** sorted list, while
-  `sort()` modifies the original list in place. Personally, I prefer using
-  `sorted()` for clarity. However, during an interview, always ask if modifying
-  the original list is acceptable. For the sake of simplicity, I will use
-  `sorted()` in the remaining examples.
+  Notice the difference: <InlineCode>sorted()</InlineCode> returns a **new**
+  sorted list, while
+  <InlineCode>sort()</InlineCode> modifies the original list in place. Personally,
+  I prefer using
+  <InlineCode>sorted()</InlineCode> for clarity. However, during an interview,
+  always ask if modifying the original list is acceptable. For the sake of
+  simplicity, I will use
+  <InlineCode>sorted()</InlineCode> in the remaining examples.
 </ImportantMessage>
 
 ## Sorting a list of collections
@@ -181,7 +186,7 @@ print(sorted_nums)
 
 ## Sorting a list with custom comparison function
 
-Sometimes, you may need a custom comparison function. For example, if you want to sort a list based on the sum of each collection within it, you can use the key parameter in the `sorted()` function to define your custom logic.
+Sometimes, you may need a custom comparison function. For example, if you want to sort a list based on the sum of each collection within it, you can use the key parameter in the <InlineCode>sorted()</InlineCode> function to define your custom logic.
 
 ```python
 nums = [(5, 2), (1, 3), (2, 6), (2, 4)]
@@ -211,7 +216,7 @@ print(sorted_nums)
 """
 ```
 
-A simple negative sign in the `lambda` function is all you need! :D
+A simple negative sign in the <InlineCode>lambda</InlineCode> function is all you need! :D
 
 </ImportantMessage>
 
@@ -253,9 +258,9 @@ arr = [[0, 0, 0], [0, 0, 0]]
 ```
 
 <ImportantMessage>
-  You cannot use `arr = ([0] * cols) * rows` to create a 2D array! This method
-  will create references to the same inner list, which can lead to unexpected
-  behavior.
+  You cannot use <InlineCode>arr = ([0] * cols) * rows</InlineCode> to create a
+  2D array! This method will create references to the same inner list, which can
+  lead to unexpected behavior.
 </ImportantMessage>
 
 ### Copying and extracting from array
@@ -296,9 +301,10 @@ part_of_nums1: [2, 3]
 
 You can also omit the start or end index:
 
-- `nums[:3]` extracts from the beginning up to index 3 (exclusive).
-- `nums[2:]` extracts from index 2 to the end of the list.
-- `nums[::2]` extracts every second element (step size of 2).
+- <InlineCode>nums[:3]</InlineCode> extracts from the beginning up to index 3 (exclusive).
+- <InlineCode>nums[2:]</InlineCode> extracts from index 2 to the end of the list.
+- <InlineCode>nums[::2]</InlineCode> extracts every second element (step size of
+  2).
 
 </ImportantMessage>
 
@@ -306,9 +312,9 @@ You can also omit the start or end index:
 
 Strings in Python are a collection of characters, but they come with a few important caveats:
 
-- Strings are immutable: You cannot modify the character at a particular index. For example, attempting to do `my_string[0] = 'A'` will raise an error.
-- No separate character type: In Python, there is no distinct character data type. Characters are simply single-character strings. For example, `'a'` is a string, not a character.
-- String concatenation is costly: Concatenating strings directly using the `+=` operator takes O(n) time because a new string is created each time, which can be inefficient in loops or with large strings. Instead, it is often better to accumulate parts in a list and then join them into a single string using `''.join()`.
+- Strings are immutable: You cannot modify the character at a particular index. For example, attempting to do <InlineCode>my_string[0] = 'A'</InlineCode> will raise an error.
+- No separate character type: In Python, there is no distinct character data type. Characters are simply single-character strings. For example, <InlineCode>'a'</InlineCode> is a string, not a character.
+- String concatenation is costly: Concatenating strings directly using the <InlineCode>+=</InlineCode> operator takes O(n) time because a new string is created each time, which can be inefficient in loops or with large strings. Instead, it is often better to accumulate parts in a list and then join them into a single string using <InlineCode>''.join()</InlineCode>.
 
 ### Split
 
@@ -326,7 +332,7 @@ print(my_chars)
 
 ### Join
 
-Joining a list of strings into a single string can be done efficiently using the `join()` method:
+Joining a list of strings into a single string can be done efficiently using the <InlineCode>join()</InlineCode> method:
 
 ```python
 animals = ['dog', 'cat', 'fish']
@@ -355,7 +361,7 @@ str_1 += 'c'  # Takes O(n)
 
 ### Optimized Concatenation
 
-Instead of using `+=`, you can accumulate strings in a list and join them at the end. This method avoids repeatedly copying the entire string and is much more efficient:
+Instead of using <InlineCode>+=</InlineCode>, you can accumulate strings in a list and join them at the end. This method avoids repeatedly copying the entire string and is much more efficient:
 
 ```python
 str_arr = ['abc']
@@ -369,7 +375,7 @@ result = ''.join(str_arr)  # Join the list into a single string
 
 ## Stack (LIFO)
 
-A stack is a last-in-first-out (LIFO) data structure. In Python, there isn't a built-in stack data structure, but most people use a `deque` (double-ended queue) from the `collections` module to mimic a stack. For more information on stacks and their time complexities, please refer to the [Algo guide on stacks].
+A stack is a last-in-first-out (LIFO) data structure. In Python, there isn't a built-in stack data structure, but most people use a <InlineCode>deque</InlineCode> (double-ended queue) from the <InlineCode>collections</InlineCode> module to mimic a stack. For more information on stacks and their time complexities, please refer to the [Algo guide on stacks].
 
 ```python
 from collections import deque
@@ -392,7 +398,7 @@ while stack:
 
 ## Queue (FIFO)
 
-A queue is a first-in-first-out (FIFO) data structure. Similar to a stack, there isn't a built-in queue data structure in Python, but most people use a `deque` (double-ended queue) from the `collections` module to mimic a queue. For more information on queues and their time complexities, please refer to the [Algo guide on queues].
+A queue is a first-in-first-out (FIFO) data structure. Similar to a stack, there isn't a built-in queue data structure in Python, but most people use a <InlineCode>deque</InlineCode> (double-ended queue) from the <InlineCode>collections</InlineCode> module to mimic a queue. For more information on queues and their time complexities, please refer to the [Algo guide on queues].
 
 ```python
 from collections import deque
@@ -415,7 +421,7 @@ while queue:
 
 ## Hashmap
 
-Hashmaps allow fast lookups using a key. In Python, they are called dictionaries. Personally, I prefer using `defaultdict` over a traditional dictionary. You can read more about `defaultdict` in [Hashmap with initial value](#hashmap-with-initial-value).
+Hashmaps allow fast lookups using a key. In Python, they are called dictionaries. Personally, I prefer using <InlineCode>defaultdict</InlineCode> over a traditional dictionary. You can read more about <InlineCode>defaultdict</InlineCode> in [Hashmap with initial value](#hashmap-with-initial-value).
 
 ```python
 hashmap = {}
@@ -456,9 +462,9 @@ Key not found!
 
 ### Hashmap with initial value
 
-Looking up a non-existing key can sometimes be annoying, especially in cases where you need to check if the key exists, and if not, initialize its value. Consider the following scenario: you want to count how many times each letter appears in a string. While iterating through the string, you would normally check if the current character exists in the dictionary. If it does, you increment its value, and if it doesn't, you initialize the value. However, you can simplify this process using a `defaultdict`.
+Looking up a non-existing key can sometimes be annoying, especially in cases where you need to check if the key exists, and if not, initialize its value. Consider the following scenario: you want to count how many times each letter appears in a string. While iterating through the string, you would normally check if the current character exists in the dictionary. If it does, you increment its value, and if it doesn't, you initialize the value. However, you can simplify this process using a <InlineCode>defaultdict</InlineCode>.
 
-A `defaultdict` automatically initializes the value when a key does not exist, based on the default value you provide in the `lambda`.
+A <InlineCode>defaultdict</InlineCode> automatically initializes the value when a key does not exist, based on the default value you provide in the <InlineCode>lambda</InlineCode>.
 
 ```python
 from collections import defaultdict
@@ -475,8 +481,10 @@ hashmap.pop('b')
 ```
 
 <ImportantMessage>
-  The key used in **both** dictionaries and `defaultdict` must be hashable.
-  Hashable types include `int`, `float`, `string`, `boolean`, and `tuple`. It's
+  The key used in **both** dictionaries and <InlineCode>defaultdict</InlineCode>{" "}
+  must be hashable. Hashable types include <InlineCode>int</InlineCode>,{" "}
+  <InlineCode>float</InlineCode>, <InlineCode>string</InlineCode>,{" "}
+  <InlineCode>boolean</InlineCode>, and <InlineCode>tuple</InlineCode>. It's
   important to note that tuples are hashable, while lists are not. This is
   because tuples are immutable (you can't change their elements once they are
   created), while lists are mutable. Strings, being immutable, are also
@@ -485,7 +493,7 @@ hashmap.pop('b')
 
 ### Iterating over hashmap
 
-The two most common ways to iterate over a dictionary or a `defaultdict` are shown below:
+The two most common ways to iterate over a dictionary or a <InlineCode>defaultdict</InlineCode> are shown below:
 
 ```python
 """ traditionaly dictionary """
@@ -543,7 +551,7 @@ print(hashset)
 
 ## Heap
 
-By default, all heaps in Python are min-heaps, meaning that the smallest element is returned when you call `heappop()`.
+By default, all heaps in Python are min-heaps, meaning that the smallest element is returned when you call <InlineCode>heappop()</InlineCode>.
 
 ```python
 import heapq
@@ -567,8 +575,9 @@ while minHeap:
 
 <ImportantMessage>
   If you already have a list of elements that you want to convert into a heap,
-  using the `heapq.heapify()` function is the fastest method, with a time
-  complexity of O(n). In contrast, adding elements one by one using `heappush()`
+  using the <InlineCode>heapq.heapify()</InlineCode> function is the fastest
+  method, with a time complexity of O(n). In contrast, adding elements one by
+  one using <InlineCode>heappush()</InlineCode>
   has a time complexity of O(n log n).
 </ImportantMessage>
 
@@ -597,9 +606,9 @@ while min_heap:
 """
 ```
 
-2. Using a Custom Object with the `__lt__()` Comparison Function
+2. Using a Custom Object with the <InlineCode>**lt**()</InlineCode> Comparison Function
 
-You can also create a custom object with the `__lt__()` method to define how the elements should be compared. This method is more flexible but more complex.
+You can also create a custom object with the <InlineCode>**lt**()</InlineCode> method to define how the elements should be compared. This method is more flexible but more complex.
 
 ```python
 import heapq
@@ -701,7 +710,7 @@ for v, adj in adj_list.items():
 
 ### Adjacent Matrix
 
-An adjacency matrix is a 2D array used to represent a graph, where each cell `adj_matrix[i][j]` holds the weight of the edge from node `i` to node `j`. For a graph with `n` nodes (labeled from 0 to `n - 1`), this matrix has dimensions `n x n`.
+An adjacency matrix is a 2D array used to represent a graph, where each cell <InlineCode>adj_matrix[i][j]</InlineCode> holds the weight of the edge from node <InlineCode>i</InlineCode> to node <InlineCode>j</InlineCode>. For a graph with <InlineCode>n</InlineCode> nodes (labeled from 0 to <InlineCode>n - 1</InlineCode>), this matrix has dimensions <InlineCode>n x n</InlineCode>.
 
 ```python
 n = 6  # Number of nodes
