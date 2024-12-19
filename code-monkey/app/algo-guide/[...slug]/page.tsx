@@ -9,6 +9,7 @@ import comparePathWithSlug from "@/lib/comparePathWithSlug";
 import InlineCode from "@/components/mdx/InlineCode";
 import { useMDXComponents } from "@/mdx-components";
 import CustomImage from "@/components/mdx/CustomImage";
+import HelpMemorizeMessage from "@/components/mdx/HelpMemorizeMessage";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -97,6 +98,7 @@ const TestPage = () => {
                 ImportantMessage,
                 InlineCode,
                 CustomImage,
+                HelpMemorizeMessage,
               })}
             />
           </div>
