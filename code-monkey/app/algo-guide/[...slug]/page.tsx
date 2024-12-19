@@ -11,6 +11,7 @@ import { useMDXComponents } from "@/mdx-components";
 import CustomImage from "@/components/mdx/CustomImage";
 import HelpMemorizeMessage from "@/components/mdx/HelpMemorizeMessage";
 import PracticeProblems from "@/components/mdx/PracticeProblems";
+import FreqLabel from "@/components/FreqLabel";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -58,19 +59,20 @@ const TestPage = () => {
                   </span>
                 ))}
             </div>
-            <div className="flex">
+            <div className="flex gap-2 items-center mb-4">
+              <div>{post.freq && FreqLabel(post.freq)}</div>
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=star&count=true"
                 width="80"
-                height="40"
+                height="20"
                 title="GitHub"
-              ></iframe>
+              />
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=fork&count=true"
                 width="80"
                 height="20"
                 title="GitHub"
-              ></iframe>
+              />
             </div>
             <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
               <div className="text-lg font-bold text-fontLogo">
