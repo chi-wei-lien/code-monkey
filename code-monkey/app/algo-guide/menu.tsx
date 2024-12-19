@@ -9,6 +9,8 @@ const Menu = () => {
       <div
         className={`prose-menu prose-ul:list-none text-fontMenu text-sm list-none font-medium pr-4`}
       >
+        <h1 className="ml-6 font-bold">Contents</h1>
+        <hr className="ml-4" />
         <ul>
           {postUrls.map(([title, postUrl]) => (
             <li key={postUrl}>

@@ -1,55 +1,70 @@
 ---
 title: Dijkstra
-date: 2024-12-16
+date: 2024-12-18
 ---
 
-Dijkstra is an important algorithm to help you find the shortest path when weights are **non-negative**. Here is a template for the algorithm. If this is your first time hearing about this algorithm, I recommend learning what it is first (Here's a [tutorial](https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/) from freecodecamp and another [tutorial](https://cp-algorithms.com/graph/dijkstra_sparse.html) from Algorithms for Competitive Programming). This post only cover the general idea and more for providing a template for you to memorize.
+Dijkstra's algorithm is a fundamental algorithm used to find the shortest path in a graph where all edge weights are **non-negative**. Below, you'll find a template for implementing the algorithm. If you're new to Dijkstra's algorithm, I recommend starting with a basic understanding of its concept. Here are two excellent resources to help you get started:
+
+- [Dijkstra's Shortest Path Algorithm - A Detailed and Visual Introduction](https://www.freecodecamp.org/news/dijkstras-shortest-path-algorithm-visual-introduction/) by _freeCodeCamp_
+- [Dijkstra on sparse graphs](https://cp-algorithms.com/graph/dijkstra_sparse.html) by _Algorithms for Competitive Programming_
+
+This post focuses on the general idea of Dijkstra's algorithm and provides a template for practice and memorization. If you're unfamiliar with Python syntax, check out this [cheatsheet](/algo-guide/Python%20Coding%20Interview%20Cheat%20Sheet) for an overview of essential syntax. Rather than memorizing the template line by line, refer to the **[How to Memorize](#how-to-memorize)** section
 
 <ImportantMessage>
 
-Here are some important things to know about dikstra and this template
+Key Points about Dijkstra's Algorithm and This Template:
 
-- Dijkstra will **only** guarantee to work if the weights are **non-negative**
-- Time complexity of the given template: <InlineCode>O((E + V) \* log(E))</InlineCode>
-  - If you are curious about why this is the case, please read
-- Best time complexity of Dijkstra implemented with a **Fibonacci heap**: <InlineCode>O(V \* log(V) + E)</InlineCode>
-  - Too difficult to implement during an interview
-- Space complexity of the given template: <InlineCode>O(E + V)</InlineCode>
+- Works only with non-negative weights: Dijkstra's algorithm is not reliable if the graph contains negative edge weights.
+- Time complexity of this template: <InlineCode>O((E + V) \* log(E))</InlineCode>
+  - Curious about why? Consider researching the algorithm's heap-based implementation.
+- Optimal time complexity: When implemented with a Fibonacci heap, Dijkstra achieves <InlineCode>O(V \* log(V) + E)</InlineCode>.
+  - However, this is rarely practical in interviews due to its complexity.
+- Space complexity of this template: <InlineCode>O(E + V)</InlineCode>
 
 </ImportantMessage>
+
+# Dijkstra Template
+
+<CustomImage
+  src="/images/dijkstra_demo.png"
+  alt="dijkstra_demo.png"
+  height={231}
+  width={500}
+  caption="The adjacency list in the template will be based on this figure"
+/>
 
 ```python
 from collections import defaultdict
 import heapq
 
+""" Example adjacency list"""
 adj_list = {
-    0: [(1, 1), (2, 5)], # ex: edge pointing to node 2 with weight 5
+    0: [(1, 1), (2, 5)],  # e.g., edge to node 2 with weight 5
     1: [(3, 100)],
     2: [(3, 6), (4, 8)],
     3: [(5, 2)],
     4: [(5, 3)]
 }
 
+
 def dijkstra(adj_list):
-    """In the beginning, we initialize so that each node will require inifinite dist to reach"""
+    """
+    Initialize distances to all nodes as infinite.
+    Start node has a distance of 0.
+    """
     dist_to_reach_node = defaultdict(lambda: float('inf'))
-
-    """Assuming that we start at node 0 with 0 dist to reach node 0"""
-    start_dist = 0
     start_node = 0
+    start_dist = 0
+    end_node = 5  # The target node we want to reach
+
     dist_to_reach_node[start_node] = start_dist
-
-    """We are trying to find the shortest path to reach node 5"""
-    end_node = 5
-
     min_heap = [(start_dist, start_node)]
 
     while min_heap:
-        """curr_dist must be the shortest distance to reach curr_dist"""
+        """ Get the node with the smallest distance """
         curr_dist, curr_node  = heapq.heappop(min_heap)
 
-        """If the curr dist is different from what is stored in dist_to_reach_node, curr dist is outdated, so we ignore
-        Another way to do this is to use a separate set to store visited node, but this method is more memory efficient"""
+        """ Ignore outdated distances """
         if curr_dist != dist_to_reach_node[curr_node]:
             continue
 
@@ -59,12 +74,25 @@ def dijkstra(adj_list):
         for neighbor, weight in adj_list[curr_node]:
             new_dist = curr_dist + weight
 
-            """If the new_dist is better than what we currently have, update our dictionary, push it back to the heap"""
+            """ If the new distance is shorter than the current stored one,
+            update the dictionary and push the new distance onto the heap. """
             if new_dist < dist_to_reach_node[neighbor]:
                 dist_to_reach_node[neighbor] = new_dist
                 heapq.heappush(min_heap, (new_dist, neighbor))
 
-    return -1 # impossible to reach end_node
+    return -1 # Return -1 if the target node is unreachable
 
 print(dijkstra(adj_list))
+""" Output (shortest path: 0 -> 2 -> 3 -> 5)
+13
+"""
 ```
+
+# How to Memorize
+
+- Dijkstra's algorithm is a greedy algorithm.
+- We only process a node once we've already computed the shortest distance to reach it.
+- A priority queue (min heap) is used to efficiently retrieve the node with the shortest distance.
+- We ensure that the node and distance popped from the priority queue are not outdated:
+  - Why? A node can be pointed to by multiple other nodes. This means there can be multiple entries in the heap referring to the same node, but only one of these entries contains the correct (shortest) distance.
+  - This check is done with the line: <InlineCode>if curr_dist != dist_to_reach_node[curr_node]: continue</InlineCode>

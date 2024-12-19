@@ -8,6 +8,7 @@ import ImportantMessage from "@/components/mdx/ImportantMessage";
 import comparePathWithSlug from "@/lib/comparePathWithSlug";
 import InlineCode from "@/components/mdx/InlineCode";
 import { useMDXComponents } from "@/mdx-components";
+import CustomImage from "@/components/mdx/CustomImage";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -29,6 +30,7 @@ const TestPage = () => {
             >
               {post.title}
             </h1>
+
             <span className="inline-flex items-center align-middle h-12">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -54,6 +56,20 @@ const TestPage = () => {
                   </span>
                 ))}
             </span>
+            <div className="flex">
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=star&count=true"
+                width="80"
+                height="40"
+                title="GitHub"
+              ></iframe>
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=fork&count=true"
+                width="80"
+                height="20"
+                title="GitHub"
+              ></iframe>
+            </div>
             <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
               <div className="text-lg font-bold text-fontLogo">
                 On this page
@@ -77,7 +93,11 @@ const TestPage = () => {
               </div>
             </div>
             <MDXContent
-              components={useMDXComponents({ ImportantMessage, InlineCode })}
+              components={useMDXComponents({
+                ImportantMessage,
+                InlineCode,
+                CustomImage,
+              })}
             />
           </div>
         </div>
