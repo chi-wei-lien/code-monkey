@@ -55,7 +55,7 @@ const MenuEntry = (currNode: DirNode) => {
   const entryElements = [];
   const fileElements = [];
 
-  const indent = currNode.level * 0.9;
+  const indent = currNode.level > 0 ? 0.9 : 0;
 
   // for (const entry in currNode.children) {
   //   if (currNode.children[entry]) {
@@ -97,11 +97,11 @@ const MenuEntry = (currNode: DirNode) => {
 
   return (
     <>
-      {entryElements.map((entryElement, i) => (
-        <div key={`level-${currNode.level}-entry-${i}`}>{entryElement}</div>
-      ))}
       {fileElements.map((fileElement, i) => (
         <div key={`level-${currNode.level}-file-${i}`}>{fileElement}</div>
+      ))}
+      {entryElements.map((entryElement, i) => (
+        <div key={`level-${currNode.level}-entry-${i}`}>{entryElement}</div>
       ))}
     </>
   );
@@ -131,7 +131,7 @@ const Menu = () => {
       <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
         <h1 className="ml-6 font-bold">Contents</h1>
         <hr className="ml-4" />
-        <div className="ml-6 mt-2">{MenuEntry(root)}</div>
+        <div className="ml-6 mt-2 pb-5">{MenuEntry(root)}</div>
       </div>
     </div>
   );

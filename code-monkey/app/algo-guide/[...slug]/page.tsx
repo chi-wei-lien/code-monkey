@@ -10,6 +10,7 @@ import InlineCode from "@/components/mdx/InlineCode";
 import { useMDXComponents } from "@/mdx-components";
 import CustomImage from "@/components/mdx/CustomImage";
 import HelpMemorizeMessage from "@/components/mdx/HelpMemorizeMessage";
+import PracticeProblems from "@/components/mdx/PracticeProblems";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -32,7 +33,7 @@ const TestPage = () => {
               {post.title}
             </h1>
 
-            <span className="inline-flex items-center align-middle h-12">
+            <div className="inline-flex flex-wrap items-center align-middle h-12">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -52,11 +53,11 @@ const TestPage = () => {
                 .split("/")
                 .map((pathComponent, i, arr) => (
                   <span key={i}>
-                    {pathComponent}
+                    {pathComponent.replace(/^\d+\s/, "")}
                     {i < arr.length - 1 && <span className="mx-1">{">"}</span>}
                   </span>
                 ))}
-            </span>
+            </div>
             <div className="flex">
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=star&count=true"
@@ -99,6 +100,7 @@ const TestPage = () => {
                 InlineCode,
                 CustomImage,
                 HelpMemorizeMessage,
+                PracticeProblems,
               })}
             />
           </div>

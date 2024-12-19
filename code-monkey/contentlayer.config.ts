@@ -56,11 +56,12 @@ export const Post = defineDocumentType(() => ({
 }));
 
 /** @type {import('rehype-pretty-code').Options} */
-const options = {
+const rehypePrettyCodeOptions = {
   grid: true,
   theme: "one-dark-pro",
   keepBackground: true,
   defaultLang: "python",
+  filterMetaString: (string: string) => string.replace(/filename="[^"]*"/, ""),
 };
 
 export default makeSource({
@@ -69,7 +70,7 @@ export default makeSource({
   mdx: {
     rehypePlugins: [
       rehypeSlug,
-      [rehypePrettyCode as any, options],
+      [rehypePrettyCode as any, rehypePrettyCodeOptions],
       [
         rehypeAutolinkHeadings,
         {

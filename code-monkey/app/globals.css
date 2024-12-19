@@ -34,3 +34,24 @@ body {
 li::marker {
   color: black !important;
 }
+
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+
+  /* Other styling */
+  display: inline-block;
+  width: 0.75rem;
+  margin-right: 2rem;
+  text-align: right;
+  color: gray;
+}
+
+[data-highlighted-line] {
+  background: rgba(200, 200, 255, 0.15);
+  @apply border-l-blue-400;
+}

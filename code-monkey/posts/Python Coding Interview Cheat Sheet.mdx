@@ -376,7 +376,7 @@ result = ''.join(str_arr)  # Join the list into a single string
 
 ## Stack (LIFO)
 
-A stack is a last-in-first-out (LIFO) data structure. In Python, there isn't a built-in stack data structure, but most people use a <InlineCode>deque</InlineCode> (double-ended queue) from the <InlineCode>collections</InlineCode> module to mimic a stack. For more information on stacks and their time complexities, please refer to the [Algo guide on stacks].
+A stack is a last-in-first-out (LIFO) data structure. In Python, there isn't a built-in stack data structure, but most people use a <InlineCode>deque</InlineCode> ([double-ended queue]()) from the <InlineCode>collections</InlineCode> module to mimic a stack. For more information on stacks and their time complexities, please refer to the [Algo guide on stacks].
 
 ```python
 from collections import deque
@@ -417,6 +417,38 @@ while queue:
 
 """ Output
 1 2 3
+"""
+```
+
+## Deque
+
+A deque (short for double-ended queue) is a data structure that allows elements to be added or removed from both ends efficiently. In Python, deques are implemented using a doubly linked list, making these operations fast. Common operations on a deque include:
+
+- Adding elements to the left (appendleft) or right (append).
+- Removing elements from the left (popleft) or right (pop).
+
+```python
+from collections import deque
+
+my_deque = deque([1, 2, 0])
+
+my_deque.append(5) # push to the right
+my_deque.appendleft(2) # push to the left
+print(my_deque)
+""" Output
+deque([2, 1, 2, 0, 5])
+"""
+
+my_deque.pop() # pop from the right
+print(my_deque)
+""" Output
+deque([2, 1, 2, 0])
+"""
+
+my_deque.popleft() # pop from the left
+print(my_deque)
+""" Output
+deque([1, 2, 0])
 """
 ```
 
@@ -494,9 +526,13 @@ hashmap.pop('b')
 
 ### Iterating over hashmap
 
-The two most common ways to iterate over a dictionary or a <InlineCode>defaultdict</InlineCode> are shown below:
+The two most common ways to iterate over a dictionary or a <InlineCode>defaultdict</InlineCode> are as follows:
+
+Method 1: using <InlineCode>.items()</InlineCode>
 
 ```python
+from collections import defaultdict
+
 """ traditionaly dictionary """
 my_dict = {
     'a': 1,
@@ -510,6 +546,32 @@ my_default_dict = defaultdict(int, my_dict)
 """ Iterating over the defaultdict """
 for key, value in my_default_dict.items():
     print(key, value)
+
+""" Output
+a 1
+b 2
+c 1
+"""
+```
+
+Method 2: accessing keys directly
+
+```python
+from collections import defaultdict
+
+""" traditionaly dictionary """
+my_dict = {
+    'a': 1,
+    'b': 2,
+    'c': 1
+}
+
+""" Initialize a defaultdict with a normal dictionary """
+my_default_dict = defaultdict(int, my_dict)
+
+""" Iterating over the defaultdict """
+for key in my_default_dict:
+    print(key, my_default_dict[key])
 
 """ Output
 a 1
