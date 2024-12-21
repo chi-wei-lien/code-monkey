@@ -18,12 +18,21 @@ from rest_framework.permissions import AllowAny
 def get_questions(request):
     q_id = request.GET.get('q_id')
     q_name = request.GET.get('q_name')
+    u_id = request.GET.get('u_id')
+    completed = request.GET.get('completed')
+    user = request.user if request.user.is_authenticated else None
 
     query = Q()
     if q_id:
         query &= Q(q_id=q_id)
+    if u_id:
+        query &= Q(posted_by=u_id)
     if q_name:
         query &= Q(name__icontains=q_name)
+    if completed and user:
+        if completed.lower() == 'false':
+            completed_questions = MarkQuestion.objects.filter(user_id=user, done=True).values_list('q_id', flat=True)
+            query &= ~Q(q_id__in=completed_questions)
 
     questions = Question.objects.filter(query)
     serializer = QuestionSerializer(questions, many=True, context={'request': request})
