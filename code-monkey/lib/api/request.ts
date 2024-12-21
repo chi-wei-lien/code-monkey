@@ -1,19 +1,21 @@
 import Cookies from "js-cookie";
 import { SERVER_ADDRESS } from "@/constants";
+import { AccessTokenType } from "@/types/AuthTokenType";
 
 const request = async (
   method: string,
   path: string,
   useAuth: boolean,
   onAuthFail?: () => void,
-  onSuccess?: (json: any) => Promise<void>,
+  onSuccess?: (json: AccessTokenType) => Promise<void>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any,
   retry = 1
-): Promise<any> => {
+) => {
   const sessionId = Cookies.get("sessionId");
   const refreshToken = Cookies.get("refresh");
 
-  const storeToken = async (json: any) => {
+  const storeToken = async (json: AccessTokenType) => {
     await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,

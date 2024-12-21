@@ -7,7 +7,7 @@ const getQuestion = async (q_id: number) => {
   try {
     const json = await request(
       "GET",
-      `/questions/get-question?${searchParams.toString()}`,
+      `/questions?${searchParams.toString()}`,
       false
     );
     return json.data;
@@ -25,7 +25,7 @@ export const getQuestionByName = async (q_name: string) => {
   try {
     const json = await request(
       "GET",
-      `/questions/get-question?${searchParams.toString()}`,
+      `/questions?${searchParams.toString()}`,
       false
     );
     return json.data;

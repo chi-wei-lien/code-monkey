@@ -2,8 +2,9 @@ import request from "../request";
 
 const getQuestions = async (
   qNameQuery: string,
-  currUser: number,
+  useAuth: boolean,
   queryNotCompleted: boolean,
+  currUser?: number,
   selectedUser?: number
 ) => {
   const searchParams = new URLSearchParams();
@@ -13,7 +14,7 @@ const getQuestions = async (
   if (selectedUser) {
     searchParams.append("u_id", selectedUser.toString());
   }
-  if (queryNotCompleted && currUser != -1) {
+  if (queryNotCompleted && currUser) {
     searchParams.append("my_id", currUser.toString());
     searchParams.append("completed", "false");
   }
@@ -22,7 +23,7 @@ const getQuestions = async (
     const json = await request(
       "GET",
       `/questions?${searchParams.toString()}`,
-      currUser !== -1
+      useAuth
     );
     return json.data;
   } catch (error) {

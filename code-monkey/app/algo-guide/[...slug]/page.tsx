@@ -23,9 +23,9 @@ const TestPage = () => {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <div className="h-[95%] w-[100%] no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
+    <div className="h-[95%] w-full no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
       <article className="p-8">
-        <div className="">
+        <div className="flex justify-center">
           <div className={`prose text-black mt-5 text-sm`}>
             <h1
               className={`mt-6 text-fontLogo ${pacifico.className}`}
@@ -65,13 +65,13 @@ const TestPage = () => {
               <div>{post.freq && FreqLabel(post.freq)}</div>
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=star&count=true"
-                width="80"
+                width="75"
                 height="20"
                 title="GitHub"
               />
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=fork&count=true"
-                width="80"
+                width="75"
                 height="20"
                 title="GitHub"
               />

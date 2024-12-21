@@ -9,82 +9,25 @@ from django.forms.models import model_to_dict
 from django.db import connection
 from django.utils import timezone
 from itertools import product
+from django.db.models import Q
+from rest_framework.permissions import AllowAny
+
 
 @api_view(['GET'])
-def get_question(request):
+@permission_classes([AllowAny])
+def get_questions(request):
     q_id = request.GET.get('q_id')
     q_name = request.GET.get('q_name')
-    sql = """
-        SELECT * 
-        FROM questions_question
-        WHERE 1 = 1
-    """
-    params = []
 
+    query = Q()
     if q_id:
-        sql += " AND q_id = %s"
-        params.append(q_id)
-    
+        query &= Q(q_id=q_id)
     if q_name:
-        sql += " AND questions_question.name LIKE %s"
-        params.append(f"%{q_name}%")
+        query &= Q(name__icontains=q_name)
 
-    result = []
-    with connection.cursor() as cursor:
-        cursor.execute(sql, params)
-        columns = [col[0] for col in cursor.description]
-        results = cursor.fetchall()
-        rows = [dict(zip(columns, row)) for row in results]
-        for row in rows:
-            result.append(row)
-    if len(result) == 0:
-        return JsonResponse({'data': None})
-    return JsonResponse({'data': result[0]})
-
-@api_view(['GET'])
-def get_questions(request):
-    users = list(User.objects.exclude(username='admin').values('id', 'username'))
-
-    sql = """
-        SELECT q.q_id, q.name, q.link, u.username AS posted_by, u.id AS posted_by_id 
-        FROM questions_question q JOIN users_user u ON q.posted_by_id=u.id
-        WHERE 1 = 1
-    """
-    params = []
-
-    q_name = request.GET.get('q_name')
-    u_id = request.GET.get('u_id')
-    completed = request.GET.get('completed')
-
-    if q_name:
-        # using prepared statement
-        sql += " AND name LIKE %s"
-        params.append(f"%{q_name}%")
-    if u_id:
-        sql += " AND u.id = %s"
-        params.append(u_id)
-
-    sql += " ORDER BY q.posted_time DESC"
-
-    result = []
-    with connection.cursor() as cursor:
-        cursor.execute(sql, params)
-        columns = [col[0] for col in cursor.description]
-        results = cursor.fetchall()
-        rows = [dict(zip(columns, row)) for row in results]
-        for row in rows:
-            if request.user:
-                my_marked = MarkQuestion.objects.filter(user_id=request.user.id, q_id=row['q_id'])
-                if completed == "false" and (len(my_marked) > 0 and my_marked[0].done == True):
-                    continue 
-            for user in users:
-                marked = MarkQuestion.objects.filter(user_id=user['id'], q_id=row['q_id'])
-                if marked:
-                    row[user['id']] = marked[0].done
-                else:
-                    row[user['id']] = False
-            result.append(row)
-    return JsonResponse({'data': result})
+    questions = Question.objects.filter(query)
+    serializer = QuestionSerializer(questions, many=True, context={'request': request})
+    return JsonResponse({'data': serializer.data})
 
 @api_view(['GET'])
 def get_mark_questions(request):
@@ -112,7 +55,7 @@ def add_question(request):
         posted_by=request.user
     )
     question.save()
-    serializer = QuestionSerializer(question)
+    serializer = QuestionSerializer(question, context={'request': request})
     return JsonResponse({'data': serializer.data})
 
 @api_view(['POST'])

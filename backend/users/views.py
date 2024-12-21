@@ -9,6 +9,7 @@ from users.models import User
 
 def get_init_tokens(user):
     refresh = RefreshToken.for_user(user)
+    refresh['username'] = user.username
     return {
         'refresh': str(refresh),
         'access': str(refresh.access_token),
@@ -31,7 +32,7 @@ def register(request):
     )
     user.save()
     tokens = get_init_tokens(user)
-    return JsonResponse({'username': username, 'tokens': tokens})
+    return JsonResponse(tokens)
     
 @api_view(['GET'])
 def get_users(request):

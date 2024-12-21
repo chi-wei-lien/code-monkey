@@ -2,16 +2,20 @@
 
 import { pacifico } from "@/app/fonts";
 import Link from "next/link";
-import { useContext } from "react";
-import { AuthContext } from "@/app/ClientLoader";
+import { getCurrUserInfo } from "@/lib/auth";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const { myId, username } = useContext(AuthContext);
-  let isLoggedIn = true;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState<string | undefined>();
 
-  if (myId == -1) {
-    isLoggedIn = false;
-  }
+  useEffect(() => {
+    const { username } = getCurrUserInfo() || {};
+    if (username) {
+      setIsLoggedIn(true);
+      setUsername(username);
+    }
+  }, []);
 
   return (
     <div className="w-screen relative">

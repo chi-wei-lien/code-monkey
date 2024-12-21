@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import request from "../request";
+import { AccessTokenType } from "@/types/AuthTokenType";
 
 const login = async (
   data: { username: string; password: string },
@@ -7,7 +8,7 @@ const login = async (
   onAuthFail: () => void,
   onError: (msg: string) => void
 ) => {
-  const storeToken = async (json: any) => {
+  const storeToken = async (json: AccessTokenType) => {
     await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,

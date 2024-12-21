@@ -1,7 +1,6 @@
 import * as React from "react";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const PrimaryButton = (props: ButtonProps) => {
   const { children, ...rest } = props;
@@ -36,6 +35,7 @@ export const TagButton = (props: ButtonProps) => {
     <button
       type="button"
       className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900"
+      {...rest}
     >
       {children}
     </button>
