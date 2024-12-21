@@ -52,12 +52,14 @@ const TestPage = () => {
               <span className="mx-1">{">"}</span>
               {post._raw.flattenedPath
                 .split("/")
-                .map((pathComponent, i, arr) => (
+                .slice(0, -1)
+                .map((pathComponent, i) => (
                   <span key={i}>
                     {pathComponent.replace(/^\d+\s/, "")}
-                    {i < arr.length - 1 && <span className="mx-1">{">"}</span>}
+                    <span className="mx-1">{">"}</span>
                   </span>
                 ))}
+              <span>{post.title}</span>
             </div>
             <div className="flex gap-2 items-center mb-4">
               <div>{post.freq && FreqLabel(post.freq)}</div>

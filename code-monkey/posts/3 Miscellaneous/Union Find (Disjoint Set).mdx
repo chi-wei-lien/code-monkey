@@ -1,0 +1,35 @@
+---
+title: Union Find (Disjoint Set)
+date: 2024-12-21
+sort_id: 1
+freq: occasional
+---
+
+Union Find (aka Disjoint Set) is an interesting data structure that allows you to join multiple sets into one in <InlineCode>O(1)</InlineCode> time and also lookup whether two nodes belong to the same set in <InlineCode>O(1)</InlineCode> time as well. Below, you'll find a template for implementing the data structure. If you're new to union find, I recommend starting with a basic understanding of its concept. Here are two excellent resources to help you get started:
+
+-
+
+This post focuses on the general idea of Union Find and provides a template for practice and memorization. If you're unfamiliar with Python syntax, check out this [cheatsheet](/algo-guide/Python%20Coding%20Interview%20Cheat%20Sheet) for an overview of essential syntax.
+
+<HelpMemorizeMessage />
+
+# General Idea
+
+There are two functions in a union find data structure, <InlineCode>union()</InlineCode> and <InlineCode>find()</InlineCode>.
+
+- <InlineCode>union(a, b)</InlineCode>: combine node <InlineCode>
+    a
+  </InlineCode> and node <InlineCode>b</InlineCode> into one set
+- <InlineCode>find(a)</InlineCode>: each set is represented by one node, <InlineCode>
+    find(a)
+  </InlineCode> returns the node that represent the set <InlineCode>
+    a
+  </InlineCode> is in (this node could be <InlineCode>
+    a
+  </InlineCode> itself).{" "}
+
+# Path Compression
+
+# Rank
+
+# Union Find Template
