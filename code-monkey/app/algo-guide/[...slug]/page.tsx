@@ -98,15 +98,20 @@ const TestPage = () => {
                 )}
               </div>
             </div>
-            <MDXContent
-              components={useMDXComponents({
-                ImportantMessage,
-                InlineCode,
-                CustomImage,
-                HelpMemorizeMessage,
-                PracticeProblems,
-              })}
-            />
+            <div className={`${post.done == false ? "hidden" : "block"}`}>
+              <MDXContent
+                components={useMDXComponents({
+                  ImportantMessage,
+                  InlineCode,
+                  CustomImage,
+                  HelpMemorizeMessage,
+                  PracticeProblems,
+                })}
+              />
+            </div>
+
+            {/* )} */}
+            {post.done == false && <h3 className="mt-4">Coming soon!</h3>}
           </div>
         </div>
         <a

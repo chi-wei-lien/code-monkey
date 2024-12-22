@@ -292,7 +292,7 @@ const LeetCodeColabPage = () => {
           </PrimaryButton>
         )}
       </div>
-      {isLoggedIn && (
+      {/* {isLoggedIn && (
         <div className="mb-4">
           <div className="w-full flex justify-between mb-1">
             <span className="text-base font-medium text-red-400">
@@ -309,7 +309,7 @@ const LeetCodeColabPage = () => {
             ></div>
           </div>
         </div>
-      )}
+      )} */}
       <div className="w-full flex justify-between py-3">
         <button
           onClick={() => {

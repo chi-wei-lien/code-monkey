@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import request from "../request";
 
 const getUsers = async (useAuth: boolean, onAuthFail: () => void) => {
