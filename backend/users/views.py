@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
 from users.serializers import UserSerializer
 from users.models import User
+from rest_framework.permissions import AllowAny
 
 def get_init_tokens(user):
     refresh = RefreshToken.for_user(user)
@@ -35,6 +36,7 @@ def register(request):
     return JsonResponse(tokens)
     
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_users(request):
     users = User.objects.exclude(username='admin')
     serializer = UserSerializer(users, many=True)

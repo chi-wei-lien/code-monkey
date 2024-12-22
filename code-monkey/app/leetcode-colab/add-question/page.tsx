@@ -90,7 +90,7 @@ const AddQuestionPage = () => {
       addQuestion(() => {
         redirect("/login");
       }, formData);
-      redirect("/");
+      redirect("/leetcode-colab");
     };
     add();
   };

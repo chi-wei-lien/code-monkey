@@ -11,18 +11,68 @@ from django.utils import timezone
 from itertools import product
 from django.db.models import Q
 from rest_framework.permissions import AllowAny
+from django.utils.timezone import now
+from datetime import datetime
+import sys
+from django.utils.dateparse import parse_datetime
+from django.db.models.functions import TruncSecond
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_question_by_name(request):
+    q_name = request.GET.get('q_name')
+    questions = Question.objects.filter(name=q_name)
+    if questions:
+        serializer = QuestionSerializer(questions[0], context={'request': request})
+        return JsonResponse({'data': serializer.data})
+    else:
+        return JsonResponse({'data': []})
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_questions(request):
+    # filter params
     q_id = request.GET.get('q_id')
     q_name = request.GET.get('q_name')
     u_id = request.GET.get('u_id')
     completed = request.GET.get('completed')
     user = request.user if request.user.is_authenticated else None
 
+    # pagination params
+    page_size = int(request.GET.get('page_size', 10))
+    last_q_id = int(request.GET.get('last_q_id', -1))
+    first_q_id = int(request.GET.get('first_q_id', sys.maxsize))
+    last_posted_time = request.GET.get('last_posted_time')
+    first_posted_time = request.GET.get('first_posted_time')
+    take_lower = False
+    if request.GET.get('take_lower'):
+        take_lower = True
+
+    if last_posted_time:
+        last_posted_time = parse_datetime(last_posted_time)
+        if not last_posted_time:
+            return JsonResponse({'error': 'Invalid last_posted_time format (use ISO format)'}, status=400)
+
+    if first_posted_time:
+        first_posted_time = parse_datetime(first_posted_time)
+        if not first_posted_time:
+            return JsonResponse({'error': 'Invalid first_posted_time format (use ISO format)'}, status=400)
+
+
     query = Q()
+    print("take_lower", take_lower)
+    if not take_lower:
+        print("last_q_id", last_q_id)
+        print("last_posted_time", last_posted_time)
+        query &= (Q(posted_time__lt=last_posted_time) | 
+                    (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
+    else:
+        print("first_q_id", first_q_id)
+        print("first_posted_time", first_posted_time)
+        query &= (Q(posted_time__gt=first_posted_time) | 
+                    (Q(posted_time=first_posted_time) & Q(q_id__lt=first_q_id)))
+
     if q_id:
         query &= Q(q_id=q_id)
     if u_id:
@@ -34,9 +84,33 @@ def get_questions(request):
             completed_questions = MarkQuestion.objects.filter(user_id=user, done=True).values_list('q_id', flat=True)
             query &= ~Q(q_id__in=completed_questions)
 
-    questions = Question.objects.filter(query)
-    serializer = QuestionSerializer(questions, many=True, context={'request': request})
-    return JsonResponse({'data': serializer.data})
+    questions = Question.objects.filter(query).order_by('-posted_time', 'q_id')
+    print("questions", questions)
+    for test in questions:
+        print(test, test.posted_time)
+    questions_result_len = len(questions)
+    questions_len = min(questions_result_len, page_size)
+
+    if take_lower:
+        serializer = QuestionSerializer(questions[questions_result_len-questions_len:], many=True, context={'request': request})
+        first_q_id_response = questions[questions_result_len-questions_len].q_id if questions else None
+        first_posted_time_response = questions[questions_result_len-questions_len].posted_time if questions else None
+        last_q_id_response = questions[questions_result_len-1].q_id if questions else None
+        last_posted_time_response = questions[questions_result_len-1].posted_time if questions else None
+    else:
+        serializer = QuestionSerializer(questions[:questions_len], many=True, context={'request': request})
+        first_q_id_response = questions[0].q_id if questions else None
+        first_posted_time_response = questions[0].posted_time if questions else None
+        last_q_id_response = questions[questions_len-1].q_id if questions else None
+        last_posted_time_response = questions[questions_len-1].posted_time if questions else None
+
+    return JsonResponse({
+        'data': serializer.data, 
+        'last_q_id': last_q_id_response, 
+        'first_q_id': first_q_id_response, 
+        'last_posted_time': last_posted_time_response,
+        'first_posted_time': first_posted_time_response
+    })
 
 @api_view(['GET'])
 def get_mark_questions(request):
@@ -60,7 +134,7 @@ def add_question(request):
     question = Question.objects.create(
         name=name,
         link=link,
-        posted_time=timezone.now(),
+        posted_time=timezone.now().replace(microsecond=0),
         posted_by=request.user
     )
     question.save()

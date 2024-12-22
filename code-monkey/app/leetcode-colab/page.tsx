@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
 import Done from "./Done";
@@ -9,6 +9,10 @@ import { redirect } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
 import UserType from "@/types/UserType";
 import getUsers from "@/lib/api/users/getUsers";
+import getQuestionStatistics from "@/lib/api/question/getQuestionStatistics";
+import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
+
+const PAGE_SIZE = 2;
 
 const LeetCodeColabPage = () => {
   const [questions, setQuestions] = useState<QuestionType[]>([]);
@@ -24,6 +28,122 @@ const LeetCodeColabPage = () => {
   const [username, setUsername] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | undefined>();
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [qsCount, setQsCount] = useState(0);
+
+  // Pagination
+  const [lastPostedTime, setLastPostedTime] = useState<Date>(new Date());
+  const [firstPostedTime, setFirstPostedTime] = useState<Date>();
+  const [lastQuestionId, setLastQuestionId] = useState<number>();
+  const [firstQuestionId, setFirstQuestionId] = useState<number>();
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const resetPagination = () => {
+    setLastPostedTime(new Date());
+    setFirstPostedTime(undefined);
+    setLastQuestionId(undefined);
+    setFirstQuestionId(undefined);
+    setPageNumber(0);
+  };
+
+  const getQuestionsWrapper = async (
+    qNameQuery: string,
+    isLoggedIn: boolean,
+    queryNotCompleted: boolean,
+    pageSize: number,
+    takeLower: boolean,
+    firstQuestionId?: number,
+    lastQuestionId?: number,
+    firstPostedTime?: Date,
+    lastPostedTime?: Date,
+    userId?: number,
+    selectedUser?: number
+  ) => {
+    const questionData = await getQuestions(
+      qNameQuery,
+      isLoggedIn,
+      queryNotCompleted,
+      pageSize,
+      takeLower,
+      firstQuestionId,
+      lastQuestionId,
+      firstPostedTime,
+      lastPostedTime,
+      userId,
+      selectedUser
+    );
+    if (questionData.data) {
+      setQuestions(questionData.data);
+    }
+
+    if (questionData.first_posted_time) {
+      console.log(
+        "set first_posted_time",
+        new Date(questionData.first_posted_time)
+      );
+      setFirstPostedTime(new Date(questionData.first_posted_time));
+    }
+
+    if (questionData.last_posted_time) {
+      console.log(
+        "set last_posted_time",
+        new Date(questionData.last_posted_time)
+      );
+      setLastPostedTime(new Date(questionData.last_posted_time));
+    }
+
+    if (questionData.first_q_id) {
+      console.log("set first_q_id", questionData.first_q_id);
+      setFirstQuestionId(questionData.first_q_id);
+    }
+
+    if (questionData.last_q_id) {
+      console.log("set last_q_id", questionData.last_q_id);
+      setLastQuestionId(questionData.last_q_id);
+    }
+    return questionData.data;
+  };
+
+  const fetchLeftPageQuestions = async () => {
+    if (pageNumber === 0) {
+      return;
+    }
+    setPageNumber(pageNumber - 1);
+    await getQuestionsWrapper(
+      qNameQuery,
+      isLoggedIn,
+      queryNotCompleted,
+      PAGE_SIZE,
+      true,
+      firstQuestionId,
+      undefined,
+      firstPostedTime,
+      undefined,
+      userId,
+      selectedUser
+    );
+  };
+
+  const fetchRightPageQuestions = async () => {
+    console.log("curr firstPostedTime", firstPostedTime);
+    console.log("curr lastPostedTime", lastPostedTime);
+    console.log("curr firstQuestionId", firstQuestionId);
+    console.log("curr lastQuestionId", lastQuestionId);
+
+    setPageNumber(pageNumber + 1);
+    await getQuestionsWrapper(
+      qNameQuery,
+      isLoggedIn,
+      queryNotCompleted,
+      PAGE_SIZE,
+      false,
+      undefined,
+      lastQuestionId,
+      undefined,
+      lastPostedTime,
+      userId,
+      selectedUser
+    );
+  };
 
   useEffect(() => {
     const { username, userId } = getCurrUserInfo() || {};
@@ -37,22 +157,32 @@ const LeetCodeColabPage = () => {
 
   useEffect(() => {
     const onLoad = async () => {
-      const u_data = await getUsers(isLoggedIn, () => {});
+      const userData = await getUsers(isLoggedIn, () => {});
 
-      if (u_data) {
-        setUsers(u_data);
+      if (userData) {
+        setUsers(userData);
       }
 
-      const q_data = await getQuestions(
+      await getQuestionsWrapper(
         qNameQuery,
         isLoggedIn,
         queryNotCompleted,
+        PAGE_SIZE,
+        false,
+        firstQuestionId,
+        lastQuestionId,
+        firstPostedTime,
+        lastPostedTime,
         userId,
         selectedUser
       );
 
-      if (q_data) {
-        setQuestions(q_data);
+      if (isLoggedIn) {
+        const stat = await getQuestionStatistics();
+        if (stat) {
+          setCompleted(stat.completed_count);
+          setQsCount(stat.question_count);
+        }
       }
     };
 
@@ -63,40 +193,14 @@ const LeetCodeColabPage = () => {
     redirect("/leetcode-colab/add-question");
   };
 
+  const completeness = useMemo(() => {
+    if (qsCount === 0) return 0;
+    return parseFloat(((completed / qsCount) * 100).toFixed(2));
+  }, [completed, qsCount]);
+
   return (
     <div className="h-[95%] w-full overflow-x-scroll overflow-y-scroll bg-cardPrimary rounded-md shadow p-10">
       <div className="flex items-center justify-between flex-wrap">
-        <div className="py-3">
-          <div className="relative max-w-xs border rounded-lg">
-            <label className="sr-only">Search</label>
-            <input
-              type="text"
-              name="hs-table-search"
-              id="hs-table-search"
-              className="text-black block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 focus:z-10 focus:border-black focus:ring-black disabled:opacity-50 disabled:pointer-events-none"
-              placeholder="Search for items"
-              value={qNameQuery}
-              onChange={(e) => setQNameQuery(e.target.value)}
-            />
-            <div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
-              <svg
-                className="text-gray-400 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
-            </div>
-          </div>
-        </div>
         <div className="relative mt-5 mb-3">
           <button
             type="button"
@@ -133,6 +237,7 @@ const LeetCodeColabPage = () => {
                     setSelectedUser(undefined);
                     setShowUserDropdown(!showUserDropdown);
                     setUserDropdownText("Posted By");
+                    resetPagination();
                   }}
                 >
                   -
@@ -147,6 +252,7 @@ const LeetCodeColabPage = () => {
                         setSelectedUser(user.id);
                         setShowUserDropdown(!showUserDropdown);
                         setUserDropdownText(user.username);
+                        resetPagination();
                       }}
                     >
                       {user.username}
@@ -160,7 +266,10 @@ const LeetCodeColabPage = () => {
         {isLoggedIn && (
           <div className="relative mt-5 mb-3">
             <button
-              onClick={() => setQueryNotCompleted(!queryNotCompleted)}
+              onClick={() => {
+                setQueryNotCompleted(!queryNotCompleted);
+                resetPagination();
+              }}
               className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             >
               <div className="flex items-center h-5">
@@ -182,6 +291,74 @@ const LeetCodeColabPage = () => {
             Add Question
           </PrimaryButton>
         )}
+      </div>
+      {isLoggedIn && (
+        <div className="mb-4">
+          <div className="flex justify-between mb-1">
+            <span className="text-base font-medium text-red-400">
+              Completed ({completed}/{qsCount})
+            </span>
+            <span className="text-sm font-medium text-red-400">
+              {completeness}%
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 transition ease-in-out">
+            <div
+              className="bg-red-400 h-2.5 rounded-full"
+              style={{ width: `${completeness}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
+      <div className="py-3">
+        <div className="relative w-full border rounded-lg">
+          <label className="sr-only">Search</label>
+          <input
+            type="text"
+            name="hs-table-search"
+            id="hs-table-search"
+            className="text-black block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 focus:z-10 focus:border-black focus:ring-black disabled:opacity-50 disabled:pointer-events-none"
+            placeholder="Search for items"
+            value={qNameQuery}
+            onChange={(e) => {
+              setQNameQuery(e.target.value);
+              resetPagination();
+            }}
+          />
+          <div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
+            <svg
+              className="text-gray-400 size-4"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <button
+          onClick={() => {
+            fetchLeftPageQuestions();
+          }}
+        >
+          <GoTriangleLeft color="black" size={30} />
+        </button>
+        <button
+          onClick={() => {
+            fetchRightPageQuestions();
+          }}
+        >
+          <GoTriangleRight color="black" size={30} />
+        </button>
       </div>
       <div className="w-full overflow-x-auto rounded-lg max-w-3/4 md:max-w-screen-lg">
         <table className="min-w-full border divide-y divide-gray-200">

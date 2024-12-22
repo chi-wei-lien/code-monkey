@@ -9,6 +9,7 @@ const login = async (
   onError: (msg: string) => void
 ) => {
   const storeToken = async (json: AccessTokenType) => {
+    console.log("tokens", json);
     await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,

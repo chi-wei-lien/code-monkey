@@ -25,7 +25,7 @@ export const getQuestionByName = async (q_name: string) => {
   try {
     const json = await request(
       "GET",
-      `/questions?${searchParams.toString()}`,
+      `/questions/get_question_by_name?${searchParams.toString()}`,
       false
     );
     return json.data;
