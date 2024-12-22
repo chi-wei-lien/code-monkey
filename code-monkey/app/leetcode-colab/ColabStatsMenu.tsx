@@ -4,7 +4,9 @@ const ColabStatsMenu = () => {
       <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
         <h1 className="ml-6 font-bold">Statistics</h1>
         <hr className="ml-4" />
-        <div className="ml-6 mt-2 pb-5">hello</div>
+        <div className="ml-6 mt-2 pb-5">
+          Soon you will be able to see statistics regarding this group!
+        </div>
       </div>
     </div>
   );

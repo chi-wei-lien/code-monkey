@@ -12,7 +12,7 @@ import getUsers from "@/lib/api/users/getUsers";
 import getQuestionStatistics from "@/lib/api/question/getQuestionStatistics";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
 const LeetCodeColabPage = () => {
   const [questions, setQuestions] = useState<QuestionType[]>([]);
