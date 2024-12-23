@@ -4,6 +4,7 @@ import { pacifico } from "@/app/fonts";
 import Link from "next/link";
 import { getCurrUserInfo } from "@/lib/auth";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,6 +17,12 @@ const Navbar = () => {
       setUsername(username);
     }
   }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("sessionId");
+    Cookies.remove("refresh");
+    window.location.reload();
+  };
 
   return (
     <div className="w-screen relative">
@@ -45,6 +52,10 @@ const Navbar = () => {
             <Link href="/sign-in" className="text-fontLogo font-bold">
               {username}
             </Link>
+            <span className="text-fontLogo font-bold">, </span>
+            <button onClick={handleLogout} className="text-fontLogo font-bold">
+              log out
+            </button>
           </div>
         )}
         {!isLoggedIn && (

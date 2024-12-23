@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
 import Done from "./Done";
@@ -28,7 +28,7 @@ const LeetCodeColabPage = () => {
   const [username, setUsername] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | undefined>();
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [qsCount, setQsCount] = useState(0);
+  // const [qsCount, setQsCount] = useState(0);
 
   // Pagination
   const [lastPostedTime, setLastPostedTime] = useState<Date>(new Date());
@@ -181,7 +181,7 @@ const LeetCodeColabPage = () => {
         const stat = await getQuestionStatistics();
         if (stat) {
           setCompleted(stat.completed_count);
-          setQsCount(stat.question_count);
+          // setQsCount(stat.question_count);
         }
       }
     };
@@ -193,10 +193,10 @@ const LeetCodeColabPage = () => {
     redirect("/leetcode-colab/add-question");
   };
 
-  const completeness = useMemo(() => {
-    if (qsCount === 0) return 0;
-    return parseFloat(((completed / qsCount) * 100).toFixed(2));
-  }, [completed, qsCount]);
+  // const completeness = useMemo(() => {
+  //   if (qsCount === 0) return 0;
+  //   return parseFloat(((completed / qsCount) * 100).toFixed(2));
+  // }, [completed, qsCount]);
 
   return (
     <div className="md:h-[95%] bg-cardPrimary rounded-md shadow p-10 md:w-full">
