@@ -82,17 +82,21 @@ const Done = ({
         </a>
       </td>
       <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-        <div className="relative flex justify-center group">
-          {/* <button>{shortenUsername(question.posted_by)}</button> */}
-          <button>{question.posted_by}</button>
-          <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
-            {question.posted_by}
-          </span>
+        <div className="w-20">
+          <div className="relative flex justify-left group">
+            {/* <button>{shortenUsername(question.posted_by)}</button> */}
+            <button className="overflow-hidden text-ellipsis whitespace-nowrap">
+              {question.posted_by}
+            </button>
+            <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+              {question.posted_by}
+            </span>
+          </div>
         </div>
       </td>
       {isLoggedIn && (
-        <td className="py-3 ps-4">
-          <div className="flex items-center h-5">
+        <td className="py-3">
+          <div className="flex justify-center items-center h-5">
             <input
               id="hs-table-search-checkbox-1"
               type="checkbox"

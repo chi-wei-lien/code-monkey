@@ -61,15 +61,10 @@ def get_questions(request):
 
 
     query = Q()
-    print("take_lower", take_lower)
     if not take_lower:
-        print("last_q_id", last_q_id)
-        print("last_posted_time", last_posted_time)
         query &= (Q(posted_time__lt=last_posted_time) | 
                     (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
     else:
-        print("first_q_id", first_q_id)
-        print("first_posted_time", first_posted_time)
         query &= (Q(posted_time__gt=first_posted_time) | 
                     (Q(posted_time=first_posted_time) & Q(q_id__lt=first_q_id)))
 
@@ -85,7 +80,9 @@ def get_questions(request):
             query &= ~Q(q_id__in=completed_questions)
 
     questions = Question.objects.filter(query).order_by('-posted_time', 'q_id')
-    print("questions", questions)
+    for index, question in enumerate(questions, start=1):
+        question.number = len(questions) - index + 1
+
     for test in questions:
         print(test, test.posted_time)
     questions_result_len = len(questions)
