@@ -5,6 +5,7 @@ import QuestionType from "@/types/QuestionType";
 import { redirect } from "next/navigation";
 import markQuestion from "@/lib/api/question/markQuestion";
 import deleteQuestion from "@/lib/api/question/deleteQuestion";
+import { BsThreeDots } from "react-icons/bs";
 
 // import shortenUsername from "../lib/shortenUsername";
 
@@ -111,6 +112,49 @@ const Done = ({
           Solutions
         </a>
       </td>
+      {isLoggedIn && (
+        <td className="px-6 py-4 text-sm whitespace-nowrap text-end">
+          <div className="relative inline-block group">
+            <BsThreeDots color="black" />
+
+            <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
+              <a
+                className="hover:cursor-pointer"
+                href={`/add-solution/${question.q_id}`}
+              >
+                <li className="px-3 py-1 rounded-sm hover:bg-gray-100 text-black">
+                  Add Solution
+                </li>
+              </a>
+
+              {myUsername === question.posted_by && (
+                <>
+                  <a
+                    className="hover:cursor-pointer"
+                    onClick={() => {
+                      redirect(`/edit-question/${question.q_id}`);
+                    }}
+                  >
+                    <li className="px-3 py-1 rounded-sm hover:bg-gray-100 text-black">
+                      Edit
+                    </li>
+                  </a>
+                  <a onClick={() => onDelete()}>
+                    <li className="px-3 py-1 rounded-sm text-red-500 hover:bg-gray-100">
+                      Delete
+                    </li>
+                  </a>
+                </>
+              )}
+            </ul>
+          </div>
+        </td>
+      )}
+    </tr>
+  );
+
+  return (
+    <tr>
       {isLoggedIn && (
         <td className="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
           <div className="relative inline-block group">
