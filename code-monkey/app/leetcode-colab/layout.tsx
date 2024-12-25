@@ -1,6 +1,9 @@
+"use client";
+
 import Navbar from "@/components/navbar";
 import ColabMenu from "./ColabMenu";
 import ColabStatsMenu from "./ColabStatsMenu";
+import { useState } from "react";
 
 const GuideLayout = ({ children }: { children: React.ReactNode }) => {
   return (

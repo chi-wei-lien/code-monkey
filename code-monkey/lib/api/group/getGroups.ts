@@ -6,7 +6,6 @@ export const getGroups = async (onAuthFail?: () => void) => {
     return json.data;
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error);
       console.error(error.message);
     }
   }

@@ -16,7 +16,6 @@ const request = async (
   const refreshToken = Cookies.get("refresh");
 
   const storeToken = async (json: AccessTokenType) => {
-    console.log("new json", json);
     await Cookies.set("sessionId", json.access, {
       expires: 1,
       secure: false,
@@ -72,7 +71,6 @@ const request = async (
     const json = await response.json();
     if (!response.ok) {
       const msg = json.detail ? json.detail : json;
-      console.log("throwing");
       throw new Error(msg);
     }
     if (onSuccess) onSuccess(json);

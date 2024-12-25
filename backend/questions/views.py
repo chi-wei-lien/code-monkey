@@ -33,6 +33,7 @@ def get_question_by_name(request):
 @permission_classes([AllowAny])
 def get_questions(request):
     # filter params
+    group_id = request.GET.get('group_id')
     q_id = request.GET.get('q_id')
     q_name = request.GET.get('q_name')
     u_id = request.GET.get('u_id')
@@ -60,7 +61,7 @@ def get_questions(request):
             return JsonResponse({'error': 'Invalid first_posted_time format (use ISO format)'}, status=400)
 
 
-    query = Q()
+    query = Q(group_id=group_id)
     if not take_lower:
         query &= (Q(posted_time__lt=last_posted_time) | 
                     (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
@@ -83,8 +84,6 @@ def get_questions(request):
     for index, question in enumerate(questions, start=1):
         question.number = len(questions) - index + 1
 
-    for test in questions:
-        print(test, test.posted_time)
     questions_result_len = len(questions)
     questions_len = min(questions_result_len, page_size)
 

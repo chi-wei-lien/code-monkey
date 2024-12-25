@@ -1,6 +1,7 @@
 import request from "../request";
 
 const getQuestions = async (
+  groupId: string,
   qNameQuery: string,
   useAuth: boolean,
   queryNotCompleted: boolean,
@@ -13,8 +14,9 @@ const getQuestions = async (
   currUser?: number,
   selectedUser?: number
 ) => {
-  console.log("test page size", pageSize);
   const searchParams = new URLSearchParams();
+  searchParams.append("group_id", groupId);
+
   if (qNameQuery !== "") {
     searchParams.append("q_name", qNameQuery);
   }
@@ -34,7 +36,6 @@ const getQuestions = async (
   if (firstPostedTime) {
     searchParams.append("first_posted_time", firstPostedTime.toISOString());
   }
-  console.log("my last post time", lastPostedTime);
   if (lastPostedTime) {
     searchParams.append("last_posted_time", lastPostedTime.toISOString());
   }

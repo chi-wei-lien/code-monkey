@@ -16,6 +16,7 @@ class Question(models.Model):
     link = models.CharField(max_length=255)
     posted_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=True)
     posted_time = models.DateTimeField()
+    group_id = models.ForeignKey('groups.Group', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
