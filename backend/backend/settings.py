@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'languages',
     'questions',
     'solutions',
+    'groups',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist'

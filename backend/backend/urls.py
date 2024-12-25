@@ -23,4 +23,5 @@ urlpatterns = [
     path('solutions/', include('solutions.urls')),
     path('languages/', include('languages.urls')),
     path('users/', include('users.urls')),
+    path('groups/', include('groups.urls')),
 ]

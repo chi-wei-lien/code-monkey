@@ -62,13 +62,17 @@ const request = async (
           0
         );
       } else {
-        if (onAuthFail) onAuthFail();
+        if (onAuthFail) {
+          onAuthFail();
+          return;
+        }
       }
     }
 
     const json = await response.json();
     if (!response.ok) {
       const msg = json.detail ? json.detail : json;
+      console.log("throwing");
       throw new Error(msg);
     }
     if (onSuccess) onSuccess(json);
