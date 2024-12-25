@@ -13,7 +13,7 @@ const CreateGroupPage = () => {
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    let newData = {
+    const newData = {
       ...formData,
       [e.target.name]: e.target.value,
     };

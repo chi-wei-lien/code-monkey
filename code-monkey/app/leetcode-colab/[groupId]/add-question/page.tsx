@@ -3,7 +3,7 @@
 import QuestionType from "@/types/QuestionType";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { getQuestionByName } from "@/lib/api/question/getQuestion";
 import addQuestion from "@/lib/api/question/addQuestion";
 import markQuestion from "@/lib/api/question/markQuestion";
@@ -11,9 +11,12 @@ import { PrimaryButton, SecondaryButton } from "@/components/buttons";
 import { useRouter } from "next/navigation";
 
 const AddQuestionPage = () => {
+  const params = useParams<{ groupId: string }>();
+
   const [formData, setFormData] = useState({
     name: "",
     link: "",
+    group_id: params.groupId,
   });
   const [changed, setChanged] = useState(false);
   const [disabled, setDisabled] = useState(true);

@@ -1,16 +1,16 @@
 import request from "../request";
 
-const getUsers = async (groupId: number, onAuthFail: () => void) => {
+export const getGroupStats = async (groupId: number) => {
   const searchParams = new URLSearchParams();
   searchParams.append("group_id", groupId.toString());
 
   try {
     const json = await request(
       "GET",
-      `/users/get-users?${searchParams}`,
-      true,
-      onAuthFail
+      `/groups/get-group-stats?${searchParams.toString()}`,
+      true
     );
+
     return json.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -18,5 +18,3 @@ const getUsers = async (groupId: number, onAuthFail: () => void) => {
     }
   }
 };
-
-export default getUsers;
