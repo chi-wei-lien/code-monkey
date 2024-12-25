@@ -7,6 +7,7 @@ from rest_framework.exceptions import ValidationError
 from users.serializers import UserSerializer
 from users.models import User
 from rest_framework.permissions import AllowAny
+from groups.models import Group, PartOfGroup
 
 def get_init_tokens(user):
     refresh = RefreshToken.for_user(user)
@@ -17,6 +18,7 @@ def get_init_tokens(user):
     }
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register(request):
     username = request.data['username']
     password = request.data['password']
@@ -36,9 +38,10 @@ def register(request):
     return JsonResponse(tokens)
     
 @api_view(['GET'])
-@permission_classes([AllowAny])
 def get_users(request):
-    users = User.objects.exclude(username='admin')
+    group_id = request.GET.get('group_id')
+    u_ids = PartOfGroup.objects.filter(group_id=group_id).values_list('user_id', flat=True)
+    users = User.objects.exclude(username='admin').filter(id__in=u_ids)
     serializer = UserSerializer(users, many=True)
     return JsonResponse({'data': serializer.data})
 

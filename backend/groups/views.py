@@ -6,6 +6,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from django.utils import timezone
 from django.db import transaction
+from questions.models import Question, MarkQuestion
+from users.models import User
+from django.db.models import Count, Q
+from django.db.models.functions import TruncDate
+from collections import defaultdict
+from django.utils.timezone import now, timedelta
 
 @api_view(['GET'])
 def get_groups(request):
@@ -35,3 +41,49 @@ def create_group(request):
 
     serializer = GroupSerializer(group, context={'request': request})
     return JsonResponse({'data': serializer.data}, status=201)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_group_stats(request):
+    group_id = request.GET.get('group_id')
+
+    questions = Question.objects.filter(group_id=group_id)
+    q_ids = questions.values_list('q_id', flat=True)
+
+    seven_days_ago = now().date() - timedelta(days=7)
+    date_range = [(seven_days_ago + timedelta(days=i)).strftime('%m/%d') for i in range(1, 8)]
+
+    grouped_data = (
+        MarkQuestion.objects.annotate(done_date=TruncDate('done_time'))
+        .filter(done_date__gte=seven_days_ago)
+        .values('user_id', 'done_date')
+        .annotate(count=Count('q_id'))
+    )
+
+    # result = defaultdict(lambda: {
+    #     'user_id': -1,
+    #     'label': date_range,
+    #     'count': [0] * len(date_range)
+    # })
+    # for entry in grouped_data:
+    #     user_id = entry['user_id']
+    #     done_date = entry['done_date'].strftime('%m/%d')
+    #     count = entry['count']
+    #     result[user_id]['user_id'] = user_id
+    #     index = date_range.index(done_date)
+    #     result[user_id]['count'][index] = count
+
+    result = defaultdict(lambda: {
+        'done_date': None
+    })
+    for entry in grouped_data:
+        done_date = entry['done_date'].strftime('%m/%d')
+        user_id = entry['user_id']
+        username = User.objects.get(id=user_id).username
+        user_id = entry['user_id']
+        result[done_date]['done_date'] = done_date
+        result[done_date][username] = entry['count']
+
+
+    return JsonResponse({'data': list(result.values())})

@@ -6,6 +6,7 @@ class MarkQuestion(models.Model):
     q_id = models.ForeignKey('questions.Question', on_delete=models.CASCADE, blank=True, null=True)
     difficulty = models.IntegerField(default=NONE, choices=DIFF_CHOICES)
     done = models.BooleanField(default=False)
+    done_time = models.DateTimeField()
 
     def __str__(self):
         return f"{self.user_id} marked {self.q_id}"

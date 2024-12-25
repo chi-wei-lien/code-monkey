@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from questions.models import Question, MarkQuestion
+from groups.models import Group
 from users.models import User
 from questions.serializers import QuestionSerializer, MarkQuestionSerializer
 from rest_framework.decorators import api_view, permission_classes
@@ -126,10 +127,12 @@ def get_statistics(request):
 def add_question(request):
     name = request.data['name']
     link = request.data['link']
+    group_id = request.data['group_id']
 
     question = Question.objects.create(
         name=name,
         link=link,
+        group_id=Group.objects.get(group_id=group_id),
         posted_time=timezone.now().replace(microsecond=0),
         posted_by=request.user
     )
@@ -145,15 +148,21 @@ def mark_question(request):
     q_id = request.data['q_id']
     difficulty = request.data['difficulty']
 
-    m_q, created = MarkQuestion.objects.get_or_create(
-        q_id=Question.objects.get(q_id=q_id),
-        user_id=request.user,
-        defaults={'done': done, 'difficulty': difficulty}
-    )
-
-    if not created:
+    m_q = MarkQuestion.objects.filter(q_id=Question.objects.get(q_id=q_id), user_id=request.user).first()
+    now = timezone.now().replace(microsecond=0)
+    if m_q:
         m_q.done = done
         m_q.difficulty = difficulty
+        done_time=now
+        m_q.save()
+    else:
+        m_q = MarkQuestion.objects.create(
+            q_id=Question.objects.get(q_id=q_id),
+            user_id=request.user,
+            done=done,
+            difficulty=difficulty,
+            done_time=now
+        )
         m_q.save()
 
     serializer = MarkQuestionSerializer(m_q)
