@@ -56,24 +56,11 @@ def get_group_stats(request):
 
     grouped_data = (
         MarkQuestion.objects.annotate(done_date=TruncDate('done_time'))
-        .filter(done_date__gte=seven_days_ago)
+        .filter(done_date__gte=seven_days_ago, done=True)
         .values('user_id', 'done_date')
         .annotate(count=Count('q_id'))
     )
-
-    # result = defaultdict(lambda: {
-    #     'user_id': -1,
-    #     'label': date_range,
-    #     'count': [0] * len(date_range)
-    # })
-    # for entry in grouped_data:
-    #     user_id = entry['user_id']
-    #     done_date = entry['done_date'].strftime('%m/%d')
-    #     count = entry['count']
-    #     result[user_id]['user_id'] = user_id
-    #     index = date_range.index(done_date)
-    #     result[user_id]['count'][index] = count
-
+    
     result = defaultdict(lambda: {
         'done_date': None
     })
