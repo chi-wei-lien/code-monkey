@@ -153,7 +153,7 @@ def mark_question(request):
     if m_q:
         m_q.done = done
         m_q.difficulty = difficulty
-        done_time=now
+        m_q.done_time=now
         m_q.save()
     else:
         m_q = MarkQuestion.objects.create(
