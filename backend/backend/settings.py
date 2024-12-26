@@ -16,6 +16,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-rxt-a)1abek%q
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hidden-dusk-88069-ba99a9b3ec95.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://hidden-dusk-88069-ba99a9b3ec95.herokuapp.com']
 
 AUTH_USER_MODEL = "users.User"
 
