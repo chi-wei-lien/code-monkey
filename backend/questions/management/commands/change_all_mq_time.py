@@ -7,5 +7,5 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         mqs = MarkQuestion.objects.all()
         for mq in mqs:
-            mq.done_time = timezone.now() - timedelta(days=7)
+            mq.done_time = timezone.now() - timedelta(days=8)
             mq.save()
