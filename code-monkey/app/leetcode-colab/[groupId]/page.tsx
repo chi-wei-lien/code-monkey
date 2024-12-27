@@ -27,7 +27,6 @@ const LeetCodeColabPage = () => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [users, setUsers] = useState<UserType[]>([]);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | undefined>();
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -40,6 +39,8 @@ const LeetCodeColabPage = () => {
   const [firstQuestionId, setFirstQuestionId] = useState<number>();
   const [pageNumber, setPageNumber] = useState(1);
 
+  const [name, setName] = useState("");
+
   const resetPagination = () => {
     setLastPostedTime(new Date());
     setFirstPostedTime(undefined);
@@ -50,7 +51,6 @@ const LeetCodeColabPage = () => {
 
   const getQuestionsWrapper = async (
     qNameQuery: string,
-    isLoggedIn: boolean,
     queryNotCompleted: boolean,
     pageSize: number,
     takeLower: boolean,
@@ -64,7 +64,7 @@ const LeetCodeColabPage = () => {
     const questionData = await getQuestions(
       params.groupId,
       qNameQuery,
-      isLoggedIn,
+      true,
       queryNotCompleted,
       pageSize,
       takeLower,
@@ -104,7 +104,6 @@ const LeetCodeColabPage = () => {
     setPageNumber(pageNumber - 1);
     await getQuestionsWrapper(
       qNameQuery,
-      isLoggedIn,
       queryNotCompleted,
       PAGE_SIZE,
       true,
@@ -121,7 +120,6 @@ const LeetCodeColabPage = () => {
     setPageNumber(pageNumber + 1);
     await getQuestionsWrapper(
       qNameQuery,
-      isLoggedIn,
       queryNotCompleted,
       PAGE_SIZE,
       false,
@@ -137,12 +135,30 @@ const LeetCodeColabPage = () => {
   useEffect(() => {
     const { username, userId } = getCurrUserInfo() || {};
     if (username) {
-      setIsLoggedIn(true);
       setUsername(username);
       setUserId(userId);
     }
     setHasLoaded(true);
   }, []);
+
+  // useEffect(() => {
+  //   const onLoad = async () => {
+  //     await getQuestionsWrapper(
+  //       qNameQuery,
+  //       queryNotCompleted,
+  //       PAGE_SIZE,
+  //       false,
+  //       undefined,
+  //       undefined,
+  //       undefined,
+  //       undefined,
+  //       userId,
+  //       selectedUser
+  //     );
+  //   };
+
+  //   if (hasLoaded) onLoad();
+  // }, [qNameQuery]);
 
   useEffect(() => {
     const onLoad = async () => {
@@ -154,14 +170,13 @@ const LeetCodeColabPage = () => {
 
       await getQuestionsWrapper(
         qNameQuery,
-        isLoggedIn,
         queryNotCompleted,
         PAGE_SIZE,
         false,
-        firstQuestionId,
-        lastQuestionId,
-        firstPostedTime,
-        lastPostedTime,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         userId,
         selectedUser
       );
@@ -173,8 +188,8 @@ const LeetCodeColabPage = () => {
       }
     };
 
-    if (hasLoaded && isLoggedIn) onLoad();
-  }, [qNameQuery, selectedUser, queryNotCompleted, hasLoaded]);
+    if (hasLoaded) onLoad();
+  }, [selectedUser, queryNotCompleted, hasLoaded]);
 
   const handleAddQuestion = () => {
     redirect(`/leetcode-colab/${params.groupId}/add-question`);
@@ -185,47 +200,43 @@ const LeetCodeColabPage = () => {
   //   return parseFloat(((completed / qsCount) * 100).toFixed(2));
   // }, [completed, qsCount]);
 
-  const SearchBox = () => (
-    <div className="relative w-76 border rounded-lg">
-      <label className="sr-only">Search</label>
-      <input
-        type="text"
-        name="hs-table-search"
-        id="hs-table-search"
-        className="text-black block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 focus:z-10 focus:border-black focus:ring-black disabled:opacity-50 disabled:pointer-events-none"
-        placeholder="Search for items"
-        value={qNameQuery}
-        onChange={(e) => {
-          setQNameQuery(e.target.value);
-          resetPagination();
-        }}
-      />
-      <div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
-        <svg
-          className="text-gray-400 size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.3-4.3"></path>
-        </svg>
-      </div>
-    </div>
-  );
-
   return (
     <div className="flex justify-between h-full gap-5 flex-col lg:flex-row">
       <div className="h-fit lg:h-[95%] bg-cardPrimary rounded-md shadow p-10 lg:w-full overflow-y-scroll">
         <div className="w-full flex items-center justify-between flex-wrap"></div>
         <div className="flex gap-2 flex-wrap mb-3">
-          <SearchBox />
+          <form className="relative w-76 border rounded-lg">
+            <label className="sr-only">Search</label>
+            <input
+              type="text"
+              name="hs-table-search"
+              id="hs-table-search"
+              className="text-black border-0 block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 focus:z-10 focus:border-0 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none"
+              placeholder="Search for items"
+              value={qNameQuery}
+              onChange={(e) => {
+                setQNameQuery(e.target.value);
+                resetPagination();
+              }}
+            />
+            <div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
+              <svg
+                className="text-gray-400 size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </div>
+          </form>
           <div className="relative">
             <button
               type="button"
@@ -288,39 +299,35 @@ const LeetCodeColabPage = () => {
               </div>
             )}
           </div>
-          {isLoggedIn && (
-            <div className="relative">
-              <button
-                onClick={() => {
-                  setQueryNotCompleted(!queryNotCompleted);
-                  resetPagination();
-                }}
-                className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                <div className="flex items-center h-5">
-                  <input
-                    id="hs-table-search-checkbox-1"
-                    type="checkbox"
-                    className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
-                    checked={queryNotCompleted}
-                    onChange={() => {}}
-                  />
-                  <label className="sr-only">Checkbox</label>
-                </div>
-                Not Completed
-              </button>
-            </div>
-          )}
-          {isLoggedIn && (
-            <div>
-              <PrimaryButton type="button" onClick={handleAddQuestion}>
-                Add Question
-              </PrimaryButton>
-            </div>
-          )}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setQueryNotCompleted(!queryNotCompleted);
+                resetPagination();
+              }}
+              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
+              <div className="flex items-center h-5">
+                <input
+                  id="hs-table-search-checkbox-1"
+                  type="checkbox"
+                  className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                  checked={queryNotCompleted}
+                  onChange={() => {}}
+                />
+                <label className="sr-only">Checkbox</label>
+              </div>
+              Not Completed
+            </button>
+          </div>
+          <div>
+            <PrimaryButton type="button" onClick={handleAddQuestion}>
+              Add Question
+            </PrimaryButton>
+          </div>
         </div>
-        <div className="w-full rounded-lg max-h-[500px] overflow-y-scroll shadow-sm ring-1 ring-gray-300">
-          <table className="border divide-y divide-gray-200">
+        <div className="w-full rounded-lg bg-fontLogo max-h-[500px] overflow-y-scroll shadow-sm ring-1 ring-gray-300">
+          <table className="">
             <thead className="bg-fontLogo">
               <tr>
                 <th
@@ -341,31 +348,27 @@ const LeetCodeColabPage = () => {
                 >
                   Posted By
                 </th>
-                {isLoggedIn && (
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
-                  >
-                    Completed
-                  </th>
-                )}
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                >
+                  Completed
+                </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
                 >
                   Solution
                 </th>
-                {isLoggedIn && (
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
-                  >
-                    Action
-                  </th>
-                )}
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
+                >
+                  Action
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 bg-cardPrimary">
               {questions.map((question, index) => {
                 return (
                   <Done
@@ -374,12 +377,8 @@ const LeetCodeColabPage = () => {
                     key={question.q_id}
                     completed={completed}
                     setCompleted={setCompleted}
-                    isLoggedIn={isLoggedIn}
                     number={questions.length - index}
                   />
-                  // <div className="h-[100px] bg-slate-500" key={question.q_id}>
-                  //   hello
-                  // </div>
                 );
               })}
             </tbody>

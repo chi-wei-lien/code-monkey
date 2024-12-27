@@ -182,3 +182,11 @@ print(dijkstra(adj_list))
 - [swim-in-rising-water](https://leetcode.com/problems/swim-in-rising-water/)
 
 </PracticeProblems>
+
+# Deep Dive on Dijkstra's Time Complexity
+
+I like to think of Dijkstra's time complexity as consisting of two parts: 1) the number of times we pop from the heap, and 2) the number of times we push to the heap. For popping, we know that we can pop at most V times because we never revisit a node. On the other hand, each time we visit a node, we push at most all of its neighbors to the queue. In other words, we push at most E edges to the heap in total. This implies that the size of the heap is at most E. Combining these observations, we can conclude that pushing to the heap takes <InlineCode>E\*log(E)</InlineCode>, and popping takes <InlineCode>V \* log(E)</InlineCode>, resulting in a total time complexity of <InlineCode>(V + E) \* log(E)</InlineCode>.
+
+## Misconception on Time Complexity
+
+You might have heard that Dijkstra's algorithm runs in <InlineCode>O((V + E) \* log (E))</InlineCode> instead of <InlineCode>O((V + E) \* log (V))</InlineCode>, but they are actually mathematically equivalent. This is because E can at most be V^2, which means that <InlineCode>O((V + E) \* log (V^2)) = O(2 \* (V + E) \* log (V)) = O((V + E) \* log (V))</InlineCode>.

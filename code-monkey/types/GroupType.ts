@@ -3,4 +3,5 @@ export interface GroupType {
   name: string;
   created_at: Date;
   member_limit: number;
+  member_count: number;
 }

@@ -63,10 +63,10 @@ def get_questions(request):
 
 
     query = Q(group_id=group_id)
-    if not take_lower:
+    if not take_lower and last_posted_time and last_q_id:
         query &= (Q(posted_time__lt=last_posted_time) | 
                     (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
-    else:
+    elif take_lower and first_posted_time and first_q_id:
         query &= (Q(posted_time__gt=first_posted_time) | 
                     (Q(posted_time=first_posted_time) & Q(q_id__lt=first_q_id)))
 

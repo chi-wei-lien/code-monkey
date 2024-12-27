@@ -7,6 +7,7 @@ import { getCurrUserInfo } from "@/lib/auth";
 import { BlackButton } from "@/components/buttons";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { FaUser } from "react-icons/fa";
 
 const ColabMenu = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
@@ -37,12 +38,15 @@ const ColabMenu = () => {
         <div className="ml-6 mt-2 pb-5">
           {isLoggedIn &&
             groups.map((group) => (
-              <Link
-                href={`/leetcode-colab/${group.group_id}`}
-                key={group.group_id}
-              >
-                {group.name}
-              </Link>
+              <div className="flex justify-between" key={group.group_id}>
+                <Link href={`/leetcode-colab/${group.group_id}`}>
+                  {group.name}
+                </Link>
+                <div className="flex gap-2 items-center">
+                  {group.member_count} / {group.member_limit}
+                  <FaUser />
+                </div>
+              </div>
             ))}
           {!isLoggedIn && <div>Sign in to view your groups!</div>}
         </div>

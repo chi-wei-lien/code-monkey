@@ -3,12 +3,12 @@ title: Union Find (Disjoint Set)
 date: 2024-12-21
 sort_id: 1
 freq: occasional
-done: false
+done: true
 ---
 
-Union Find (aka Disjoint Set) is an interesting data structure that allows you to join multiple sets into one in <InlineCode>O(1)</InlineCode> time and also lookup whether two nodes belong to the same set in <InlineCode>O(1)</InlineCode> time as well. Below, you'll find a template for implementing the data structure. If you're new to union find, I recommend starting with a basic understanding of its concept. Here are two excellent resources to help you get started:
+Union Find (aka Disjoint Set) is an interesting data structure that allows you to join multiple sets into one in <InlineCode>O(1)</InlineCode> time and also lookup whether two nodes belong to the same set in <InlineCode>O(1)</InlineCode> time as well. Below, you'll find a template for implementing the data structure. If you're new to union find, I recommend starting with a basic understanding of its concept. Here is an excellent resources to help you get started:
 
--
+- [Disjoint Set Union](https://cp-algorithms.com/data_structures/disjoint_set_union.html) by _Algorithms for Competitive Programming_
 
 This post focuses on the general idea of Union Find and provides a template for practice and memorization. If you're unfamiliar with Python syntax, check out this [cheatsheet](/algo-guide/Python%20Coding%20Interview%20Cheat%20Sheet) for an overview of essential syntax.
 
@@ -18,19 +18,48 @@ This post focuses on the general idea of Union Find and provides a template for 
 
 There are two functions in a union find data structure, <InlineCode>union()</InlineCode> and <InlineCode>find()</InlineCode>.
 
-- <InlineCode>union(a, b)</InlineCode>: combine node <InlineCode>
-    a
-  </InlineCode> and node <InlineCode>b</InlineCode> into one set
-- <InlineCode>find(a)</InlineCode>: each set is represented by one node, <InlineCode>
-    find(a)
-  </InlineCode> returns the node that represent the set <InlineCode>
-    a
-  </InlineCode> is in (this node could be <InlineCode>
-    a
-  </InlineCode> itself).{" "}
+- <InlineCode>union(a, b)</InlineCode>: combine node
+  <InlineCode>a</InlineCode> and node <InlineCode>b</InlineCode> into one set
+- <InlineCode>find(a)</InlineCode>: each set is represented by one node,
+  <InlineCode>find(a)</InlineCode> returns the node that represent the set
+  <InlineCode>a</InlineCode> is in (this node could be
+  <InlineCode>a</InlineCode> itself).
 
 # Path Compression
 
-# Rank
+When we do do <InlineCode>find(a)</InlineCode> we connect all the node along the path to reach the root node directly with the root node.
+
+# Union by Rank
+
+When we are joining two sets, ideally we want to put the smaller-height set underneath the larger-height set. When the two sets have the same size, the final size will be either size plus 1. It is important to understand that there is a difference between _rank_ and _height_. Rank is only the upperbound of height but not the actual height.
 
 # Union Find Template
+
+```python
+n = 6 # given 6 nodes labeled 0 to 5
+rank = [0] * n
+parent = [i for i in range(n)]
+
+
+def find(a):
+  if parent[a] == a:
+    return a
+  parent[a] = find(parent[a]) # Path compression
+  return parent[a]
+
+def union(a, b):
+  a_parent = find(a)
+  b_parent = find(b)
+
+  if a_parent == b_parent: # the two are already connected
+    return
+
+  """Union by rank: attach the tree with lower rank under the tree with higher rank"""
+  if rank[a_parent] < rank[b_parent]:
+      parent[a_parent] = b_parent
+  elif rank[a_parent] > rank[b_parent]:
+      parent[b_parent] = a_parent
+  else:
+      parent[b_parent] = a_parent  # If ranks are equal, make either one the root
+      rank[a_parent] += 1  # Increment the rank of the root
+```
