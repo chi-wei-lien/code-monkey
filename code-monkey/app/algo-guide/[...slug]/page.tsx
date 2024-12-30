@@ -28,7 +28,7 @@ const TestPage = () => {
         <div className="flex justify-center">
           <div className={`prose text-black mt-5 text-sm`}>
             <h1
-              className={`mt-6 text-fontLogo ${pacifico.className}`}
+              className={`mt-6 text-themeBrown ${pacifico.className}`}
               id="title"
             >
               {post.title}
@@ -77,7 +77,7 @@ const TestPage = () => {
               />
             </div>
             <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
-              <div className="text-lg font-bold text-fontLogo">
+              <div className="text-lg font-bold text-themeBrown">
                 On this page
               </div>
               <div>

@@ -1,20 +1,19 @@
 import type { Config } from "tailwindcss";
-const flowbite = require("flowbite-react/tailwind");
 
 export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    flowbite.content(),
   ],
   theme: {
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        bgPrimary: "#EAE6E6",
-        fontLogo: "#535151",
+        themeIvory: "#EAE6E6",
+        themeBrown: "#535151",
+        themeDarkBrown: "#424040",
         cardPrimary: "#F3F0F0",
         fontMenu: "#464646",
       },
@@ -47,5 +46,5 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), flowbite.plugin()],
+  plugins: [require("@tailwindcss/typography")],
 } satisfies Config;

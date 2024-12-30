@@ -24,14 +24,14 @@ const ColabStatsMenu = ({ groupId }: ColabStatsMenuProps) => {
   const [users, setUsers] = useState<UserType[]>([]);
 
   const colors = [
-    "#f87171",
-    "#fb923c",
-    "#4ade80",
-    "#22d3ee",
-    "#818cf8",
-    "#c084fc",
-    "#fb7185",
-    "#a8a29e",
+    "#f87171", // red-400
+    "#fb923c", // orange-400
+    "#fbbf24", // amber-400
+    "#a3e635", // lime-400
+    "#22d3ee", // cyan-400
+    "#60a5fa", // blue-400
+    "#a78bfa", // violet-400
+    "#f472b6", // pink-400
   ];
 
   useEffect(() => {
@@ -50,34 +50,38 @@ const ColabStatsMenu = ({ groupId }: ColabStatsMenuProps) => {
       <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
         <h1 className="ml-6 font-bold">Statistics</h1>
         <hr className="ml-4" />
-        <div className="h-[20rem] w-[20rem] mt-4">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={500}
-              height={300}
-              data={groupStats}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="done_date" />
-              <YAxis tickFormatter={(value) => Math.round(value).toString()} />
-              <Tooltip />
-              <Legend />
-              {users.map((user, i) => (
-                <Bar
-                  key={user.id}
-                  dataKey={user.username}
-                  stackId="a"
-                  fill={colors[i % colors.length]}
+        <div className="flex justify-center">
+          <div className="h-[20rem] w-[20rem] mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                width={500}
+                height={300}
+                data={groupStats}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="done_date" />
+                <YAxis
+                  tickFormatter={(value) => Math.round(value).toString()}
                 />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
+                <Tooltip />
+                <Legend />
+                {users.map((user, i) => (
+                  <Bar
+                    key={user.id}
+                    dataKey={user.username}
+                    stackId="a"
+                    fill={colors[i % colors.length]}
+                  />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

@@ -5,13 +5,15 @@ import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
 import Done from "../Done";
 import { PrimaryButton } from "@/components/buttons";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
 import UserType from "@/types/UserType";
 import getUsers from "@/lib/api/users/getUsers";
 import getQuestionStatistics from "@/lib/api/question/getQuestionStatistics";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import ColabStatsMenu from "../ColabStatsMenu";
+import { GroupType } from "@/types/GroupType";
+import { getGroup } from "@/lib/api/group/getGroup";
 
 const PAGE_SIZE = 10;
 
@@ -24,7 +26,6 @@ const LeetCodeColabPage = () => {
   const [selectedUser, setSelectedUser] = useState<number>();
   const [completed, setCompleted] = useState(0);
   const [userDropdownText, setUserDropdownText] = useState("Posted By");
-  const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [users, setUsers] = useState<UserType[]>([]);
 
   const [username, setUsername] = useState<string | undefined>();
@@ -38,8 +39,13 @@ const LeetCodeColabPage = () => {
   const [lastQuestionId, setLastQuestionId] = useState<number>();
   const [firstQuestionId, setFirstQuestionId] = useState<number>();
   const [pageNumber, setPageNumber] = useState(1);
+  const [group, setGroup] = useState<GroupType>();
 
-  const [name, setName] = useState("");
+  const router = useRouter();
+
+  const onAuthFail = () => {
+    router.push("sign-in");
+  };
 
   const resetPagination = () => {
     setLastPostedTime(new Date());
@@ -133,7 +139,7 @@ const LeetCodeColabPage = () => {
   };
 
   useEffect(() => {
-    const { username, userId } = getCurrUserInfo() || {};
+    const { username, userId } = getCurrUserInfo(onAuthFail) || {};
     if (username) {
       setUsername(username);
       setUserId(userId);
@@ -141,29 +147,33 @@ const LeetCodeColabPage = () => {
     setHasLoaded(true);
   }, []);
 
-  // useEffect(() => {
-  //   const onLoad = async () => {
-  //     await getQuestionsWrapper(
-  //       qNameQuery,
-  //       queryNotCompleted,
-  //       PAGE_SIZE,
-  //       false,
-  //       undefined,
-  //       undefined,
-  //       undefined,
-  //       undefined,
-  //       userId,
-  //       selectedUser
-  //     );
-  //   };
+  useEffect(() => {
+    const onLoad = async () => {
+      await getQuestionsWrapper(
+        qNameQuery,
+        queryNotCompleted,
+        PAGE_SIZE,
+        false,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        userId,
+        selectedUser
+      );
+    };
 
-  //   if (hasLoaded) onLoad();
-  // }, [qNameQuery]);
+    if (hasLoaded) onLoad();
+  }, [qNameQuery]);
 
   useEffect(() => {
     const onLoad = async () => {
-      const userData = await getUsers(parseInt(params.groupId), () => {});
+      const groupData = await getGroup(parseInt(params.groupId));
+      if (groupData) {
+        setGroup(groupData);
+      }
 
+      const userData = await getUsers(parseInt(params.groupId));
       if (userData) {
         setUsers(userData);
       }
@@ -203,9 +213,14 @@ const LeetCodeColabPage = () => {
   return (
     <div className="flex justify-between h-full gap-5 flex-col lg:flex-row">
       <div className="h-fit lg:h-[95%] bg-cardPrimary rounded-md shadow p-10 lg:w-full overflow-y-scroll">
+        {group && (
+          <h1 className="text-themeBrown font-bold text-xl pt-0 pb-5">
+            {group.name}
+          </h1>
+        )}
         <div className="w-full flex items-center justify-between flex-wrap"></div>
         <div className="flex gap-2 flex-wrap mb-3">
-          <form className="relative w-76 border rounded-lg">
+          <div className="relative w-76 rounded-lg">
             <label className="sr-only">Search</label>
             <input
               type="text"
@@ -236,68 +251,66 @@ const LeetCodeColabPage = () => {
                 <path d="m21 21-4.3-4.3"></path>
               </svg>
             </div>
-          </form>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowUserDropdown(!showUserDropdown)}
-              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          </div>
+          <button
+            id="dropdownDefaultButton"
+            data-dropdown-toggle="dropdown"
+            className="text-themeBrown shadow-sm bg-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+            type="button"
+          >
+            {userDropdownText}
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
             >
-              {userDropdownText}
-              <svg
-                className="w-5 h-5 -mr-1 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-                data-slot="icon"
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+          <div
+            id="dropdown"
+            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+          >
+            <ul
+              className="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownDefaultButton"
+            >
+              <a
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
+                role="menuitem"
+                onClick={() => {
+                  setSelectedUser(undefined);
+                  setUserDropdownText("Posted By");
+                  resetPagination();
+                }}
               >
-                <path
-                  fillRule="evenodd"
-                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-            {showUserDropdown && (
-              <div
-                className="absolute left-0 z-10 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="menu-button"
-              >
-                <div className="py-1" role="none">
+                -
+              </a>
+              {users.map((user) => {
+                return (
                   <a
+                    key={user.id}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
                     role="menuitem"
                     onClick={() => {
-                      setSelectedUser(undefined);
-                      setShowUserDropdown(!showUserDropdown);
-                      setUserDropdownText("Posted By");
+                      setSelectedUser(user.id);
+                      setUserDropdownText(user.username);
                       resetPagination();
                     }}
                   >
-                    -
+                    {user.username}
                   </a>
-                  {users.map((user) => {
-                    return (
-                      <a
-                        key={user.id}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
-                        role="menuitem"
-                        onClick={() => {
-                          setSelectedUser(user.id);
-                          setShowUserDropdown(!showUserDropdown);
-                          setUserDropdownText(user.username);
-                          resetPagination();
-                        }}
-                      >
-                        {user.username}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+                );
+              })}
+            </ul>
           </div>
           <div className="relative">
             <button
@@ -305,7 +318,7 @@ const LeetCodeColabPage = () => {
                 setQueryNotCompleted(!queryNotCompleted);
                 resetPagination();
               }}
-              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50"
             >
               <div className="flex items-center h-5">
                 <input
@@ -326,9 +339,9 @@ const LeetCodeColabPage = () => {
             </PrimaryButton>
           </div>
         </div>
-        <div className="w-full rounded-lg bg-fontLogo max-h-[500px] overflow-y-scroll shadow-sm ring-1 ring-gray-300">
+        <div className="w-full rounded-lg bg-themeBrown max-h-[500px] overflow-y-scroll shadow-sm ring-1 ring-gray-300">
           <table className="">
-            <thead className="bg-fontLogo">
+            <thead className="bg-themeBrown">
               <tr>
                 <th
                   scope="col"

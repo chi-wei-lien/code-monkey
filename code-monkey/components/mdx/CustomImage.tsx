@@ -18,7 +18,7 @@ const CustomImage = ({
   return (
     <div className="flex justify-center">
       <figure>
-        <div className="border-2 border-fontLogo border-dashed rounded-md">
+        <div className="border-2 border-themeBrown border-dashed rounded-md">
           <Image
             src={src}
             alt={alt}
