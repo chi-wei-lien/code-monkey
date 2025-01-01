@@ -63,7 +63,7 @@ const TableRow = ({
   return (
     <tr>
       <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-        {number}
+        {question.number}
       </td>
       <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a className="block w-48" href={question.link} target="_blank">
@@ -77,8 +77,8 @@ const TableRow = ({
           </div>
         </a>
       </td>
-      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-        <div className="w-20">
+      <td className="py-4 text-sm text-gray-800 whitespace-nowrap">
+        <div className="w-14">
           <div className="relative flex justify-left group">
             {/* <button>{shortenUsername(question.posted_by)}</button> */}
             <button className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -90,7 +90,7 @@ const TableRow = ({
           </div>
         </div>
       </td>
-      <td className="py-3">
+      <td className="pl-6 py-3">
         <div className="flex justify-center items-center h-5">
           <input
             id="hs-table-search-checkbox-1"
@@ -102,7 +102,7 @@ const TableRow = ({
           <label className="sr-only">Checkbox</label>
         </div>
       </td>
-      <td className="px-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
+      <td className="pl-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a
           className="hover:cursor-pointer"
           onClick={() => redirect(`/question/${question.q_id}/solutions`)}
@@ -110,7 +110,7 @@ const TableRow = ({
           Solutions
         </a>
       </td>
-      <td className="px-6 py-4 text-sm whitespace-nowrap text-end">
+      <td className="pl-6 py-4 text-sm whitespace-nowrap text-center">
         <div className="relative inline-block group">
           <BsThreeDots color="black" />
 

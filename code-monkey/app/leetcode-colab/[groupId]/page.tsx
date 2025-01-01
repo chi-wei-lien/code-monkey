@@ -289,37 +289,37 @@ const LeetCodeColabPage = () => {
               <tr>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="pl-6 py-3 text-xs font-medium text-white uppercase text-start"
                 >
                   No.
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="pl-6 py-3 text-xs font-medium text-white uppercase text-start"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start text-nowrap"
+                  className="py-3 text-xs font-medium text-white uppercase text-start text-nowrap"
                 >
                   Posted By
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-start"
                 >
                   Completed
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-start"
                 >
                   Solution
                 </th>
                 <th
                   scope="col"
-                  className="px-6 py-3 text-xs font-medium text-white uppercase text-end"
+                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-end"
                 >
                   Action
                 </th>

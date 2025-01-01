@@ -1,5 +1,6 @@
 interface QuestionType {
   name: string;
+  number: number;
   link: string;
   posted_by: string;
   posted_by_id: number;
