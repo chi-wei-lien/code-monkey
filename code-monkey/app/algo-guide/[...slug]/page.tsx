@@ -23,10 +23,10 @@ const TestPage = () => {
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <div className="h-[95%] w-full no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
+    <div className="h-[95%] w-full no-scrollbar overflow-x-auto overflow-y-auto bg-cardPrimary rounded-md shadow">
       <article className="p-8">
-        <div className="flex justify-center">
-          <div className={`prose text-black mt-5 text-sm`}>
+        <div className="lg:flex lg:justify-center">
+          <div className="prose text-black mt-5 text-sm">
             <h1
               className={`mt-6 text-themeBrown ${pacifico.className}`}
               id="title"
@@ -109,8 +109,6 @@ const TestPage = () => {
                 })}
               />
             </div>
-
-            {/* )} */}
             {post.done == false && <h3 className="mt-4">Coming soon!</h3>}
           </div>
         </div>
