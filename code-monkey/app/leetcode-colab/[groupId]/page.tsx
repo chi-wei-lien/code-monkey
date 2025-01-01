@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
-import Done from "../Done";
+import Done from "../done";
 import { PrimaryButton } from "@/components/buttons";
 import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
@@ -11,7 +11,7 @@ import UserType from "@/types/UserType";
 import getUsers from "@/lib/api/users/getUsers";
 import getQuestionStatistics from "@/lib/api/question/getQuestionStatistics";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
-import ColabStatsMenu from "../ColabStatsMenu";
+import ColabStatsMenu from "../colab-stats-menu";
 import { GroupType } from "@/types/GroupType";
 import { getGroup } from "@/lib/api/group/getGroup";
 import PostedByButton from "./posted-by-button";
@@ -361,7 +361,10 @@ const LeetCodeColabPage = () => {
           </button>
         </div>
       </div>
-      <ColabStatsMenu groupId={parseInt(params.groupId)} />
+      <ColabStatsMenu
+        groupId={parseInt(params.groupId)}
+        completed={completed}
+      />
     </div>
   );
 };

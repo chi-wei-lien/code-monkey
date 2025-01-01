@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { redirect } from "next/navigation";
 import login from "@/lib/api/auth/login";

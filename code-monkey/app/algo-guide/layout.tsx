@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 import Menu from "./menu";
 
 const GuideLayout = ({ children }: { children: React.ReactNode }) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { pacifico } from "../fonts";
 import { PrimaryButton, SecondaryButton } from "@/components/buttons";

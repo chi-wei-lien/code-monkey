@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { getCurrUserInfo } from "@/lib/auth";
 import { useEffect, useState } from "react";
-import AuthButton from "./AuthButton";
+import AuthButton from "./auth-button";
 import { SiInternetcomputer } from "react-icons/si";
 import { FaCode } from "react-icons/fa6";
 

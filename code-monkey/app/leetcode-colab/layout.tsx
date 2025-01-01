@@ -1,7 +1,7 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import ColabMenu from "./ColabMenu";
+import Navbar from "@/components/navbar";
+import ColabMenu from "./colab-menu";
 
 const GuideLayout = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -4,14 +4,14 @@ import { allPosts } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { notFound, useParams } from "next/navigation";
 import { pacifico } from "@/app/fonts";
-import ImportantMessage from "@/components/mdx/ImportantMessage";
+import ImportantMessage from "@/components/mdx/important-message";
 import comparePathWithSlug from "@/lib/comparePathWithSlug";
-import InlineCode from "@/components/mdx/InlineCode";
+import InlineCode from "@/components/mdx/inline-code";
 import { useMDXComponents } from "@/mdx-components";
-import CustomImage from "@/components/mdx/CustomImage";
-import HelpMemorizeMessage from "@/components/mdx/HelpMemorizeMessage";
-import PracticeProblems from "@/components/mdx/PracticeProblems";
-import FreqLabel from "@/components/FreqLabel";
+import CustomImage from "@/components/mdx/custom-image";
+import HelpMemorizeMessage from "@/components/mdx/help-memorize-message";
+import PracticeProblems from "@/components/mdx/practice-problems";
+import FreqLabel from "@/components/freq-label";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();

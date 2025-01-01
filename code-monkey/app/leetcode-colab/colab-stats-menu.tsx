@@ -2,6 +2,7 @@
 
 import { getGroupStats } from "@/lib/api/group/getGroupStat";
 import getUsers from "@/lib/api/users/getUsers";
+import QuestionType from "@/types/QuestionType";
 import UserType from "@/types/UserType";
 import { useEffect, useState } from "react";
 import {
@@ -17,9 +18,10 @@ import {
 
 interface ColabStatsMenuProps {
   groupId: number;
+  completed: number;
 }
 
-const ColabStatsMenu = ({ groupId }: ColabStatsMenuProps) => {
+const ColabStatsMenu = ({ groupId, completed }: ColabStatsMenuProps) => {
   const [groupStats, setGroupStats] = useState();
   const [users, setUsers] = useState<UserType[]>([]);
 
@@ -43,7 +45,7 @@ const ColabStatsMenu = ({ groupId }: ColabStatsMenuProps) => {
       setUsers(userData ?? []);
     };
     loadStats();
-  }, [groupId]);
+  }, [groupId, completed]);
 
   return (
     <div className="min-h-28 md:h-[95%] no-scrollbar md:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
