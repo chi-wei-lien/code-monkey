@@ -41,6 +41,8 @@ def get_questions(request):
     completed = request.GET.get('completed')
     user = request.user if request.user.is_authenticated else None
 
+    # TODO: check if the use belong to the group
+
     # pagination params
     page_size = int(request.GET.get('page_size', 10))
     last_q_id = int(request.GET.get('last_q_id', -1))

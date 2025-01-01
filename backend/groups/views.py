@@ -21,6 +21,14 @@ def get_groups(request):
     serializer = GroupSerializer(groups, many=True)
     return JsonResponse({'data': serializer.data})
 
+@api_view(['GET'])
+def get_group(request):
+    group_id = request.GET.get('group_id')
+    group = Group.objects.get(group_id=group_id)
+    PartOfGroup.objects.get(user_id=request.user, group_id=group)
+    serializer = GroupSerializer(group)
+    return JsonResponse({'data': serializer.data})
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_group(request):
@@ -59,6 +67,7 @@ def get_group_stats(request):
         .filter(done_date__gte=seven_days_ago, done=True)
         .values('user_id', 'done_date')
         .annotate(count=Count('q_id'))
+        .order_by('done_date')
     )
     
     result = defaultdict(lambda: {
