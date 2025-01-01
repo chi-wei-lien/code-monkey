@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
 import Done from "../Done";
@@ -44,10 +44,6 @@ const LeetCodeColabPage = () => {
 
   const router = useRouter();
 
-  const onAuthFail = () => {
-    router.push("sign-in");
-  };
-
   const resetPagination = () => {
     setLastPostedTime(new Date());
     setFirstPostedTime(undefined);
@@ -56,53 +52,56 @@ const LeetCodeColabPage = () => {
     setPageNumber(0);
   };
 
-  const getQuestionsWrapper = async (
-    qNameQuery: string,
-    queryNotCompleted: boolean,
-    pageSize: number,
-    takeLower: boolean,
-    firstQuestionId?: number,
-    lastQuestionId?: number,
-    firstPostedTime?: Date,
-    lastPostedTime?: Date,
-    userId?: number,
-    selectedUser?: number
-  ) => {
-    const questionData = await getQuestions(
-      params.groupId,
-      qNameQuery,
-      true,
-      queryNotCompleted,
-      pageSize,
-      takeLower,
-      firstQuestionId,
-      lastQuestionId,
-      firstPostedTime,
-      lastPostedTime,
-      userId,
-      selectedUser
-    );
-    if (questionData.data) {
-      setQuestions(questionData.data);
-    }
+  const getQuestionsWrapper = useCallback(
+    async (
+      qNameQuery: string,
+      queryNotCompleted: boolean,
+      pageSize: number,
+      takeLower: boolean,
+      firstQuestionId?: number,
+      lastQuestionId?: number,
+      firstPostedTime?: Date,
+      lastPostedTime?: Date,
+      userId?: number,
+      selectedUser?: number
+    ) => {
+      const questionData = await getQuestions(
+        params.groupId,
+        qNameQuery,
+        true,
+        queryNotCompleted,
+        pageSize,
+        takeLower,
+        firstQuestionId,
+        lastQuestionId,
+        firstPostedTime,
+        lastPostedTime,
+        userId,
+        selectedUser
+      );
+      if (questionData.data) {
+        setQuestions(questionData.data);
+      }
 
-    if (questionData.first_posted_time) {
-      setFirstPostedTime(new Date(questionData.first_posted_time));
-    }
+      if (questionData.first_posted_time) {
+        setFirstPostedTime(new Date(questionData.first_posted_time));
+      }
 
-    if (questionData.last_posted_time) {
-      setLastPostedTime(new Date(questionData.last_posted_time));
-    }
+      if (questionData.last_posted_time) {
+        setLastPostedTime(new Date(questionData.last_posted_time));
+      }
 
-    if (questionData.first_q_id) {
-      setFirstQuestionId(questionData.first_q_id);
-    }
+      if (questionData.first_q_id) {
+        setFirstQuestionId(questionData.first_q_id);
+      }
 
-    if (questionData.last_q_id) {
-      setLastQuestionId(questionData.last_q_id);
-    }
-    return questionData.data;
-  };
+      if (questionData.last_q_id) {
+        setLastQuestionId(questionData.last_q_id);
+      }
+      return questionData.data;
+    },
+    [params.groupId]
+  );
 
   const fetchLeftPageQuestions = async () => {
     if (pageNumber === 1) {
@@ -140,6 +139,9 @@ const LeetCodeColabPage = () => {
   };
 
   useEffect(() => {
+    const onAuthFail = () => {
+      redirect("sign-in");
+    };
     const { username, userId } = getCurrUserInfo(onAuthFail) || {};
     if (username) {
       setUsername(username);
@@ -147,25 +149,6 @@ const LeetCodeColabPage = () => {
     }
     setHasLoaded(true);
   }, []);
-
-  useEffect(() => {
-    const onLoad = async () => {
-      await getQuestionsWrapper(
-        qNameQuery,
-        queryNotCompleted,
-        PAGE_SIZE,
-        false,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        userId,
-        selectedUser
-      );
-    };
-
-    if (hasLoaded) onLoad();
-  }, [qNameQuery]);
 
   useEffect(() => {
     const onLoad = async () => {
@@ -200,10 +183,18 @@ const LeetCodeColabPage = () => {
     };
 
     if (hasLoaded) onLoad();
-  }, [selectedUser, queryNotCompleted, hasLoaded]);
+  }, [
+    qNameQuery,
+    selectedUser,
+    queryNotCompleted,
+    hasLoaded,
+    getQuestionsWrapper,
+    params.groupId,
+    userId,
+  ]);
 
   const handleAddQuestion = () => {
-    redirect(`/leetcode-colab/${params.groupId}/add-question`);
+    router.push(`/leetcode-colab/${params.groupId}/add-question`);
   };
 
   // const completeness = useMemo(() => {

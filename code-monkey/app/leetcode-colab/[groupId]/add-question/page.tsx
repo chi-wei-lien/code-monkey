@@ -3,12 +3,11 @@
 import QuestionType from "@/types/QuestionType";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useRouter, useParams } from "next/navigation";
 import { getQuestionByName } from "@/lib/api/question/getQuestion";
 import addQuestion from "@/lib/api/question/addQuestion";
 import markQuestion from "@/lib/api/question/markQuestion";
 import { PrimaryButton, SecondaryButton } from "@/components/buttons";
-import { useRouter } from "next/navigation";
 
 const AddQuestionPage = () => {
   const params = useParams<{ groupId: string }>();
@@ -93,7 +92,7 @@ const AddQuestionPage = () => {
       addQuestion(() => {
         redirect("/login");
       }, formData);
-      redirect("/leetcode-colab");
+      router.back();
     };
     add();
   };

@@ -43,7 +43,7 @@ const ColabStatsMenu = ({ groupId }: ColabStatsMenuProps) => {
       setUsers(userData ?? []);
     };
     loadStats();
-  }, []);
+  }, [groupId]);
 
   return (
     <div className="min-h-28 md:h-[95%] no-scrollbar md:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">

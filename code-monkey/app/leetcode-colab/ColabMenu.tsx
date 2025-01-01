@@ -8,18 +8,16 @@ import { BlackButton } from "@/components/buttons";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 const ColabMenu = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router = useRouter();
-
-  const onAuthFail = () => {
-    router.push("sign-in");
-  };
 
   useEffect(() => {
+    const onAuthFail = () => {
+      redirect("sign-in");
+    };
+
     const loadGroups = async () => {
       setGroups((await getGroups()) ?? []);
     };
