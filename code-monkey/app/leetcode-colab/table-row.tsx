@@ -7,7 +7,7 @@ import markQuestion from "@/lib/api/question/markQuestion";
 import deleteQuestion from "@/lib/api/question/deleteQuestion";
 import { BsThreeDots } from "react-icons/bs";
 
-interface DoneProps {
+interface TableRowProps {
   number: number;
   question: QuestionType;
   completed: number;
@@ -15,13 +15,13 @@ interface DoneProps {
   myUsername?: string;
 }
 
-const Done = ({
+const TableRow = ({
   question,
   number,
   setCompleted,
   completed,
   myUsername,
-}: DoneProps) => {
+}: TableRowProps) => {
   const [checked, setChecked] = useState<boolean>(question.is_completed);
 
   useEffect(() => {
@@ -150,4 +150,4 @@ const Done = ({
   );
 };
 
-export default Done;
+export default TableRow;

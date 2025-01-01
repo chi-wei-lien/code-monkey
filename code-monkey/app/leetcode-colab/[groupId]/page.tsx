@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
-import Done from "../done";
+import TableRow from "../table-row";
 import { PrimaryButton } from "@/components/buttons";
 import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
@@ -328,7 +328,7 @@ const LeetCodeColabPage = () => {
             <tbody className="divide-y divide-gray-200 bg-cardPrimary">
               {questions.map((question, index) => {
                 return (
-                  <Done
+                  <TableRow
                     question={question}
                     myUsername={username}
                     key={question.q_id}
