@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from questions.models import Question, MarkQuestion
+from questions.models import Question, MarkQuestion, LikeQuestion
 from groups.models import Group
 from users.models import User
-from questions.serializers import QuestionSerializer, MarkQuestionSerializer
+from questions.serializers import QuestionSerializer, MarkQuestionSerializer, LikeQuestionSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.forms.models import model_to_dict
@@ -17,6 +17,7 @@ from datetime import datetime
 import sys
 from django.utils.dateparse import parse_datetime
 from django.db.models.functions import TruncSecond
+from django.db import transaction
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -84,9 +85,6 @@ def get_questions(request):
             query &= ~Q(q_id__in=completed_questions)
 
     questions = Question.objects.filter(query).order_by('-posted_time', 'q_id')
-    for index, question in enumerate(questions, start=1):
-        question.number = len(questions) - index + 1
-
     questions_result_len = len(questions)
     questions_len = min(questions_result_len, page_size)
 
@@ -131,8 +129,11 @@ def add_question(request):
     link = request.data['link']
     group_id = request.data['group_id']
 
+    last_question = Question.objects.filter(group_id=group_id).order_by('-number').first()
+
     question = Question.objects.create(
         name=name,
+        number=last_question.number + 1,
         link=link,
         group_id=Group.objects.get(group_id=group_id),
         posted_time=timezone.now().replace(microsecond=0),
@@ -145,7 +146,6 @@ def add_question(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def mark_question(request):
-
     done = request.data['done']
     q_id = request.data['q_id']
     difficulty = request.data['difficulty']
@@ -168,6 +168,38 @@ def mark_question(request):
         m_q.save()
 
     serializer = MarkQuestionSerializer(m_q)
+    return JsonResponse({'data': serializer.data})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_question(request):
+    like = request.data['like']
+    q_id = request.data['q_id']
+
+    with transaction.atomic():
+        q = Question.objects.get(q_id=q_id)
+        l_q = LikeQuestion.objects.filter(q_id=Question.objects.get(q_id=q_id), user_id=request.user).first()
+        now = timezone.now().replace(microsecond=0)
+        if l_q:
+            if not l_q.like:
+                q.likes += 1
+                q.save()
+            l_q.like  = like
+            l_q.like_time=now
+            l_q.save()
+        else:
+            l_q = LikeQuestion.objects.create(
+                q_id=Question.objects.get(q_id=q_id),
+                user_id=request.user,
+                like=like,
+                like_time=now
+            )
+            l_q.save()
+            if like:
+                q.likes += 1
+                q.save()
+
+    serializer = LikeQuestionSerializer(l_q)
     return JsonResponse({'data': serializer.data})
 
 @api_view(['PUT'])
