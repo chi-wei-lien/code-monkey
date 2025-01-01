@@ -43,12 +43,12 @@ const PostedByButton = ({
     <div ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="text-themeBrown shadow-sm bg-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center border-[1px]  border-gray-400"
+        className="inline-flex items-center rounded-lg border-[1px] border-gray-400 bg-white px-3 py-2 text-center text-sm font-medium text-themeBrown shadow-sm hover:bg-gray-50"
         type="button"
       >
         {userDropdownText}
         <svg
-          className="w-2.5 h-2.5 ms-3"
+          className="ms-3 h-2.5 w-2.5"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -66,14 +66,14 @@ const PostedByButton = ({
       {isOpen && (
         <div
           id="dropdown"
-          className="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+          className="absolute z-10 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow"
         >
           <ul
             className="py-2 text-sm text-gray-700"
             aria-labelledby="dropdownDefaultButton"
           >
             <a
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
+              className="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-slate-100"
               role="menuitem"
               onClick={() => {
                 onResetClick();
@@ -86,7 +86,7 @@ const PostedByButton = ({
               return (
                 <a
                   key={user.id}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:cursor-pointer hover:bg-slate-100"
                   role="menuitem"
                   onClick={() => {
                     onClick(user);

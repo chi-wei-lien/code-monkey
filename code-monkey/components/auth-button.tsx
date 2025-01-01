@@ -37,7 +37,7 @@ const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
   if (isLoggedIn) {
     return (
       <div className="relative" ref={dropdownRef}>
-        <div className="flex justify-end items-center text-themeDarkBrown gap-2 hover:text-violet-500 focus:outline-none">
+        <div className="flex items-center justify-end gap-2 text-themeDarkBrown hover:text-violet-500 focus:outline-none">
           <FaRegUserCircle className="mt-1" />
           <button
             onClick={toggleDropdown}
@@ -48,10 +48,10 @@ const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
           </button>
         </div>
         {isOpen && (
-          <div className="absolute mt-5 right-0 z-[100] bg-white divide-y text-sm divide-gray-100 rounded-lg shadow w-44">
+          <div className="absolute right-0 z-[100] mt-5 w-44 divide-y divide-gray-100 rounded-lg bg-white text-sm shadow">
             <div className="px-4 py-3 text-themeDarkBrown">
               <div>Bonnie Green</div>
-              <div className="font-medium truncate">name@flowbite.com</div>
+              <div className="truncate font-medium">name@flowbite.com</div>
             </div>
             <ul
               className="py-2 text-sm text-gray-700"
@@ -86,7 +86,7 @@ const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
 
   return (
     <Link
-      className="text-themeDarkBrown focus:outline-none font-medium rounded-lg text-center inline-flex items-center gap-2"
+      className="inline-flex items-center gap-2 rounded-lg text-center font-medium text-themeDarkBrown focus:outline-none"
       href="/sign-in"
     >
       <FaRegUserCircle />

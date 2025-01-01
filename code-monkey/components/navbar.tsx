@@ -22,18 +22,18 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="relative lg:absolute w-screen flex flex-wrap items-center justify-between pt-3 px-6 bg-cardPrimary shadow-sm pb-3">
+    <nav className="relative flex w-screen flex-wrap items-center justify-between bg-cardPrimary px-6 pb-3 pt-3 shadow-sm lg:absolute">
       <Link
         href="/"
-        className={`ml-3 text-themeDarkBrown text-xl font-semibold`}
+        className={`ml-3 text-xl font-semibold text-themeDarkBrown`}
       >
         🐵 code monkey
       </Link>
-      <ul className="gap-3 lg:gap-6 font-medium flex flex-col rounded-lg lg:flex-row lg:mt-0 bg-cardPrimary">
+      <ul className="flex flex-col gap-3 rounded-lg bg-cardPrimary font-medium lg:mt-0 lg:flex-row lg:gap-6">
         <li>
           <Link
             href="/algo-guide"
-            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500 justify-end"
+            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-violet-500"
           >
             <FaCode />
             Algo Guide
@@ -42,7 +42,7 @@ const Navbar = () => {
         <li>
           <Link
             href="/leetcode-colab"
-            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500 justify-end"
+            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-violet-500"
           >
             <SiInternetcomputer />
             LeetCode Colab

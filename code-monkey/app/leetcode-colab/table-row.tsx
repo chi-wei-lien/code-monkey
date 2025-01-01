@@ -37,7 +37,7 @@ const TableRow = ({
   const onDelete = async () => {
     if (
       window.confirm(
-        `Are you sure you want to remove this question: ${question.name}?`
+        `Are you sure you want to remove this question: ${question.name}?`,
       )
     ) {
       await deleteQuestion(question.q_id);
@@ -53,7 +53,7 @@ const TableRow = ({
         q_id: question.q_id,
         difficulty: 0,
       },
-      onAuthFail
+      onAuthFail,
     );
     setChecked(newChecked);
     if (!newChecked) {
@@ -76,7 +76,7 @@ const TableRow = ({
 
   return (
     <tr>
-      <td className="px-6 py-3 text-sm text-gray-800 whitespace-nowrap flex items-center gap-2">
+      <td className="flex items-center gap-2 whitespace-nowrap px-6 py-3 text-sm text-gray-800">
         {isLiked ? (
           <FaStar
             className="text-xl text-amber-400"
@@ -87,46 +87,46 @@ const TableRow = ({
         )}
         {likes}
       </td>
-      <td className="px-3 py-3 text-sm text-gray-800 whitespace-nowrap">
+      <td className="whitespace-nowrap px-3 py-3 text-sm text-gray-800">
         {question.number}
       </td>
-      <td className="px-6 py-3 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
+      <td className="whitespace-nowrap px-6 py-3 text-sm font-medium text-blue-600 underline underline-offset-2">
         <a className="block w-48" href={question.link} target="_blank">
-          <div className="relative flex justify-start group">
+          <div className="group relative flex justify-start">
             <button className="overflow-hidden text-ellipsis whitespace-nowrap">
               {question.name}
             </button>
-            <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+            <span className="absolute top-5 scale-0 rounded bg-gray-800 p-2 text-xs text-white transition-all group-hover:scale-100">
               {question.name}
             </span>
           </div>
         </a>
       </td>
-      <td className="py-3 text-sm text-gray-800 whitespace-nowrap">
+      <td className="whitespace-nowrap py-3 text-sm text-gray-800">
         <div className="w-14">
-          <div className="relative flex justify-left group">
+          <div className="justify-left group relative flex">
             <button className="overflow-hidden text-ellipsis whitespace-nowrap">
               {question.posted_by}
             </button>
-            <span className="absolute p-2 text-xs text-white transition-all scale-0 bg-gray-800 rounded top-5 group-hover:scale-100">
+            <span className="absolute top-5 scale-0 rounded bg-gray-800 p-2 text-xs text-white transition-all group-hover:scale-100">
               {question.posted_by}
             </span>
           </div>
         </div>
       </td>
-      <td className="pl-6 py-3">
-        <div className="flex justify-center items-center h-5">
+      <td className="py-3 pl-6">
+        <div className="flex h-5 items-center justify-center">
           <input
             id="hs-table-search-checkbox-1"
             type="checkbox"
-            className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+            className="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
             checked={checked}
             onChange={onMark}
           />
           <label className="sr-only">Checkbox</label>
         </div>
       </td>
-      <td className="pl-6 py-3 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
+      <td className="whitespace-nowrap py-3 pl-6 text-sm text-blue-600 underline underline-offset-2">
         <a
           className="hover:cursor-pointer"
           onClick={() => redirect(`/question/${question.q_id}/solutions`)}
@@ -134,16 +134,16 @@ const TableRow = ({
           Solutions
         </a>
       </td>
-      <td className="px-6 py-3 text-sm whitespace-nowrap text-center">
-        <div className="relative inline-block group">
+      <td className="whitespace-nowrap px-6 py-3 text-center text-sm">
+        <div className="group relative inline-block">
           <BsThreeDots color="black" />
 
-          <ul className="absolute right-0 z-50 transition duration-150 ease-in-out origin-top transform scale-0 bg-white border rounded-sm group-hover:scale-100 min-w-32">
+          <ul className="absolute right-0 z-50 min-w-32 origin-top scale-0 transform rounded-sm border bg-white transition duration-150 ease-in-out group-hover:scale-100">
             <a
               className="hover:cursor-pointer"
               href={`/add-solution/${question.q_id}`}
             >
-              <li className="px-1 py-1 rounded-sm hover:bg-gray-100 text-black">
+              <li className="rounded-sm px-1 py-1 text-black hover:bg-gray-100">
                 Add Solution
               </li>
             </a>
@@ -156,12 +156,12 @@ const TableRow = ({
                     redirect(`/edit-question/${question.q_id}`);
                   }}
                 >
-                  <li className="px-1 py-1 rounded-sm hover:bg-gray-100 text-black">
+                  <li className="rounded-sm px-1 py-1 text-black hover:bg-gray-100">
                     Edit
                   </li>
                 </a>
                 <a onClick={onDelete}>
-                  <li className="px-1 py-1 rounded-sm text-red-500 hover:bg-gray-100">
+                  <li className="rounded-sm px-1 py-1 text-red-500 hover:bg-gray-100">
                     Delete
                   </li>
                 </a>

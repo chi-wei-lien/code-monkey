@@ -11,7 +11,7 @@ const CreateGroupPage = () => {
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const newData = {
       ...formData,
@@ -36,22 +36,22 @@ const CreateGroupPage = () => {
   };
 
   return (
-    <div className="h-fit lg:h-[95%] bg-cardPrimary rounded-md shadow p-10 lg:w-full overflow-y-scroll">
-      <div className="h-full flex lg:flex-row justify-center items-center">
+    <div className="h-fit overflow-y-scroll rounded-md bg-cardPrimary p-10 shadow lg:h-[95%] lg:w-full">
+      <div className="flex h-full items-center justify-center lg:flex-row">
         <form className="p-4" onSubmit={handleSubmit}>
           <div className="mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900">
+            <label className="mb-2 block text-sm font-medium text-gray-900">
               Group Name
             </label>
             <input
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-80 p-2.5"
+              className="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-black focus:ring-black"
               required
             />
           </div>
-          <div className="flex gap-2 justify-center">
+          <div className="flex justify-center gap-2">
             <PrimaryButton type="submit">Create Group</PrimaryButton>
             <SecondaryButton type="button" onClick={handleCancel}>
               Cancel

@@ -16,7 +16,7 @@ const construct_menu = (
   idx: number,
   title: string,
   url: string,
-  sort_id: number
+  sort_id: number,
 ) => {
   if (idx == pathComponents.length) {
     return;
@@ -44,7 +44,7 @@ const construct_menu = (
       idx + 1,
       title,
       url,
-      sort_id
+      sort_id,
     );
   } else {
     console.error("error occurs when adding path component");
@@ -73,7 +73,7 @@ const MenuEntry = (currNode: DirNode) => {
       const numA = parseInt(keyA.split(" ")[0], 10);
       const numB = parseInt(keyB.split(" ")[0], 10);
       return numA - numB;
-    }
+    },
   );
 
   for (const [entry, childNode] of sortedEntries) {
@@ -82,7 +82,7 @@ const MenuEntry = (currNode: DirNode) => {
         <div style={{ paddingLeft: `${indent}rem` }}>
           <a>{entry.replace(/^\d+\s/, "")}</a>
           {MenuEntry(childNode)}
-        </div>
+        </div>,
       );
     }
   }
@@ -91,7 +91,7 @@ const MenuEntry = (currNode: DirNode) => {
     fileElements.push(
       <a href={url} style={{ paddingLeft: `${indent}rem` }}>
         {title}
-      </a>
+      </a>,
     );
   }
 
@@ -121,14 +121,14 @@ const Menu = () => {
       0,
       post.title,
       `/algo-guide/${post._raw.flattenedPath}`,
-      post.sort_id
+      post.sort_id,
     );
     return [post.title, post._raw.flattenedPath];
   });
 
   return (
-    <div className="min-h-28 lg:h-[95%] no-scrollbar lg:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
-      <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
+    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary pt-4 shadow lg:h-[95%] lg:min-w-[20rem]">
+      <div className={`list-none pr-4 text-sm font-medium text-fontMenu`}>
         <h1 className="ml-6 font-bold">Contents</h1>
         <hr className="ml-4" />
         <div className="ml-6 mt-2 pb-5">{MenuEntry(root)}</div>

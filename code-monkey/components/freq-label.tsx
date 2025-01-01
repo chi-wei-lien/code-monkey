@@ -29,7 +29,7 @@ const FreqLabel = (freq: string) => {
 
   return (
     <div
-      className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full ${colorClassName} text-white`}
+      className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 ${colorClassName} text-white`}
     >
       <span>{labelName}</span>
       <span>
@@ -41,10 +41,7 @@ const FreqLabel = (freq: string) => {
             alt="/icons/information-icon.svg"
             className="m-0 text-white"
           />
-          <span
-            className="group-hover:opacity-100 transition-opacity bg-gray-800 px-2 text-sm p-2 text-gray-100 rounded-md absolute left-1/2 
--translate-x-1/2 opacity-0 mt-2 mx-auto"
-          >
+          <span className="absolute left-1/2 mx-auto mt-2 -translate-x-1/2 rounded-md bg-gray-800 p-2 px-2 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
             {description}
           </span>
         </div>

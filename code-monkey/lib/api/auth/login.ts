@@ -6,7 +6,7 @@ const login = async (
   data: { username: string; password: string },
   onSuccess: () => void,
   onAuthFail: () => void,
-  onError: (msg: string) => void
+  onError: (msg: string) => void,
 ) => {
   const storeToken = async (json: AccessTokenType) => {
     await Cookies.set("sessionId", json.access, {
@@ -29,7 +29,7 @@ const login = async (
       false,
       onAuthFail,
       storeToken,
-      data
+      data,
     );
   } catch (error) {
     if (error instanceof Error) {

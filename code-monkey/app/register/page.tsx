@@ -16,7 +16,7 @@ const SignInPage = () => {
   const [error, setError] = useState("");
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,
@@ -38,7 +38,7 @@ const SignInPage = () => {
           redirect("/leetcode-colab");
         },
         () => {},
-        setError
+        setError,
       );
     };
     handleRegister();
@@ -53,31 +53,31 @@ const SignInPage = () => {
   };
 
   return (
-    <section className="min-h-screen lg:h-screen min-w-screen bg-themeIvory">
+    <section className="min-w-screen min-h-screen bg-themeIvory lg:h-screen">
       <Navbar />
-      <div className="pt-16 pl-8 pr-8 h-full flex gap-5 flex-col lg:flex-row lg:justify-center items-center">
-        <div className="px-10 py-10 no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
+      <div className="flex h-full flex-col items-center gap-5 pl-8 pr-8 pt-16 lg:flex-row lg:justify-center">
+        <div className="no-scrollbar overflow-y-scroll rounded-md bg-cardPrimary px-10 py-10 shadow">
           <form onSubmit={handleSubmit}>
             <div className="mb-5">
               <h1
-                className={`${pacifico.className} text-themeBrown font-bold text-2xl text-center mb-4`}
+                className={`${pacifico.className} mb-4 text-center text-2xl font-bold text-themeBrown`}
               >
                 Register
               </h1>
-              <label className="block mb-2 text-sm text-themeBrown font-bold">
+              <label className="mb-2 block text-sm font-bold text-themeBrown">
                 Username
               </label>
               <input
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-80 p-2.5"
+                className="block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-black focus:ring-black"
                 required
                 placeholder="bob-1234"
               />
             </div>
             <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
+              <label className="mb-2 block text-sm font-medium text-gray-900">
                 Password
               </label>
               <input
@@ -85,12 +85,12 @@ const SignInPage = () => {
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
             </div>
             <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
+              <label className="mb-2 block text-sm font-medium text-gray-900">
                 Repeat Password
               </label>
               <input
@@ -98,11 +98,11 @@ const SignInPage = () => {
                 type="password"
                 value={formData.repeatPassword}
                 onChange={handleChange}
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
             </div>
-            <div className="flex gap-2 justify-center">
+            <div className="flex justify-center gap-2">
               <PrimaryButton type="submit">Register</PrimaryButton>
               <SecondaryButton onClick={goSignIn}>Sign in</SecondaryButton>
               <SecondaryButton onClick={goHome}>Cancel</SecondaryButton>

@@ -63,7 +63,7 @@ const LeetCodeColabPage = () => {
       firstPostedTime?: Date,
       lastPostedTime?: Date,
       userId?: number,
-      selectedUser?: number
+      selectedUser?: number,
     ) => {
       const questionData = await getQuestions(
         params.groupId,
@@ -77,7 +77,7 @@ const LeetCodeColabPage = () => {
         firstPostedTime,
         lastPostedTime,
         userId,
-        selectedUser
+        selectedUser,
       );
       if (questionData.data) {
         setQuestions(questionData.data);
@@ -100,7 +100,7 @@ const LeetCodeColabPage = () => {
       }
       return questionData.data;
     },
-    [params.groupId]
+    [params.groupId],
   );
 
   const fetchLeftPageQuestions = async () => {
@@ -118,7 +118,7 @@ const LeetCodeColabPage = () => {
       firstPostedTime,
       undefined,
       userId,
-      selectedUser
+      selectedUser,
     );
   };
 
@@ -134,7 +134,7 @@ const LeetCodeColabPage = () => {
       undefined,
       lastPostedTime,
       userId,
-      selectedUser
+      selectedUser,
     );
   };
 
@@ -172,7 +172,7 @@ const LeetCodeColabPage = () => {
         undefined,
         undefined,
         userId,
-        selectedUser
+        selectedUser,
       );
 
       const stat = await getQuestionStatistics();
@@ -203,20 +203,20 @@ const LeetCodeColabPage = () => {
   // }, [completed, qsCount]);
 
   return (
-    <div className="flex justify-between h-full gap-5 flex-col lg:flex-row">
-      <div className="h-fit lg:h-[95%] bg-cardPrimary rounded-md shadow p-10 lg:w-full overflow-y-scroll">
+    <div className="flex h-full flex-col justify-between gap-5 lg:flex-row">
+      <div className="h-fit overflow-y-scroll rounded-md bg-cardPrimary p-10 shadow lg:h-[95%] lg:w-full">
         {group && (
-          <h1 className="text-themeBrown font-bold text-xl pt-0 pb-5">
+          <h1 className="pb-5 pt-0 text-xl font-bold text-themeBrown">
             {group.name}
           </h1>
         )}
-        <div className="w-full flex items-center justify-between flex-wrap"></div>
-        <div className="flex gap-2 flex-wrap mb-3">
-          <div className="relative w-76 rounded-lg">
+        <div className="flex w-full flex-wrap items-center justify-between"></div>
+        <div className="mb-3 flex flex-wrap gap-2">
+          <div className="w-76 relative rounded-lg">
             <label className="sr-only">Search</label>
             <input
               type="text"
-              className="text-black block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 border-[1px] border-gray-400"
+              className="block w-full rounded-lg border-[1px] border-gray-400 px-3 py-2 ps-9 text-sm text-black shadow-sm"
               placeholder="Search for items"
               value={qNameQuery}
               onChange={(e) => {
@@ -224,9 +224,9 @@ const LeetCodeColabPage = () => {
                 resetPagination();
               }}
             />
-            <div className="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
+            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
               <svg
-                className="text-gray-400 size-4"
+                className="size-4 text-gray-400"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -262,13 +262,13 @@ const LeetCodeColabPage = () => {
                 setQueryNotCompleted(!queryNotCompleted);
                 resetPagination();
               }}
-              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50 border-[1px] border-gray-400"
+              className="inline-flex justify-center gap-x-1.5 rounded-md border-[1px] border-gray-400 bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50"
             >
-              <div className="flex items-center h-5">
+              <div className="flex h-5 items-center">
                 <input
                   id="hs-table-search-checkbox-1"
                   type="checkbox"
-                  className="text-blue-600 border-gray-200 rounded"
+                  className="rounded border-gray-200 text-blue-600"
                   checked={queryNotCompleted}
                   onChange={() => {}}
                 />
@@ -283,49 +283,49 @@ const LeetCodeColabPage = () => {
             </PrimaryButton>
           </div>
         </div>
-        <div className="w-full rounded-lg bg-themeBrown max-h-[500px] overflow-y-scroll shadow-sm ring-1 ring-gray-300">
+        <div className="max-h-[500px] w-full overflow-y-scroll rounded-lg bg-themeBrown shadow-sm ring-1 ring-gray-300">
           <table className="">
             <thead className="bg-themeBrown">
               <tr>
                 <th
                   scope="col"
-                  className="pl-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
                 >
                   Star
                 </th>
                 <th
                   scope="col"
-                  className="pl-3 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-3 text-start text-xs font-medium uppercase text-white"
                 >
                   No.
                 </th>
                 <th
                   scope="col"
-                  className="pl-6 py-3 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="py-3 text-xs font-medium text-white uppercase text-start text-nowrap"
+                  className="text-nowrap py-3 text-start text-xs font-medium uppercase text-white"
                 >
                   Posted By
                 </th>
                 <th
                   scope="col"
-                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
                 >
                   Completed
                 </th>
                 <th
                   scope="col"
-                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-start"
+                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
                 >
                   Solution
                 </th>
                 <th
                   scope="col"
-                  className="py-3 px-6 text-xs font-medium text-white uppercase text-end"
+                  className="px-6 py-3 text-end text-xs font-medium uppercase text-white"
                 >
                   Action
                 </th>
@@ -346,7 +346,7 @@ const LeetCodeColabPage = () => {
             </tbody>
           </table>
         </div>
-        <div className="w-full flex justify-between py-3">
+        <div className="flex w-full justify-between py-3">
           <button
             onClick={() => {
               fetchLeftPageQuestions();
@@ -354,7 +354,7 @@ const LeetCodeColabPage = () => {
           >
             <GoTriangleLeft color="#535151" size={30} />
           </button>
-          <div className="px-2 py-1 shadow-sm rounded-md bg-white text-gray-900 ring-1 ring-gray-300">
+          <div className="rounded-md bg-white px-2 py-1 text-gray-900 shadow-sm ring-1 ring-gray-300">
             {pageNumber}
           </div>
           <button

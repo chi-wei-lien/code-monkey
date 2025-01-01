@@ -47,12 +47,12 @@ const ColabStatsMenu = ({ groupId, completed }: ColabStatsMenuProps) => {
   }, [groupId, completed]);
 
   return (
-    <div className="min-h-28 lg:h-[95%] no-scrollbar lg:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow pb-4">
-      <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
+    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary pb-4 pt-4 shadow lg:h-[95%] lg:min-w-[20rem]">
+      <div className={`list-none pr-4 text-sm font-medium text-fontMenu`}>
         <h1 className="ml-6 font-bold">Statistics</h1>
         <hr className="ml-4" />
         <div className="flex justify-center">
-          <div className="h-[20rem] w-[20rem] mt-4">
+          <div className="mt-4 h-[20rem] w-[20rem]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 width={500}

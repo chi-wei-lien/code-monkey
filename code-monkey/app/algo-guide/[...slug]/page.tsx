@@ -16,17 +16,17 @@ import FreqLabel from "@/components/freq-label";
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
   const post = allPosts.find((post) =>
-    comparePathWithSlug(post._raw.flattenedPath, params.slug)
+    comparePathWithSlug(post._raw.flattenedPath, params.slug),
   );
   if (!post) notFound();
 
   const MDXContent = useMDXComponent(post.body.code);
 
   return (
-    <div className="h-[95%] w-full no-scrollbar overflow-x-auto overflow-y-auto bg-cardPrimary rounded-md shadow">
+    <div className="no-scrollbar h-[95%] w-full overflow-x-auto overflow-y-auto rounded-md bg-cardPrimary shadow">
       <article className="p-8">
         <div className="lg:flex lg:justify-center">
-          <div className="prose text-black mt-5 text-sm">
+          <div className="prose mt-5 text-sm text-black">
             <h1
               className={`mt-6 text-themeBrown ${pacifico.className}`}
               id="title"
@@ -34,7 +34,7 @@ const TestPage = () => {
               {post.title}
             </h1>
 
-            <div className="inline-flex flex-wrap items-center align-middle h-12">
+            <div className="inline-flex h-12 flex-wrap items-center align-middle">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="19"
@@ -61,7 +61,7 @@ const TestPage = () => {
                 ))}
               <span>{post.title}</span>
             </div>
-            <div className="flex gap-2 items-center mb-4">
+            <div className="mb-4 flex items-center gap-2">
               <div>{post.freq && FreqLabel(post.freq)}</div>
               <iframe
                 src="https://ghbtns.com/github-btn.html?user=chi-wei-lien&repo=cs348-project&type=star&count=true"
@@ -76,7 +76,7 @@ const TestPage = () => {
                 title="GitHub"
               />
             </div>
-            <div className="border-dashed border-2 border-sky-500 p-4 rounded-md">
+            <div className="rounded-md border-2 border-dashed border-sky-500 p-4">
               <div className="text-lg font-bold text-themeBrown">
                 On this page
               </div>
@@ -86,7 +86,7 @@ const TestPage = () => {
                     return (
                       <div key={heading.slug}>
                         <a
-                          className="data-[level=two]:pl-2 data-[level=three]:pl-4 data-[level=four]:pl-6"
+                          className="data-[level=four]:pl-6 data-[level=three]:pl-4 data-[level=two]:pl-2"
                           data-level={heading.level}
                           href={`#${heading.slug}`}
                         >
@@ -94,7 +94,7 @@ const TestPage = () => {
                         </a>
                       </div>
                     );
-                  }
+                  },
                 )}
               </div>
             </div>
@@ -114,7 +114,7 @@ const TestPage = () => {
         </div>
         <a
           href="#title"
-          className="fixed bottom-5 right-8 bg-slate-700 text-white p-3 rounded-full shadow-lg hover:bg-slate-800 transition"
+          className="fixed bottom-5 right-8 rounded-full bg-slate-700 p-3 text-white shadow-lg transition hover:bg-slate-800"
         >
           Back to Top
         </a>

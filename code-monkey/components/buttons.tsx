@@ -8,7 +8,7 @@ export const PrimaryButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`${rest.className} text-white bg-red-400 border hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2`}
+      className={`${rest.className} rounded-lg border bg-red-400 px-3 py-2 text-sm font-medium text-white hover:bg-red-500 focus:outline-none focus:ring-4 focus:ring-red-300`}
       {...rest}
     >
       {children}
@@ -21,7 +21,7 @@ export const SecondaryButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`${rest.className} text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2`}
+      className={`${rest.className} rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100`}
       {...rest}
     >
       {children}
@@ -34,7 +34,7 @@ export const BlackButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`${rest.className} text-white bg-themeBrown border hover:bg-themeDarkBrown focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1`}
+      className={`${rest.className} rounded-lg border bg-themeBrown px-2 py-1 text-sm font-medium text-white hover:bg-themeDarkBrown focus:outline-none focus:ring-4 focus:ring-red-300`}
       {...rest}
     >
       {children}
@@ -47,7 +47,7 @@ export const TagButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 dark:focus:ring-yellow-900"
+      className="mb-2 me-2 rounded-lg bg-yellow-400 px-3 py-2 text-sm font-medium text-white hover:bg-yellow-500 focus:outline-none focus:ring-yellow-300 dark:focus:ring-yellow-900"
       {...rest}
     >
       {children}
