@@ -2,7 +2,6 @@
 
 import { getGroupStats } from "@/lib/api/group/getGroupStat";
 import getUsers from "@/lib/api/users/getUsers";
-import QuestionType from "@/types/QuestionType";
 import UserType from "@/types/UserType";
 import { useEffect, useState } from "react";
 import {
