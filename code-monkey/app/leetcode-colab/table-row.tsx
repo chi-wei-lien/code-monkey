@@ -6,9 +6,10 @@ import { redirect } from "next/navigation";
 import markQuestion from "@/lib/api/question/markQuestion";
 import deleteQuestion from "@/lib/api/question/deleteQuestion";
 import { BsThreeDots } from "react-icons/bs";
+import { FaRegStar, FaStar } from "react-icons/fa";
+import likeQuestion from "@/lib/api/question/likeQuestion";
 
 interface TableRowProps {
-  number: number;
   question: QuestionType;
   completed: number;
   setCompleted: React.Dispatch<React.SetStateAction<number>>;
@@ -17,12 +18,13 @@ interface TableRowProps {
 
 const TableRow = ({
   question,
-  number,
   setCompleted,
   completed,
   myUsername,
 }: TableRowProps) => {
   const [checked, setChecked] = useState<boolean>(question.is_completed);
+  const [isLiked, setIsLiked] = useState<boolean>(question.is_liked);
+  const [likes, setLikes] = useState<number>(question.likes);
 
   useEffect(() => {
     setChecked(question.is_completed);
@@ -31,6 +33,7 @@ const TableRow = ({
   const onAuthFail = () => {
     redirect("/login");
   };
+
   const onDelete = async () => {
     if (
       window.confirm(
@@ -60,12 +63,34 @@ const TableRow = ({
     }
   };
 
+  const handleStarClick = () => {
+    const newLike = !isLiked;
+    likeQuestion({ q_id: question.q_id, like: newLike }, onAuthFail);
+    setIsLiked(newLike);
+    if (newLike) {
+      setLikes(likes + 1);
+    } else {
+      setLikes(likes - 1);
+    }
+  };
+
   return (
     <tr>
-      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+      <td className="px-6 py-3 text-sm text-gray-800 whitespace-nowrap flex items-center gap-2">
+        {isLiked ? (
+          <FaStar
+            className="text-xl text-amber-400"
+            onClick={handleStarClick}
+          />
+        ) : (
+          <FaRegStar className="text-xl" onClick={handleStarClick} />
+        )}
+        {likes}
+      </td>
+      <td className="px-3 py-3 text-sm text-gray-800 whitespace-nowrap">
         {question.number}
       </td>
-      <td className="px-6 py-4 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
+      <td className="px-6 py-3 text-sm font-medium text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a className="block w-48" href={question.link} target="_blank">
           <div className="relative flex justify-start group">
             <button className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -77,10 +102,9 @@ const TableRow = ({
           </div>
         </a>
       </td>
-      <td className="py-4 text-sm text-gray-800 whitespace-nowrap">
+      <td className="py-3 text-sm text-gray-800 whitespace-nowrap">
         <div className="w-14">
           <div className="relative flex justify-left group">
-            {/* <button>{shortenUsername(question.posted_by)}</button> */}
             <button className="overflow-hidden text-ellipsis whitespace-nowrap">
               {question.posted_by}
             </button>
@@ -102,7 +126,7 @@ const TableRow = ({
           <label className="sr-only">Checkbox</label>
         </div>
       </td>
-      <td className="pl-6 py-4 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
+      <td className="pl-6 py-3 text-sm text-blue-600 underline whitespace-nowrap underline-offset-2">
         <a
           className="hover:cursor-pointer"
           onClick={() => redirect(`/question/${question.q_id}/solutions`)}
@@ -110,7 +134,7 @@ const TableRow = ({
           Solutions
         </a>
       </td>
-      <td className="pl-6 py-4 text-sm whitespace-nowrap text-center">
+      <td className="px-6 py-3 text-sm whitespace-nowrap text-center">
         <div className="relative inline-block group">
           <BsThreeDots color="black" />
 
@@ -119,7 +143,7 @@ const TableRow = ({
               className="hover:cursor-pointer"
               href={`/add-solution/${question.q_id}`}
             >
-              <li className="px-3 py-1 rounded-sm hover:bg-gray-100 text-black">
+              <li className="px-1 py-1 rounded-sm hover:bg-gray-100 text-black">
                 Add Solution
               </li>
             </a>
@@ -132,12 +156,12 @@ const TableRow = ({
                     redirect(`/edit-question/${question.q_id}`);
                   }}
                 >
-                  <li className="px-3 py-1 rounded-sm hover:bg-gray-100 text-black">
+                  <li className="px-1 py-1 rounded-sm hover:bg-gray-100 text-black">
                     Edit
                   </li>
                 </a>
-                <a onClick={() => onDelete()}>
-                  <li className="px-3 py-1 rounded-sm text-red-500 hover:bg-gray-100">
+                <a onClick={onDelete}>
+                  <li className="px-1 py-1 rounded-sm text-red-500 hover:bg-gray-100">
                     Delete
                   </li>
                 </a>

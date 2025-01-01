@@ -291,6 +291,12 @@ const LeetCodeColabPage = () => {
                   scope="col"
                   className="pl-6 py-3 text-xs font-medium text-white uppercase text-start"
                 >
+                  Star
+                </th>
+                <th
+                  scope="col"
+                  className="pl-3 py-3 text-xs font-medium text-white uppercase text-start"
+                >
                   No.
                 </th>
                 <th
@@ -319,14 +325,14 @@ const LeetCodeColabPage = () => {
                 </th>
                 <th
                   scope="col"
-                  className="py-3 pl-6 text-xs font-medium text-white uppercase text-end"
+                  className="py-3 px-6 text-xs font-medium text-white uppercase text-end"
                 >
                   Action
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-cardPrimary">
-              {questions.map((question, index) => {
+              {questions.map((question) => {
                 return (
                   <TableRow
                     question={question}
@@ -334,7 +340,6 @@ const LeetCodeColabPage = () => {
                     key={question.q_id}
                     completed={completed}
                     setCompleted={setCompleted}
-                    number={questions.length - index}
                   />
                 );
               })}
