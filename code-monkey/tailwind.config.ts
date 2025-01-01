@@ -11,10 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        themeIvory: "#EAE6E6",
+        themeIvory: "#F3F0F0",
         themeBrown: "#535151",
+        themeLightBrown: "#716f6f",
         themeDarkBrown: "#424040",
-        cardPrimary: "#F3F0F0",
+        cardPrimary: "#FFFFFF",
         fontMenu: "#464646",
       },
       typography: {

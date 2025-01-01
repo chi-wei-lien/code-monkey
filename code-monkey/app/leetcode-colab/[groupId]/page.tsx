@@ -14,6 +14,7 @@ import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import ColabStatsMenu from "../ColabStatsMenu";
 import { GroupType } from "@/types/GroupType";
 import { getGroup } from "@/lib/api/group/getGroup";
+import PostedByButton from "./posted-by-button";
 
 const PAGE_SIZE = 10;
 
@@ -224,9 +225,7 @@ const LeetCodeColabPage = () => {
             <label className="sr-only">Search</label>
             <input
               type="text"
-              name="hs-table-search"
-              id="hs-table-search"
-              className="text-black border-0 block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 focus:z-10 focus:border-0 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none"
+              className="text-black block w-full px-3 py-2 text-sm rounded-lg shadow-sm ps-9 border-[1px] border-gray-400"
               placeholder="Search for items"
               value={qNameQuery}
               onChange={(e) => {
@@ -252,79 +251,33 @@ const LeetCodeColabPage = () => {
               </svg>
             </div>
           </div>
-          <button
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="dropdown"
-            className="text-themeBrown shadow-sm bg-white hover:bg-gray-50 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
-            type="button"
-          >
-            {userDropdownText}
-            <svg
-              className="w-2.5 h-2.5 ms-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
-          <div
-            id="dropdown"
-            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul
-              className="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownDefaultButton"
-            >
-              <a
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
-                role="menuitem"
-                onClick={() => {
-                  setSelectedUser(undefined);
-                  setUserDropdownText("Posted By");
-                  resetPagination();
-                }}
-              >
-                -
-              </a>
-              {users.map((user) => {
-                return (
-                  <a
-                    key={user.id}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100 hover:cursor-pointer"
-                    role="menuitem"
-                    onClick={() => {
-                      setSelectedUser(user.id);
-                      setUserDropdownText(user.username);
-                      resetPagination();
-                    }}
-                  >
-                    {user.username}
-                  </a>
-                );
-              })}
-            </ul>
-          </div>
+          <PostedByButton
+            userDropdownText={userDropdownText}
+            users={users}
+            onResetClick={() => {
+              setSelectedUser(undefined);
+              setUserDropdownText("Posted By");
+              resetPagination();
+            }}
+            onClick={(user: UserType) => {
+              setSelectedUser(user.id);
+              setUserDropdownText(user.username);
+              resetPagination();
+            }}
+          />
           <div className="relative">
             <button
               onClick={() => {
                 setQueryNotCompleted(!queryNotCompleted);
                 resetPagination();
               }}
-              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50"
+              className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50 border-[1px] border-gray-400"
             >
               <div className="flex items-center h-5">
                 <input
                   id="hs-table-search-checkbox-1"
                   type="checkbox"
-                  className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                  className="text-blue-600 border-gray-200 rounded"
                   checked={queryNotCompleted}
                   onChange={() => {}}
                 />

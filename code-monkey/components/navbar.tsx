@@ -1,37 +1,31 @@
 "use client";
 
-import { pacifico } from "@/app/fonts";
 import Link from "next/link";
 import { getCurrUserInfo } from "@/lib/auth";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import AuthButton from "./AuthButton";
-import { useRouter } from "next/navigation";
+import { SiInternetcomputer } from "react-icons/si";
+import { FaCode } from "react-icons/fa6";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState<string | undefined>();
-  const router = useRouter();
+  const [username, setUsername] = useState<string>();
 
   useEffect(() => {
     const { username } = getCurrUserInfo(() => {}) || {};
     if (username) {
       setIsLoggedIn(true);
-      setUsername(username);
+    } else {
+      setIsLoggedIn(false);
     }
+    setUsername(username);
   }, []);
 
-  const handleLogout = () => {
-    Cookies.remove("sessionId");
-    Cookies.remove("refresh");
-    window.location.reload();
-  };
-
   return (
-    <nav className="relative md:absolute w-screen flex flex-wrap items-center justify-between pt-2 px-6">
+    <nav className="relative md:absolute w-screen flex flex-wrap items-center justify-between pt-3 px-6 bg-cardPrimary shadow-sm pb-3">
       <Link
         href="/"
-        className={`${pacifico.className} text-2xl text-themeBrown`}
+        className={`ml-3 text-themeDarkBrown text-xl font-semibold`}
       >
         🐵 code monkey
       </Link>
@@ -59,86 +53,31 @@ const Navbar = () => {
           />
         </svg>
       </button>
-      <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul className="items-center shadow-sm md:shadow-none font-medium flex flex-col border rounded-lg border-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-cardPrimary md:bg-transparent">
-          <li>
-            <Link
-              href="/algo-guide"
-              className="block text-gray-900 rounded md:border-0 md:p-0"
-            >
-              Algo Guide
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/leetcode-colab"
-              className="block text-gray-900 rounded md:border-0 md:p-0"
-            >
-              LeetCode Colab
-            </Link>
-          </li>
-          {/* <li>
-            <Link
-              href="/sign-in"
-              className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-            >
-              Sign in
-            </Link>
-          </li> */}
-          <li>
-            <AuthButton isLoggedIn username={username} />
-          </li>
-        </ul>
-      </div>
-    </nav>
-  );
 
-  return (
-    <div className="w-screen relative">
-      <div className="absolute pl-8 pt-3">
-        <div className="flex items-center gap-7">
+      <ul className="items-center gap-2 shadow-sm md:shadow-none font-medium flex flex-col border rounded-lg border-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-cardPrimary md:bg-transparent">
+        <li>
           <Link
-            href="/"
-            className={`${pacifico.className} text-2xl text-themeBrown`}
+            href="/algo-guide"
+            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500"
           >
-            🐵 code monkey
+            <FaCode />
+            Algo Guide
           </Link>
-          <div className="pt-2">
-            <Link href="/algo-guide" className="text-themeBrown font-bold">
-              Algo Guide
-            </Link>
-          </div>
-          <div className="pt-2">
-            <Link href="/leetcode-colab" className="text-themeBrown font-bold">
-              LeetCode Colab
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="absolute right-0 pr-8 pt-3">
-        {isLoggedIn && (
-          <div className="pt-2">
-            <Link href="/sign-in" className="text-themeBrown font-bold">
-              {username}
-            </Link>
-            <span className="text-themeBrown font-bold">, </span>
-            <button
-              onClick={handleLogout}
-              className="text-themeBrown font-bold"
-            >
-              log out
-            </button>
-          </div>
-        )}
-        {!isLoggedIn && (
-          <div className="pt-2">
-            <Link href="/sign-in" className="text-themeBrown font-bold">
-              Sign in
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
+        </li>
+        <li>
+          <Link
+            href="/leetcode-colab"
+            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500"
+          >
+            <SiInternetcomputer />
+            LeetCode Colab
+          </Link>
+        </li>
+        <li>
+          <AuthButton isLoggedIn={isLoggedIn} username={username} />
+        </li>
+      </ul>
+    </nav>
   );
 };
 
