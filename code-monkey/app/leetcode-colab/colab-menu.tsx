@@ -30,7 +30,7 @@ const ColabMenu = () => {
   }, []);
 
   return (
-    <div className="min-h-28 md:h-[95%] no-scrollbar md:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
+    <div className="min-h-28 lg:h-[95%] no-scrollbar lg:min-w-[20rem] overflow-y-scroll bg-cardPrimary pt-4 rounded-md shadow">
       <div className={`text-fontMenu text-sm list-none font-medium pr-4`}>
         <div className="flex gap-2 items-center justify-between">
           <h1 className="ml-6 font-bold">Groups</h1>

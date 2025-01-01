@@ -125,7 +125,7 @@ const AddQuestionPage = () => {
 
   return (
     <div className="h-[95%] w-full overflow-x-scroll overflow-y-scroll bg-cardPrimary rounded-md shadow p-10">
-      <div className="h-full flex md:flex-row md:justify-center items-center">
+      <div className="h-full flex lg:flex-row lg:justify-center items-center">
         <form className="p-4" onSubmit={handleSubmit}>
           <div className="mb-5">
             <label className="block mb-2 text-sm font-medium text-gray-900">

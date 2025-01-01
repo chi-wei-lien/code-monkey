@@ -53,9 +53,9 @@ const SignInPage = () => {
   };
 
   return (
-    <section className="min-h-screen md:h-screen min-w-screen bg-themeIvory">
+    <section className="min-h-screen lg:h-screen min-w-screen bg-themeIvory">
       <Navbar />
-      <div className="pt-16 pl-8 pr-8 h-full flex gap-5 flex-col md:flex-row md:justify-center items-center">
+      <div className="pt-16 pl-8 pr-8 h-full flex gap-5 flex-col lg:flex-row lg:justify-center items-center">
         <div className="px-10 py-10 no-scrollbar overflow-y-scroll bg-cardPrimary rounded-md shadow">
           <form onSubmit={handleSubmit}>
             <div className="mb-5">

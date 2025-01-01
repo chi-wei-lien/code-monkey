@@ -37,14 +37,16 @@ const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
   if (isLoggedIn) {
     return (
       <div className="relative" ref={dropdownRef}>
-        <button
-          onClick={toggleDropdown}
-          className="text-themeDarkBrown focus:outline-none font-medium rounded-lg text-center inline-flex items-center gap-2 hover:text-violet-500 pr-2"
-          type="button"
-        >
-          <FaRegUserCircle />
-          {username}
-        </button>
+        <div className="flex justify-end items-center text-themeDarkBrown gap-2 hover:text-violet-500 focus:outline-none">
+          <FaRegUserCircle className="mt-1" />
+          <button
+            onClick={toggleDropdown}
+            className="font-medium"
+            type="button"
+          >
+            {username}
+          </button>
+        </div>
         {isOpen && (
           <div className="absolute mt-5 right-0 z-[100] bg-white divide-y text-sm divide-gray-100 rounded-lg shadow w-44">
             <div className="px-4 py-3 text-themeDarkBrown">

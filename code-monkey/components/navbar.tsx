@@ -22,43 +22,18 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="relative md:absolute w-screen flex flex-wrap items-center justify-between pt-3 px-6 bg-cardPrimary shadow-sm pb-3">
+    <nav className="relative lg:absolute w-screen flex flex-wrap items-center justify-between pt-3 px-6 bg-cardPrimary shadow-sm pb-3">
       <Link
         href="/"
         className={`ml-3 text-themeDarkBrown text-xl font-semibold`}
       >
         🐵 code monkey
       </Link>
-      <button
-        data-collapse-toggle="navbar-default"
-        type="button"
-        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-        aria-controls="navbar-default"
-        aria-expanded="false"
-      >
-        <span className="sr-only">Open main menu</span>
-        <svg
-          className="w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </button>
-
-      <ul className="items-center gap-2 shadow-sm md:shadow-none font-medium flex flex-col border rounded-lg border-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-cardPrimary md:bg-transparent">
+      <ul className="gap-3 lg:gap-6 font-medium flex flex-col rounded-lg lg:flex-row lg:mt-0 bg-cardPrimary">
         <li>
           <Link
             href="/algo-guide"
-            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500"
+            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500 justify-end"
           >
             <FaCode />
             Algo Guide
@@ -67,7 +42,7 @@ const Navbar = () => {
         <li>
           <Link
             href="/leetcode-colab"
-            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500"
+            className="flex gap-3 items-center text-themeDarkBrown rounded hover:text-violet-500 justify-end"
           >
             <SiInternetcomputer />
             LeetCode Colab
