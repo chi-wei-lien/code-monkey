@@ -181,10 +181,12 @@ def like_question(request):
         l_q = LikeQuestion.objects.filter(q_id=Question.objects.get(q_id=q_id), user_id=request.user).first()
         now = timezone.now().replace(microsecond=0)
         if l_q:
-            if not l_q.like:
+            if not l_q.like and like:
                 q.likes += 1
-                q.save()
-            l_q.like  = like
+            elif not like:
+                q.likes -= 1
+
+            l_q.like = like
             l_q.like_time=now
             l_q.save()
         else:
@@ -197,7 +199,9 @@ def like_question(request):
             l_q.save()
             if like:
                 q.likes += 1
-                q.save()
+            else:
+                q.likes -= 1
+        q.save()
 
     serializer = LikeQuestionSerializer(l_q)
     return JsonResponse({'data': serializer.data})
