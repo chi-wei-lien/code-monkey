@@ -15,6 +15,7 @@ import ColabStatsMenu from "../colab-stats-menu";
 import { GroupType } from "@/types/GroupType";
 import { getGroup } from "@/lib/api/group/getGroup";
 import PostedByButton from "./posted-by-button";
+import Image from "next/image";
 
 const PAGE_SIZE = 10;
 
@@ -32,6 +33,7 @@ const LeetCodeColabPage = () => {
   const [username, setUsername] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | undefined>();
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // const [qsCount, setQsCount] = useState(0);
 
   // Pagination
@@ -65,6 +67,7 @@ const LeetCodeColabPage = () => {
       userId?: number,
       selectedUser?: number,
     ) => {
+      setIsLoading(true);
       const questionData = await getQuestions(
         params.groupId,
         qNameQuery,
@@ -98,6 +101,9 @@ const LeetCodeColabPage = () => {
       if (questionData.last_q_id) {
         setLastQuestionId(questionData.last_q_id);
       }
+      // await new Promise((f) => setTimeout(f, 1000));
+
+      setIsLoading(false);
       return questionData.data;
     },
     [params.groupId],
@@ -283,68 +289,85 @@ const LeetCodeColabPage = () => {
             </PrimaryButton>
           </div>
         </div>
-        <div className="max-h-[500px] w-full overflow-y-scroll rounded-lg bg-themeBrown shadow-sm ring-1 ring-gray-300">
-          <table className="">
-            <thead className="bg-themeBrown">
-              <tr>
-                <th
-                  scope="col"
-                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
-                >
-                  Star
-                </th>
-                <th
-                  scope="col"
-                  className="py-3 pl-3 text-start text-xs font-medium uppercase text-white"
-                >
-                  No.
-                </th>
-                <th
-                  scope="col"
-                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
-                >
-                  Name
-                </th>
-                <th
-                  scope="col"
-                  className="text-nowrap py-3 text-start text-xs font-medium uppercase text-white"
-                >
-                  Posted By
-                </th>
-                <th
-                  scope="col"
-                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
-                >
-                  Completed
-                </th>
-                <th
-                  scope="col"
-                  className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
-                >
-                  Solution
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-end text-xs font-medium uppercase text-white"
-                >
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 bg-cardPrimary">
-              {questions.map((question) => {
-                return (
-                  <TableRow
-                    question={question}
-                    myUsername={username}
-                    key={question.q_id}
-                    completed={completed}
-                    setCompleted={setCompleted}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="flex w-full justify-center">
+          <div className="relative max-h-[500px] w-fit overflow-y-scroll rounded-lg bg-themeBrown shadow-sm ring-1 ring-gray-300">
+            <table className="">
+              <thead className="bg-themeBrown">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
+                  >
+                    Star
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 pl-3 text-start text-xs font-medium uppercase text-white"
+                  >
+                    No.
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-nowrap py-3 text-start text-xs font-medium uppercase text-white"
+                  >
+                    Posted By
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
+                  >
+                    Completed
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 pl-6 text-start text-xs font-medium uppercase text-white"
+                  >
+                    Solution
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-end text-xs font-medium uppercase text-white"
+                  >
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-cardPrimary">
+                {isLoading && (
+                  <tr>
+                    <td colSpan={7}>
+                      <div className="flex w-full items-center justify-center">
+                        <Image
+                          src={"/gifs/hourglass.gif"}
+                          height={80}
+                          width={80}
+                          alt={`hour glass`}
+                          unoptimized={true}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                {questions.map((question) => {
+                  return (
+                    <TableRow
+                      question={question}
+                      myUsername={username}
+                      key={question.q_id}
+                      completed={completed}
+                      setCompleted={setCompleted}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="flex w-full justify-between py-3">
           <button
