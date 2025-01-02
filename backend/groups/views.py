@@ -59,8 +59,7 @@ def get_group_stats(request):
     questions = Question.objects.filter(group_id=group_id)
     q_ids = questions.values_list('q_id', flat=True)
 
-    seven_days_ago = now().date() - timedelta(days=7)
-    date_range = [(seven_days_ago + timedelta(days=i)).strftime('%m/%d') for i in range(1, 8)]
+    seven_days_ago = now().date() - timedelta(days=6)
 
     grouped_data = (
         MarkQuestion.objects.annotate(done_date=TruncDate('done_time'))
