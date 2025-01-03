@@ -12,7 +12,7 @@ const getQuestions = async (
   firstPostedTime?: Date,
   lastPostedTime?: Date,
   currUser?: number,
-  selectedUser?: number
+  selectedUser?: number,
 ) => {
   const searchParams = new URLSearchParams();
   searchParams.append("group_id", groupId);
@@ -49,7 +49,7 @@ const getQuestions = async (
     const json = await request(
       "GET",
       `/questions?${searchParams.toString()}`,
-      useAuth
+      useAuth,
     );
     return json;
   } catch (error) {

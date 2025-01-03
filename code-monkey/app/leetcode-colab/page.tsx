@@ -2,20 +2,26 @@
 
 import { getGroups } from "@/lib/api/group/getGroups";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { GroupType } from "@/types/GroupType";
 
 const DefaultPage = () => {
+  const [groups, setGroups] = useState<GroupType[]>([]);
   useEffect(() => {
-    const redirectGroup = async () => {
+    const loadGroups = async () => {
       const groups = await getGroups();
-      if (groups) {
-        redirect(`/leetcode-colab/${groups[0].group_id}`);
-      }
+      setGroups(groups ?? []);
     };
 
-    redirectGroup();
+    loadGroups();
   }, []);
+
+  useEffect(() => {
+    if (groups.length > 0) {
+      redirect(`/leetcode-colab/${groups[0].group_id}`);
+    }
+  }, [groups]);
 
   return (
     <div className="flex h-full flex-col justify-between gap-5 lg:flex-row">

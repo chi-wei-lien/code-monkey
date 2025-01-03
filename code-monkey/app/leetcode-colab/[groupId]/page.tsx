@@ -9,15 +9,16 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
 import UserType from "@/types/UserType";
 import getUsers from "@/lib/api/users/getUsers";
-import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import ColabStatsMenu from "../colab-stats-menu";
 import { GroupType } from "@/types/GroupType";
 import { getGroup } from "@/lib/api/group/getGroup";
 import PostedByButton from "./posted-by-button";
 import Image from "next/image";
 import { getGroupStats } from "@/lib/api/group/getGroupStat";
+import EntryPerPageButton from "./entry-per-page-button";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const PAGE_SIZE = 10;
+const INIT_PAGE_SIZE = 10;
 
 const LeetCodeColabPage = () => {
   const params = useParams<{ groupId: string }>();
@@ -41,6 +42,9 @@ const LeetCodeColabPage = () => {
   const [firstQuestionId, setFirstQuestionId] = useState<number>();
   const [pageNumber, setPageNumber] = useState(1);
   const [group, setGroup] = useState<GroupType>();
+  const [totalQuestionCount, setTotalQuestionCount] = useState(0);
+  const [pageSize, setPageSize] = useState(INIT_PAGE_SIZE);
+  const [numOfPage, setNumOfPage] = useState(0);
 
   // stats
   const [groupStats, setGroupStats] = useState<StackGraphData[]>();
@@ -106,6 +110,16 @@ const LeetCodeColabPage = () => {
         setLastQuestionId(questionData.last_q_id);
       }
 
+      if (questionData.total_q_count) {
+        setTotalQuestionCount(questionData.total_q_count);
+      }
+
+      if (questionData.number_of_pages) {
+        setNumOfPage(questionData.number_of_pages);
+      }
+
+      console.log(questionData.number_of_pages);
+
       setIsLoading(false);
       return questionData.data;
     },
@@ -120,7 +134,7 @@ const LeetCodeColabPage = () => {
     await getQuestionsWrapper(
       qNameQuery,
       queryNotCompleted,
-      PAGE_SIZE,
+      pageSize,
       true,
       firstQuestionId,
       undefined,
@@ -136,7 +150,7 @@ const LeetCodeColabPage = () => {
     await getQuestionsWrapper(
       qNameQuery,
       queryNotCompleted,
-      PAGE_SIZE,
+      pageSize,
       false,
       undefined,
       lastQuestionId,
@@ -174,7 +188,7 @@ const LeetCodeColabPage = () => {
       await getQuestionsWrapper(
         qNameQuery,
         queryNotCompleted,
-        PAGE_SIZE,
+        pageSize,
         false,
         undefined,
         undefined,
@@ -193,6 +207,7 @@ const LeetCodeColabPage = () => {
     getQuestionsWrapper,
     params.groupId,
     userId,
+    pageSize,
   ]);
 
   const loadStats = useCallback(async () => {
@@ -209,6 +224,10 @@ const LeetCodeColabPage = () => {
 
   const handleAddQuestion = () => {
     router.push(`/leetcode-colab/${params.groupId}/add-question`);
+  };
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize);
   };
 
   return (
@@ -271,7 +290,7 @@ const LeetCodeColabPage = () => {
                 setQueryNotCompleted(!queryNotCompleted);
                 resetPagination();
               }}
-              className="inline-flex justify-center gap-x-1.5 rounded-md border-[1px] border-gray-400 bg-white px-3 py-2 text-sm text-themeBrown shadow-sm hover:bg-gray-50"
+              className="inline-flex justify-center gap-x-1.5 rounded-md border-[1px] border-gray-400 bg-white px-3 py-2 text-sm font-medium text-themeBrown shadow-sm hover:bg-gray-50"
             >
               <div className="flex h-5 items-center">
                 <input
@@ -371,25 +390,46 @@ const LeetCodeColabPage = () => {
             </table>
           </div>
         </div>
-        <div className="flex w-full justify-between py-3">
-          <button
-            onClick={() => {
-              fetchLeftPageQuestions();
-            }}
-          >
-            <GoTriangleLeft color="#535151" size={30} />
-          </button>
-          <div className="rounded-md bg-white px-2 py-1 text-gray-900 shadow-sm ring-1 ring-gray-300">
-            {pageNumber}
+        {!isLoading && (
+          <div className="mt-4 flex w-full justify-end gap-2 text-themeBrown">
+            <EntryPerPageButton
+              dropdownText={`${pageSize} per page`}
+              onClick={handlePageSizeChange}
+            />
+            <div className="flex h-fit divide-x divide-gray-400 rounded-lg border-[1px] border-gray-400 bg-white shadow-sm hover:bg-gray-50">
+              <div className="mx-3 my-2 text-sm font-medium">
+                {(pageNumber - 1) * pageSize + 1} -{" "}
+                {Math.min(pageNumber * pageSize, questions.length)} of{" "}
+                {totalQuestionCount}
+              </div>
+              <div className="item-center flex gap-4 px-2">
+                <button
+                  onClick={() => {
+                    fetchLeftPageQuestions();
+                  }}
+                  disabled={pageNumber == 1}
+                >
+                  <FaAngleLeft
+                    className={`${pageNumber == 1 ? "text-slate-400" : "text-slate-500 hover:text-slate-600"}`}
+                    size={20}
+                  />
+                </button>
+                <button
+                  onClick={() => {
+                    fetchRightPageQuestions();
+                  }}
+                  disabled={pageNumber == numOfPage}
+                >
+                  <FaAngleRight
+                    className={`${pageNumber == numOfPage ? "text-slate-400" : "text-slate-500 hover:text-slate-600"}`}
+                    size={20}
+                  />
+                </button>
+              </div>
+            </div>
+            <div></div>
           </div>
-          <button
-            onClick={() => {
-              fetchRightPageQuestions();
-            }}
-          >
-            <GoTriangleRight color="#535151" size={30} />
-          </button>
-        </div>
+        )}
       </div>
       <ColabStatsMenu
         groupStats={groupStats}
