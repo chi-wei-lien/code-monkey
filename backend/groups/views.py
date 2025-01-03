@@ -12,6 +12,7 @@ from django.db.models import Count, Q
 from django.db.models.functions import TruncDate
 from collections import defaultdict
 from django.utils.timezone import now, timedelta
+from questions.serializers import QuestionSerializer, MarkQuestionSerializer, LikeQuestionSerializer
 
 @api_view(['GET'])
 def get_groups(request):
@@ -57,8 +58,6 @@ def get_group_stats(request):
     group_id = request.GET.get('group_id')
 
     questions = Question.objects.filter(group_id=group_id)
-    q_ids = questions.values_list('q_id', flat=True)
-
     seven_days_ago = now().date() - timedelta(days=6)
 
     grouped_data = (
@@ -80,5 +79,33 @@ def get_group_stats(request):
         result[done_date]['done_date'] = done_date
         result[done_date][username] = entry['count']
 
+    week_qs = Question.objects.filter(group_id=group_id, posted_time__gte=seven_days_ago)
+    qs_count = week_qs.count()
+    
+    done_qs = MarkQuestion.objects.filter(
+        q_id__in=week_qs.values_list('q_id', flat=True),
+        user_id=request.user.id,
+        done_time__gte=seven_days_ago,
+        done=True,
+    )
 
-    return JsonResponse({'data': list(result.values())})
+    done_qs_count = done_qs.count()
+    done_qs_ids = done_qs.values_list('q_id', flat=True)
+    not_done_qs = week_qs.exclude(q_id__in=done_qs_ids)
+    qs_serializer = QuestionSerializer(not_done_qs, many=True, context={'request': request})
+
+    return JsonResponse({
+        'stack_graph_data': list(result.values()),
+        'question_count': qs_count, 
+        'completed_count': done_qs_count,
+        'still_need': qs_serializer.data
+    })
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_statistics(request):
+    qs_count = Question.objects.count()
+    mark_qs_count = MarkQuestion.objects.filter(user_id=request.user.id, done=True).count()
+    return JsonResponse({'question_count': qs_count, 'completed_count': mark_qs_count})

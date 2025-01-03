@@ -115,12 +115,12 @@ def get_mark_questions(request):
     serializer = MarkQuestionSerializer(mark_qs, many=True)
     return JsonResponse({'data': serializer.data})
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_statistics(request):
-    qs_count = Question.objects.count()
-    mark_qs_count = MarkQuestion.objects.filter(user_id=request.user.id, done=True).count()
-    return JsonResponse({'question_count': qs_count, 'completed_count': mark_qs_count})
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_statistics(request):
+#     qs_count = Question.objects.count()
+#     mark_qs_count = MarkQuestion.objects.filter(user_id=request.user.id, done=True).count()
+#     return JsonResponse({'question_count': qs_count, 'completed_count': mark_qs_count})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
