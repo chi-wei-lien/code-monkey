@@ -59,7 +59,7 @@ const LeetCodeColabPage = () => {
     setFirstPostedTime(undefined);
     setLastQuestionId(undefined);
     setFirstQuestionId(undefined);
-    setPageNumber(0);
+    setPageNumber(1);
   };
 
   const getQuestionsWrapper = useCallback(
@@ -399,11 +399,21 @@ const LeetCodeColabPage = () => {
                     />
                   );
                 })}
+                {questions.length === 0 && !isLoading && (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="px-3 py-2 text-center text-themeBrown"
+                    >
+                      Our monkeys tried our best but no questions were found!
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
-        {!isLoading && (
+        {!isLoading && questions.length > 0 && (
           <div className="mt-4 flex w-full justify-end gap-2 text-themeBrown">
             <EntryPerPageButton
               dropdownText={`${pageSize} per page`}

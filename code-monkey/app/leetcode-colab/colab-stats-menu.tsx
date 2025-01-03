@@ -84,15 +84,13 @@ const ColabStatsMenu = ({
         <div className="mt-6 rounded-lg border-2 border-dashed p-5">
           <div className="flex items-center gap-2 font-bold">
             <h1>Weekly Goal</h1>
-            <span>
-              <div className="group relative">
-                <IoInformationCircleOutline className="text-lg" />
-                <span className="absolute left-1/2 z-10 mx-auto mt-2 w-[150px] rounded-md bg-gray-800 p-4 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
-                  Indicates how many questions you solved that are posted within
-                  this week
-                </span>
-              </div>
-            </span>
+            <div className="group relative">
+              <IoInformationCircleOutline className="text-lg" />
+              <span className="absolute left-1/2 z-10 mx-auto mt-2 hidden w-[150px] rounded-md bg-gray-800 p-4 text-sm text-gray-100 transition-opacity group-hover:block">
+                Indicates how many questions you solved that are posted within
+                this week
+              </span>
+            </div>
           </div>
           <hr />
           <div className="mt-2">
@@ -100,7 +98,7 @@ const ColabStatsMenu = ({
               <div>
                 {doneCount} / {qsCount}
               </div>
-              <div>{completeness}</div>
+              <div>{completeness}%</div>
             </div>
             <div className="mb-5 h-2 overflow-hidden rounded-full bg-gray-200">
               <div
@@ -123,6 +121,9 @@ const ColabStatsMenu = ({
               </div>
             </Link>
           ))}
+          {notDoneQuestions.length === 0 && (
+            <div>Good job! You solved all questions posted this week!</div>
+          )}
         </div>
       </div>
     </div>
