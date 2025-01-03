@@ -399,8 +399,9 @@ const LeetCodeColabPage = () => {
             <div className="flex h-fit divide-x divide-gray-400 rounded-lg border-[1px] border-gray-400 bg-white shadow-sm hover:bg-gray-50">
               <div className="mx-3 my-2 text-sm font-medium">
                 {(pageNumber - 1) * pageSize + 1} -{" "}
-                {Math.min(pageNumber * pageSize, questions.length)} of{" "}
-                {totalQuestionCount}
+                {(pageNumber - 1) * pageSize +
+                  Math.min(pageSize, questions.length)}{" "}
+                of {totalQuestionCount}
               </div>
               <div className="item-center flex gap-4 px-2">
                 <button
