@@ -30,16 +30,16 @@ const ColabMenu = () => {
   }, []);
 
   return (
-    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary pt-4 shadow lg:h-[95%] lg:min-w-[20rem]">
-      <div className={`list-none pr-4 text-sm font-medium text-fontMenu`}>
+    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary p-6 shadow lg:h-[95%] lg:min-w-[20rem]">
+      <div className={`list-none text-sm font-medium text-fontMenu`}>
         <div className="flex items-center justify-between gap-2">
-          <h1 className="ml-6 font-bold">Groups</h1>
+          <h1 className="font-bold">Groups</h1>
           <BlackButton onClick={() => redirect("/leetcode-colab/create-group")}>
             Create Group
           </BlackButton>
         </div>
-        <hr className="ml-4 mt-2" />
-        <div className="ml-6 mt-2 pb-5">
+        <hr className="mt-2" />
+        <div className="mt-2 pb-5">
           {isLoggedIn &&
             groups.map((group) => (
               <div className="flex justify-between" key={group.group_id}>

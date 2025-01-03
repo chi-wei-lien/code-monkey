@@ -9,13 +9,13 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
 import UserType from "@/types/UserType";
 import getUsers from "@/lib/api/users/getUsers";
-import getQuestionStatistics from "@/lib/api/question/getQuestionStatistics";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
 import ColabStatsMenu from "../colab-stats-menu";
 import { GroupType } from "@/types/GroupType";
 import { getGroup } from "@/lib/api/group/getGroup";
 import PostedByButton from "./posted-by-button";
 import Image from "next/image";
+import { getGroupStats } from "@/lib/api/group/getGroupStat";
 
 const PAGE_SIZE = 10;
 
@@ -26,7 +26,7 @@ const LeetCodeColabPage = () => {
   const [qNameQuery, setQNameQuery] = useState("");
   const [queryNotCompleted, setQueryNotCompleted] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number>();
-  const [completed, setCompleted] = useState(0);
+  // const [completed, setCompleted] = useState(0);
   const [userDropdownText, setUserDropdownText] = useState("Posted By");
   const [users, setUsers] = useState<UserType[]>([]);
 
@@ -34,7 +34,6 @@ const LeetCodeColabPage = () => {
   const [userId, setUserId] = useState<number | undefined>();
   const [hasLoaded, setHasLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // const [qsCount, setQsCount] = useState(0);
 
   // Pagination
   const [lastPostedTime, setLastPostedTime] = useState<Date>(new Date());
@@ -43,6 +42,12 @@ const LeetCodeColabPage = () => {
   const [firstQuestionId, setFirstQuestionId] = useState<number>();
   const [pageNumber, setPageNumber] = useState(1);
   const [group, setGroup] = useState<GroupType>();
+
+  // stats
+  const [groupStats, setGroupStats] = useState<StackGraphData[]>();
+  const [doneCount, setDoneCount] = useState(0);
+  const [qsCount, setQsCount] = useState(0);
+  const [notDoneQuestions, setNotDoneQuestions] = useState<QuestionType[]>([]);
 
   const router = useRouter();
 
@@ -101,7 +106,6 @@ const LeetCodeColabPage = () => {
       if (questionData.last_q_id) {
         setLastQuestionId(questionData.last_q_id);
       }
-      // await new Promise((f) => setTimeout(f, 1000));
 
       setIsLoading(false);
       return questionData.data;
@@ -180,14 +184,7 @@ const LeetCodeColabPage = () => {
         userId,
         selectedUser,
       );
-
-      const stat = await getQuestionStatistics();
-      if (stat) {
-        setCompleted(stat.completed_count);
-        // setQsCount(stat.question_count);
-      }
     };
-
     if (hasLoaded) onLoad();
   }, [
     qNameQuery,
@@ -199,14 +196,29 @@ const LeetCodeColabPage = () => {
     userId,
   ]);
 
+  const loadStats = useCallback(async () => {
+    const statData = await getGroupStats(parseInt(params.groupId));
+    setGroupStats(statData.stack_graph_data ?? []);
+    setQsCount(statData.question_count ?? 0);
+    setDoneCount(statData.completed_count ?? 0);
+    setNotDoneQuestions(statData.still_need ?? []);
+  }, [params.groupId]);
+
+  useEffect(() => {
+    loadStats();
+  }, [params.groupId, loadStats]);
+
+  // useEffect(() => {
+  //   const loadStats = async () => {
+  //     const statData = await getGroupStats(parseInt(params.groupId));
+  //     setGroupStats(statData.stack_graph_data ?? []);
+  //   };
+  //   loadStats();
+  // }, [params.groupId, doneCount]);
+
   const handleAddQuestion = () => {
     router.push(`/leetcode-colab/${params.groupId}/add-question`);
   };
-
-  // const completeness = useMemo(() => {
-  //   if (qsCount === 0) return 0;
-  //   return parseFloat(((completed / qsCount) * 100).toFixed(2));
-  // }, [completed, qsCount]);
 
   return (
     <div className="flex h-full flex-col justify-between gap-5 lg:flex-row">
@@ -357,11 +369,10 @@ const LeetCodeColabPage = () => {
                 {questions.map((question) => {
                   return (
                     <TableRow
+                      loadStats={loadStats}
                       question={question}
                       myUsername={username}
                       key={question.q_id}
-                      completed={completed}
-                      setCompleted={setCompleted}
                     />
                   );
                 })}
@@ -390,8 +401,11 @@ const LeetCodeColabPage = () => {
         </div>
       </div>
       <ColabStatsMenu
-        groupId={parseInt(params.groupId)}
-        completed={completed}
+        groupStats={groupStats}
+        qsCount={qsCount}
+        doneCount={doneCount}
+        users={users}
+        notDoneQuestions={notDoneQuestions}
       />
     </div>
   );

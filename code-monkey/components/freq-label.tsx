@@ -1,4 +1,5 @@
-import Image from "next/image";
+// import Image from "next/image";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 const FreqLabel = (freq: string) => {
   let colorClassName = "";
@@ -34,13 +35,7 @@ const FreqLabel = (freq: string) => {
       <span>{labelName}</span>
       <span>
         <div className="group relative">
-          <Image
-            width={14}
-            height={14}
-            src="/icons/information-icon.svg"
-            alt="/icons/information-icon.svg"
-            className="m-0 text-white"
-          />
+          <IoInformationCircleOutline className="text-lg" />
           <span className="absolute left-1/2 mx-auto mt-2 -translate-x-1/2 rounded-md bg-gray-800 p-2 px-2 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
             {description}
           </span>

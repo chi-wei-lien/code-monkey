@@ -11,17 +11,11 @@ import likeQuestion from "@/lib/api/question/likeQuestion";
 
 interface TableRowProps {
   question: QuestionType;
-  completed: number;
-  setCompleted: React.Dispatch<React.SetStateAction<number>>;
   myUsername?: string;
+  loadStats: () => Promise<void>;
 }
 
-const TableRow = ({
-  question,
-  setCompleted,
-  completed,
-  myUsername,
-}: TableRowProps) => {
+const TableRow = ({ question, loadStats, myUsername }: TableRowProps) => {
   const [checked, setChecked] = useState<boolean>(question.is_completed);
   const [isLiked, setIsLiked] = useState<boolean>(question.is_liked);
   const [likes, setLikes] = useState<number>(question.likes);
@@ -46,21 +40,20 @@ const TableRow = ({
   };
 
   const onMark = (event: ChangeEvent<HTMLInputElement>) => {
-    const newChecked = event.target.checked;
-    markQuestion(
-      {
-        done: newChecked,
-        q_id: question.q_id,
-        difficulty: 0,
-      },
-      onAuthFail,
-    );
-    setChecked(newChecked);
-    if (!newChecked) {
-      setCompleted(completed - 1);
-    } else {
-      setCompleted(completed + 1);
-    }
+    const mark = async () => {
+      const newChecked = event.target.checked;
+      setChecked(newChecked);
+      await markQuestion(
+        {
+          done: newChecked,
+          q_id: question.q_id,
+          difficulty: 0,
+        },
+        onAuthFail,
+      );
+      await loadStats();
+    };
+    mark();
   };
 
   const handleStarClick = () => {

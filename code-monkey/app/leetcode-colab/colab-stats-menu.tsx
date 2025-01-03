@@ -1,9 +1,10 @@
 "use client";
 
-import { getGroupStats } from "@/lib/api/group/getGroupStat";
-import getUsers from "@/lib/api/users/getUsers";
+import QuestionType from "@/types/QuestionType";
 import UserType from "@/types/UserType";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useMemo } from "react";
+import { IoInformationCircleOutline } from "react-icons/io5";
 import {
   BarChart,
   Bar,
@@ -16,14 +17,20 @@ import {
 } from "recharts";
 
 interface ColabStatsMenuProps {
-  groupId: number;
-  completed: number;
+  groupStats?: StackGraphData[];
+  qsCount: number;
+  doneCount: number;
+  users: UserType[];
+  notDoneQuestions: QuestionType[];
 }
 
-const ColabStatsMenu = ({ groupId, completed }: ColabStatsMenuProps) => {
-  const [groupStats, setGroupStats] = useState();
-  const [users, setUsers] = useState<UserType[]>([]);
-
+const ColabStatsMenu = ({
+  doneCount,
+  qsCount,
+  notDoneQuestions,
+  groupStats,
+  users,
+}: ColabStatsMenuProps) => {
   const colors = [
     "#f87171", // red-400
     "#fb923c", // orange-400
@@ -35,54 +42,93 @@ const ColabStatsMenu = ({ groupId, completed }: ColabStatsMenuProps) => {
     "#f472b6", // pink-400
   ];
 
-  useEffect(() => {
-    const loadStats = async () => {
-      const myData = await getGroupStats(groupId);
-      setGroupStats(myData ?? []);
-
-      const userData = await getUsers(groupId, () => {});
-      setUsers(userData ?? []);
-    };
-    loadStats();
-  }, [groupId, completed]);
+  const completeness = useMemo(() => {
+    if (qsCount === 0) return 0;
+    return parseFloat(((doneCount / qsCount) * 100).toFixed(2));
+  }, [doneCount, qsCount]);
 
   return (
-    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary pb-4 pt-4 shadow lg:h-[95%] lg:min-w-[20rem]">
-      <div className={`list-none pr-4 text-sm font-medium text-fontMenu`}>
-        <h1 className="ml-6 font-bold">Statistics</h1>
-        <hr className="ml-4" />
-        <div className="flex justify-center">
-          <div className="mt-4 h-[20rem] w-[20rem]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={500}
-                height={300}
-                data={groupStats}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="done_date" />
-                <YAxis
-                  tickFormatter={(value) => Math.round(value).toString()}
-                />
-                <Tooltip />
-                <Legend />
-                {users.map((user, i) => (
-                  <Bar
-                    key={user.id}
-                    dataKey={user.username}
-                    stackId="a"
-                    fill={colors[i % colors.length]}
+    <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary p-6 pb-4 shadow lg:h-[95%] lg:min-w-[20rem]">
+      <div className="list-none text-sm font-medium text-fontMenu">
+        <div className="rounded-lg border-2 border-dashed p-5">
+          <h1 className="font-bold">Group Statistics</h1>
+          <hr />
+          <div className="flex justify-center">
+            <div className="mt-4 h-[20rem] w-[20rem]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  width={500}
+                  height={300}
+                  data={groupStats}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="done_date" />
+                  <YAxis
+                    tickFormatter={(value) => Math.round(value).toString()}
                   />
-                ))}
-              </BarChart>
-            </ResponsiveContainer>
+                  <Tooltip />
+                  <Legend />
+                  {users.map((user, i) => (
+                    <Bar
+                      key={user.id}
+                      dataKey={user.username}
+                      stackId="a"
+                      fill={colors[i % colors.length]}
+                    />
+                  ))}
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
+        </div>
+        <div className="mt-6 rounded-lg border-2 border-dashed p-5">
+          <div className="flex items-center gap-2 font-bold">
+            <h1>Weekly Goal</h1>
+            <span>
+              <div className="group relative">
+                <IoInformationCircleOutline className="text-lg" />
+                <span className="absolute left-1/2 z-10 mx-auto mt-2 w-[150px] rounded-md bg-gray-800 p-4 text-sm text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">
+                  Indicates how many questions you solved that are posted within
+                  this week
+                </span>
+              </div>
+            </span>
+          </div>
+          <hr />
+          <div className="mt-2">
+            <div className="flex justify-between">
+              <div>
+                {doneCount} / {qsCount}
+              </div>
+              <div>{completeness}</div>
+            </div>
+            <div className="mb-5 h-2 overflow-hidden rounded-full bg-gray-200">
+              <div
+                className="h-2 rounded-full bg-red-400 duration-200 ease-in"
+                style={{ width: `${completeness}%` }}
+              >
+                <div className="h-full w-full translate-x-full transform bg-gray-200"></div>
+              </div>
+            </div>
+          </div>
+          {notDoneQuestions.map((question, i) => (
+            <Link href={question.link} target="_blank" key={question.q_id}>
+              <div className="group relative flex">
+                <button className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {i + 1}. {question.name}
+                </button>
+                <span className="absolute top-5 scale-0 rounded bg-gray-800 p-2 text-xs text-white transition-all group-hover:scale-100">
+                  {question.name}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

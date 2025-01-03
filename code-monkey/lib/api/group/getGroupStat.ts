@@ -8,10 +8,10 @@ export const getGroupStats = async (groupId: number) => {
     const json = await request(
       "GET",
       `/groups/get-group-stats?${searchParams.toString()}`,
-      true
+      true,
     );
 
-    return json.data;
+    return json;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
