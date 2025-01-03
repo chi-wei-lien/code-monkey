@@ -26,7 +26,6 @@ const LeetCodeColabPage = () => {
   const [qNameQuery, setQNameQuery] = useState("");
   const [queryNotCompleted, setQueryNotCompleted] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number>();
-  // const [completed, setCompleted] = useState(0);
   const [userDropdownText, setUserDropdownText] = useState("Posted By");
   const [users, setUsers] = useState<UserType[]>([]);
 
@@ -207,14 +206,6 @@ const LeetCodeColabPage = () => {
   useEffect(() => {
     loadStats();
   }, [params.groupId, loadStats]);
-
-  // useEffect(() => {
-  //   const loadStats = async () => {
-  //     const statData = await getGroupStats(parseInt(params.groupId));
-  //     setGroupStats(statData.stack_graph_data ?? []);
-  //   };
-  //   loadStats();
-  // }, [params.groupId, doneCount]);
 
   const handleAddQuestion = () => {
     router.push(`/leetcode-colab/${params.groupId}/add-question`);

@@ -9,7 +9,6 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import React from "react";
-// import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const ColabMenu = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
@@ -55,14 +54,6 @@ const ColabMenu = () => {
               </div>
             ))}
           {!isLoggedIn && <div>Sign in to view your groups!</div>}
-          <div className="w-[20rem]">
-            {/* <DotLottieReact
-              src="https://lottie.host/fa84cd99-e943-4b50-acd4-e41e1324f6df/QlA8TUWh74.lottie"
-              loop
-              autoplay
-              speed={2}
-            /> */}
-          </div>
         </div>
       </div>
     </div>
