@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
 import React from "react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+// import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const ColabMenu = () => {
   const [groups, setGroups] = useState<GroupType[]>([]);
