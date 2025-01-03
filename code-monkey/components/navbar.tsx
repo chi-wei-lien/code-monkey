@@ -33,7 +33,7 @@ const Navbar = () => {
         <li>
           <Link
             href="/interview-guide"
-            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-violet-500"
+            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-red-400"
           >
             <FaCode />
             Interview Guide
@@ -42,7 +42,7 @@ const Navbar = () => {
         <li>
           <Link
             href="/leetcode-colab"
-            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-violet-500"
+            className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-red-400"
           >
             <SiInternetcomputer />
             LeetCode Colab
