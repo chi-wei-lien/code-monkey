@@ -228,6 +228,19 @@ const LeetCodeColabPage = () => {
 
   const handlePageSizeChange = (newPageSize: number) => {
     setPageSize(newPageSize);
+    setPageNumber(1);
+    getQuestionsWrapper(
+      qNameQuery,
+      queryNotCompleted,
+      newPageSize,
+      false,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      userId,
+      selectedUser,
+    );
   };
 
   return (
@@ -312,7 +325,7 @@ const LeetCodeColabPage = () => {
           </div>
         </div>
         <div className="flex w-full justify-center">
-          <div className="relative max-h-[500px] w-fit overflow-y-scroll rounded-lg bg-themeBrown shadow-sm ring-1 ring-gray-300">
+          <div className="lg:overflow-y-none relative max-h-[500px] w-fit overflow-y-scroll rounded-lg bg-themeBrown shadow-sm ring-1 ring-gray-300 lg:max-h-none">
             <table className="">
               <thead className="bg-themeBrown">
                 <tr>
