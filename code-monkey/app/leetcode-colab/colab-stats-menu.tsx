@@ -53,39 +53,33 @@ const ColabStatsMenu = ({
         <div className="rounded-lg border-2 border-dashed p-5">
           <h1 className="font-bold">Group Statistics</h1>
           <hr />
-          <div className="flex justify-center">
-            <div className="mt-4 h-[20rem] w-[20rem]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  width={500}
-                  height={300}
-                  data={groupStats}
-                  margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="done_date" />
-                  <YAxis
-                    tickFormatter={(value) => Math.round(value).toString()}
-                  />
-                  <Tooltip />
-                  <Legend />
-                  {users.map((user, i) => (
-                    <Bar
-                      key={user.id}
-                      dataKey={user.username}
-                      stackId="a"
-                      fill={colors[i % colors.length]}
-                    />
-                  ))}
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              width={500}
+              height={300}
+              data={groupStats}
+              margin={{
+                top: 30,
+                right: 0,
+                left: 0,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="done_date" />
+              <YAxis tickFormatter={(value) => Math.round(value).toString()} />
+              <Tooltip />
+              <Legend />
+              {users.map((user, i) => (
+                <Bar
+                  key={user.id}
+                  dataKey={user.username}
+                  stackId="a"
+                  fill={colors[i % colors.length]}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
         </div>
         <div className="mt-6 rounded-lg border-2 border-dashed p-5">
           <div className="flex items-center gap-2 font-bold">
