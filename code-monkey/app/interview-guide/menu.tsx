@@ -120,7 +120,7 @@ const Menu = () => {
       post._raw.flattenedPath.split("/"),
       0,
       post.title,
-      `/algo-guide/${post._raw.flattenedPath}`,
+      `/interview-guide/${post._raw.flattenedPath}`,
       post.sort_id,
     );
     return [post.title, post._raw.flattenedPath];

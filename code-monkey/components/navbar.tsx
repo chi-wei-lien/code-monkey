@@ -32,11 +32,11 @@ const Navbar = () => {
       <ul className="flex flex-col gap-3 rounded-lg bg-cardPrimary font-medium lg:mt-0 lg:flex-row lg:gap-6">
         <li>
           <Link
-            href="/algo-guide"
+            href="/interview-guide"
             className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-violet-500"
           >
             <FaCode />
-            Algo Guide
+            Interview Guide
           </Link>
         </li>
         <li>
