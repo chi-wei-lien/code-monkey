@@ -4,6 +4,7 @@ from questions.models import Question, MarkQuestion, LikeQuestion
 from groups.models import Group
 from users.models import User
 from questions.serializers import QuestionSerializer, MarkQuestionSerializer, LikeQuestionSerializer
+from groups.models import PartOfGroup
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.forms.models import model_to_dict
@@ -18,6 +19,7 @@ import sys
 from django.utils.dateparse import parse_datetime
 from django.db.models.functions import TruncSecond
 from django.db import transaction
+import math
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -42,7 +44,9 @@ def get_questions(request):
     completed = request.GET.get('completed')
     user = request.user if request.user.is_authenticated else None
 
-    # TODO: check if the use belong to the group
+    if not PartOfGroup.objects.filter(user_id=request.user, group_id=group_id).exists():
+        print("doesn't belong")
+        return JsonResponse({'error': 'User not part of the group'}, status=400)
 
     # pagination params
     page_size = int(request.GET.get('page_size', 10))
@@ -64,14 +68,7 @@ def get_questions(request):
         if not first_posted_time:
             return JsonResponse({'error': 'Invalid first_posted_time format (use ISO format)'}, status=400)
 
-
     query = Q(group_id=group_id)
-    if not take_lower and last_posted_time and last_q_id:
-        query &= (Q(posted_time__lt=last_posted_time) | 
-                    (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
-    elif take_lower and first_posted_time and first_q_id:
-        query &= (Q(posted_time__gt=first_posted_time) | 
-                    (Q(posted_time=first_posted_time) & Q(q_id__lt=first_q_id)))
 
     if q_id:
         query &= Q(q_id=q_id)
@@ -84,7 +81,20 @@ def get_questions(request):
             completed_questions = MarkQuestion.objects.filter(user_id=user, done=True).values_list('q_id', flat=True)
             query &= ~Q(q_id__in=completed_questions)
 
-    questions = Question.objects.filter(query).order_by('-posted_time', 'q_id')
+    questions = Question.objects.filter(query)
+    total_questions_count = len(questions)
+    number_of_pages = math.ceil(total_questions_count / page_size)
+    
+    page_query = Q()
+
+    if not take_lower and last_posted_time and last_q_id:
+        page_query &= (Q(posted_time__lt=last_posted_time) | 
+                    (Q(posted_time=last_posted_time) & Q(q_id__gt=last_q_id)))
+    elif take_lower and first_posted_time and first_q_id:
+        page_query &= (Q(posted_time__gt=first_posted_time) | 
+                    (Q(posted_time=first_posted_time) & Q(q_id__lt=first_q_id)))
+
+    questions = questions.filter(page_query).order_by('-posted_time', 'q_id')
     questions_result_len = len(questions)
     questions_len = min(questions_result_len, page_size)
 
@@ -106,7 +116,9 @@ def get_questions(request):
         'last_q_id': last_q_id_response, 
         'first_q_id': first_q_id_response, 
         'last_posted_time': last_posted_time_response,
-        'first_posted_time': first_posted_time_response
+        'first_posted_time': first_posted_time_response,
+        'total_q_count': total_questions_count,
+        'number_of_pages': number_of_pages
     })
 
 @api_view(['GET'])
