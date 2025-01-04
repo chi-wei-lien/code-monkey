@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 const CustomH1 = (props: { props: ReactNode }) => (
   <h1
     style={{
-      marginTop: 40,
+      marginTop: 30,
       marginBottom: 10,
       fontSize: "1.4rem",
       color: "#535151",
