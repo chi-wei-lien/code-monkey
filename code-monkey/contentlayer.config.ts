@@ -14,7 +14,8 @@ export const Post = defineDocumentType(() => ({
     date: { type: "date", required: true },
     sort_id: { type: "number", required: true },
     freq: { type: "string", required: false },
-    done: { type: "boolean", required: false },
+    show_toc: { type: "boolean", required: false, default: true },
+    done: { type: "boolean", required: false, default: true },
   },
   computedFields: {
     url: {
@@ -49,7 +50,7 @@ export const Post = defineDocumentType(() => ({
               text: content,
               slug: content ? slugger.slug(content) : undefined,
             };
-          }
+          },
         );
         return headings;
       },

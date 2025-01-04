@@ -12,6 +12,7 @@ import CustomImage from "@/components/mdx/custom-image";
 import HelpMemorizeMessage from "@/components/mdx/help-memorize-message";
 import PracticeProblems from "@/components/mdx/practice-problems";
 import FreqLabel from "@/components/freq-label";
+import Author from "@/components/mdx/author";
 
 const TestPage = () => {
   const params = useParams<{ slug: string[] }>();
@@ -76,28 +77,34 @@ const TestPage = () => {
                 title="GitHub"
               />
             </div>
-            <div className="rounded-md border-2 border-dashed border-sky-500 p-4">
-              <div className="text-lg font-bold text-themeBrown">
-                On this page
+            {post.show_toc && (
+              <div className="rounded-md border-2 border-dashed border-sky-500 p-4">
+                <div className="text-lg font-bold text-themeBrown">
+                  On this page
+                </div>
+                <div>
+                  {post.headings.map(
+                    (heading: {
+                      slug: string;
+                      text: string;
+                      level: number;
+                    }) => {
+                      return (
+                        <div key={heading.slug}>
+                          <a
+                            className="data-[level=four]:pl-6 data-[level=three]:pl-4 data-[level=two]:pl-2"
+                            data-level={heading.level}
+                            href={`#${heading.slug}`}
+                          >
+                            {heading.text}
+                          </a>
+                        </div>
+                      );
+                    },
+                  )}
+                </div>
               </div>
-              <div>
-                {post.headings.map(
-                  (heading: { slug: string; text: string; level: number }) => {
-                    return (
-                      <div key={heading.slug}>
-                        <a
-                          className="data-[level=four]:pl-6 data-[level=three]:pl-4 data-[level=two]:pl-2"
-                          data-level={heading.level}
-                          href={`#${heading.slug}`}
-                        >
-                          {heading.text}
-                        </a>
-                      </div>
-                    );
-                  },
-                )}
-              </div>
-            </div>
+            )}
             <div className={`${post.done == false ? "hidden" : "block"}`}>
               <MDXContent
                 components={useMDXComponents({
@@ -106,6 +113,7 @@ const TestPage = () => {
                   CustomImage,
                   HelpMemorizeMessage,
                   PracticeProblems,
+                  Author,
                 })}
               />
             </div>

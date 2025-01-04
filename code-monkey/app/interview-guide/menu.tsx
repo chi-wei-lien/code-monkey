@@ -57,17 +57,6 @@ const MenuEntry = (currNode: DirNode) => {
 
   const indent = currNode.level > 0 ? 0.9 : 0;
 
-  // for (const entry in currNode.children) {
-  //   if (currNode.children[entry]) {
-  //     entryElements.push(
-  //       <div style={{ paddingLeft: `${indent}rem` }}>
-  //         <a>{entry}</a>
-  //         {MenuEntry(currNode.children[entry])}
-  //       </div>
-  //     );
-  //   }
-  // }
-
   const sortedEntries = Object.entries(currNode.children).sort(
     ([keyA], [keyB]) => {
       const numA = parseInt(keyA.split(" ")[0], 10);
@@ -79,7 +68,10 @@ const MenuEntry = (currNode: DirNode) => {
   for (const [entry, childNode] of sortedEntries) {
     if (childNode) {
       entryElements.push(
-        <div style={{ paddingLeft: `${indent}rem` }}>
+        <div
+          className="hover:text-red-400"
+          style={{ paddingLeft: `${indent}rem` }}
+        >
           <a>{entry.replace(/^\d+\s/, "")}</a>
           {MenuEntry(childNode)}
         </div>,
@@ -89,7 +81,11 @@ const MenuEntry = (currNode: DirNode) => {
 
   for (const [, title, url] of currNode.files) {
     fileElements.push(
-      <a href={url} style={{ paddingLeft: `${indent}rem` }}>
+      <a
+        href={url}
+        className="hover:text-red-400"
+        style={{ paddingLeft: `${indent}rem` }}
+      >
         {title}
       </a>,
     );
@@ -98,10 +94,14 @@ const MenuEntry = (currNode: DirNode) => {
   return (
     <>
       {fileElements.map((fileElement, i) => (
-        <div key={`level-${currNode.level}-file-${i}`}>{fileElement}</div>
+        <div className="pt-1" key={`level-${currNode.level}-file-${i}`}>
+          {fileElement}
+        </div>
       ))}
       {entryElements.map((entryElement, i) => (
-        <div key={`level-${currNode.level}-entry-${i}`}>{entryElement}</div>
+        <div className="pt-1" key={`level-${currNode.level}-entry-${i}`}>
+          {entryElement}
+        </div>
       ))}
     </>
   );
@@ -131,7 +131,7 @@ const Menu = () => {
       <div className={`list-none pr-4 text-sm font-medium text-fontMenu`}>
         <h1 className="ml-6 font-bold">Contents</h1>
         <hr className="ml-4" />
-        <div className="ml-6 mt-2 pb-5">{MenuEntry(root)}</div>
+        <div className="ml-6 mt-1 pb-5">{MenuEntry(root)}</div>
       </div>
     </div>
   );
