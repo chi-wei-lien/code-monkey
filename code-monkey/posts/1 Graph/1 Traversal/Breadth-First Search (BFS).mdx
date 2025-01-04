@@ -1,0 +1,128 @@
+---
+title: Breadth-First Search
+date: 2024-1-4
+sort_id: 1
+freq: fundamental
+---
+
+Breadth-First Search (BFS) is a traversal algorithm that explores a graph layer by layer. This makes it useful for finding the shortest path between two nodes, as long as all edge weights are equal and there are no negative-weight edges. If that sounds confusing, don’t worry—we'll cover more advanced shortest-path algorithms in the future.
+
+If you're new to BFS, here are two excellent resources to get started:
+
+- [Breadth First Search](https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/tutorial/) by _hackerearth_
+- [Breadth First Search](https://cp-algorithms.com/graph/breadth-first-search.html) by _Algorithms for Competitive Programming_
+
+<HelpMemorizeMessage />
+
+<br />
+
+<CustomImage
+  src="/images/bfs_demo.png"
+  alt="bfs_demo.png"
+  height={231}
+  width={500}
+  caption="The adjacency list in the template will be based on this figure"
+/>
+
+# BFS Template
+
+```python
+from collections import deque
+
+""" Example adjacency list """
+adj_list = {
+    0: [1, 2],  # Node 1 and 2 are adjacent to node 0
+    1: [3],
+    2: [3, 4],
+    3: [5],
+    4: [5],
+    5: []
+}
+
+def bfs(adj_list):
+    bfs_queue = deque([0])  # Initialize the queue with the starting node
+    visited = set([0])
+
+    while bfs_queue:
+        layer_len = len(bfs_queue)
+        for _ in range(layer_len):
+            front = bfs_queue.popleft()
+
+            """ Add your custom logic here; in this example, we print the node value """
+            print(front, end=" ")
+
+            for neighbor in adj_list[front]:
+                if neighbor not in visited:
+                    bfs_queue.append(neighbor)
+                    visited.add(neighbor)
+
+        print()  # Print a new line after processing each layer
+
+bfs(adj_list)
+
+""" Output:
+0
+1 2
+3 4
+5
+"""
+```
+
+# BFS Template (Finding Shortest Path)
+
+```python
+from collections import deque
+
+""" Example adjacency list """
+adj_list = {
+    0: [1, 2],
+    1: [3],
+    2: [3, 4],
+    3: [5],
+    4: [5],
+    5: []
+}
+
+def bfs_shortest_path(adj_list, a, b):  # Find the shortest path between nodes a and b
+    bfs_queue = deque([a])  # Initialize the queue with the starting node
+    visited = set([a])
+    length = 0
+
+    while bfs_queue:
+        layer_len = len(bfs_queue)
+        for _ in range(layer_len):
+            front = bfs_queue.popleft()
+
+            if front == b:
+                return length
+
+            for neighbor in adj_list[front]:
+                if neighbor not in visited:
+                    bfs_queue.append(neighbor)
+                    visited.add(neighbor)
+
+        length += 1
+
+    return -1  # Return -1 if node a cannot reach node b
+
+print(bfs_shortest_path(adj_list, 0, 5))
+
+""" Output:
+3
+"""
+```
+
+<ImportantMessage>
+
+Key Points about BFS and this Template:
+
+- Some BFS templates omit the <InlineCode>layer_len</InlineCode> variable and its associated loop. However, this variable is crucial for distinguishing layers. Without it, we wouldn't know when to increment the <InlineCode>length</InlineCode> variable (e.g., <InlineCode>length += 1</InlineCode>).
+- The time complexity of BFS is <InlineCode>O(V + E)</InlineCode>, where <InlineCode>V</InlineCode> is the total number of nodes, and <InlineCode>E</InlineCode> is the total number of edges.
+
+</ImportantMessage>
+
+## How to Memorize
+
+- Breadth-First Search explores nodes layer by layer.
+- A **queue** is used to manage nodes during traversal.
+- Use a variable like <InlineCode>layer_len</InlineCode> to track the number of nodes in the current layer, helping you identify when the layer ends.
