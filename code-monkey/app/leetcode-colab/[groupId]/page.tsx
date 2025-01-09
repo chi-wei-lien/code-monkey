@@ -163,7 +163,7 @@ const LeetCodeColabPage = () => {
 
   useEffect(() => {
     const onAuthFail = () => {
-      redirect("sign-in");
+      redirect("/sign-in");
     };
     const { username, userId } = getCurrUserInfo(onAuthFail) || {};
     if (username) {

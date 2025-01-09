@@ -16,7 +16,7 @@ const ColabMenu = () => {
 
   useEffect(() => {
     const onAuthFail = () => {
-      redirect("sign-in");
+      redirect("/sign-in");
     };
 
     const loadGroups = async () => {
