@@ -1,0 +1,87 @@
+---
+title: Longest Increasing Subsequence
+date: 2025-2-6
+sort_id: 1
+freq: fundamental
+done: true
+---
+
+This problem can be found on LeetCode: 300. Longest Increasing Subsequence. I encourage you to read the problem statement and try solving it on your own before continuing with this post.
+
+# Solution 1: Dynamic Programming
+
+```python
+"""
+Time Complexity: O(n^2)
+Space Complexity: O(n)
+"""
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        n = len(nums)
+        dp = [1] * n
+        max_len = 0
+        for i in range(n):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    dp[i] = max(dp[j] + 1, dp[i])
+            max_len = max(max_len, dp[i])
+        return max_len
+```
+
+If you're familiar with dynamic programming (DP), this solution might be intuitive. The key idea is to maintain a dp array where:
+
+<InlineCode>dp[i]</InlineCode> stores the length of the longest increasing
+subsequence that ends at index <InlineCode>i</InlineCode>. To compute
+<InlineCode>dp[i]</InlineCode>, we iterate over all previous indices
+<InlineCode>j</InlineCode> and check if
+<InlineCode>nums[i] > nums[j]</InlineCode>. If so, we consider extending the
+subsequence ending at <InlineCode>j</InlineCode> by including
+<InlineCode>nums[i]</InlineCode>, giving a candidate length of
+<InlineCode>dp[j] + 1</InlineCode>. We update
+<InlineCode>dp[i]</InlineCode> by taking the maximum of these candidate lengths.
+Finally, the result is the maximum value in the dp array.
+
+# Solution 2: Building Sequence (Greedy)
+
+```python
+"""
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+"""
+def lengthOfLIS(self, nums: List[int]) -> int:
+    lis = []
+    n = len(nums)
+    for i in range(n):
+        l = 0
+        r = len(lis) - 1
+        res = -1
+        while l <= r:
+            mid = l + (r - l) // 2
+            if lis[mid] >= nums[i]:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+        if res == -1 or res >= len(lis):
+            lis.append(nums[i])
+        else:
+            lis[res] = nums[i]
+    return len(lis)
+```
+
+This approach is more challenging to come up with. The idea is to greedily build a sequence while ensuring we maintain the potential for the longest increasing subsequence (LIS). Instead of maintaining a valid LIS at every step, we build a sequence that helps us determine the correct length.
+
+# Key Insight (Greedy Property)
+
+> If we encounter a smaller element, replacing a larger element with it allows for more room to build a longer subsequence.
+
+For example, consider the sequence <InlineCode>[0, 5, 2, ...]</InlineCode>. Keeping 5 would limit our ability to extend the sequence if a 3 appears later. Instead, replacing 5 with 2 increases the flexibility of the sequence.
+
+Consider the array <InlineCode>[1, 4, 5, 2, 3]</InlineCode>.
+
+We process elements one by one, maintaining an increasing sequence that may not be a valid LIS but helps track the potential length.
+After processing 1, 4, 5, our sequence is <InlineCode>[1, 4, 5]</InlineCode>.
+When we encounter 2, we replace 4 with 2, giving <InlineCode>[1, 2, 5]</InlineCode>. Although 2 originally appears after 5 in the input, this replacement doesn't affect the sequence length.
+When 3 arrives, it replaces 5, forming <InlineCode>[1, 2, 3]</InlineCode>.
+If a 6 appears next, we simply append it, forming <InlineCode>[1, 2, 3, 6]</InlineCode>.
+Since we always maintain a valid sequence length while making these replacements, the length of the incr at the end gives the correct answer.
