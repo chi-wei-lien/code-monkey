@@ -20,3 +20,9 @@ class PartOfGroup(models.Model):
 
     def __str__(self):
         return f"{self.user_id} is part of group {self.group_id}"
+
+class GroupInvite(models.Model):
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='created_group_invites')
+    to_user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='received_group_invites')
+    group_id = models.ForeignKey('groups.Group', on_delete=models.CASCADE)
+    created_at = models.DateTimeField()

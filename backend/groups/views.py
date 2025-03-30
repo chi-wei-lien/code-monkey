@@ -1,5 +1,5 @@
-from groups.models import Group, PartOfGroup
-from groups.serializers import GroupSerializer
+from groups.models import Group, PartOfGroup, GroupInvite
+from groups.serializers import GroupSerializer, GroupInviteSerializer
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
@@ -109,3 +109,23 @@ def get_statistics(request):
     qs_count = Question.objects.count()
     mark_qs_count = MarkQuestion.objects.filter(user_id=request.user.id, done=True).count()
     return JsonResponse({'question_count': qs_count, 'completed_count': mark_qs_count})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def invite_to_group(request):
+    group_id = request.data['group_id']
+    to_user = request.data['u_id']
+    
+    if not User.objects.filter(id=to_user).exists():
+        return JsonResponse({'error': 'user does not exist'})
+
+    GroupInvite.objects.create(
+        to_user=User.objects.get(id=to_user),
+        created_by=request.user,
+        created_at=timezone.now().replace(microsecond=0),
+    )
+
+    gi_serializer = GroupInviteSerializer(GroupInvite, many=True)
+
+    return JsonResponse({'data': gi_serializer.data}, status=201)
