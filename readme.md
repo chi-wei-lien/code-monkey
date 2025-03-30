@@ -15,7 +15,7 @@ Originally, this project was much cooler—it had a feature where users could sh
 
 # Project Structure
 
-- Frontend: Next.js + TypeScript, Contentlayer, MDX
+- Frontend: Next.js + TypeScript, [Contentlayer](https://contentlayer.dev/), [MDX](https://mdxjs.com/)
 - Backend (removed): Python, Django, PostgreSQL
 
 # How to Contribute
@@ -27,6 +27,9 @@ If you find something that seems off or could be explained better, feel free to 
 Run the development server with the following commands:
 
 ```sh
+# Install dependencies
+npm install
+
 # Build the app
 npm run build
 
