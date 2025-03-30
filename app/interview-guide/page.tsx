@@ -1,9 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Page = () => {
   const router = useRouter();
-  router.push("/interview-guide/Getting%20Started");
+  useEffect(() => {
+    router.push("/interview-guide/Getting%20Started");
+  }, [router]);
   return <div></div>;
 };
 
