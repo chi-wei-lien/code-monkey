@@ -32,7 +32,7 @@ const ColabMenu = () => {
 
   return (
     <div className="no-scrollbar min-h-28 overflow-y-scroll rounded-md bg-cardPrimary p-6 shadow lg:h-[95%] lg:min-w-[20rem]">
-      <div className={`list-none text-sm font-medium text-fontMenu`}>
+      <div className="list-none text-sm font-medium text-fontMenu">
         <div className="flex items-center justify-between gap-2">
           <h1 className="font-bold">Groups</h1>
           <BlackButton onClick={() => redirect("/leetcode-colab/create-group")}>

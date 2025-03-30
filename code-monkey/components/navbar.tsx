@@ -39,7 +39,7 @@ const Navbar = () => {
             Interview Guide
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             href="/leetcode-colab"
             className="flex items-center justify-end gap-3 rounded text-themeDarkBrown hover:text-red-400"
@@ -50,7 +50,7 @@ const Navbar = () => {
         </li>
         <li>
           <AuthButton isLoggedIn={isLoggedIn} username={username} />
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

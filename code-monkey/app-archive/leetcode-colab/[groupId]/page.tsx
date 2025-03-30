@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import getQuestions from "@/lib/api/question/getQuestions";
 import QuestionType from "@/types/QuestionType";
 import TableRow from "../table-row";
-import { PrimaryButton } from "@/components/buttons";
+import { BlackButton, PrimaryButton } from "@/components/buttons";
 import { redirect, useParams, useRouter } from "next/navigation";
 import { getCurrUserInfo } from "@/lib/auth";
 import UserType from "@/types/UserType";
@@ -247,11 +247,13 @@ const LeetCodeColabPage = () => {
     <div className="flex h-full flex-col justify-between gap-5 lg:flex-row">
       <div className="h-fit overflow-y-scroll rounded-md bg-cardPrimary p-10 shadow lg:h-[95%] lg:w-full">
         {group && (
-          <h1 className="pb-5 pt-0 text-xl font-bold text-themeBrown">
+          <h1 className="pb-3 pt-0 text-xl font-bold text-themeBrown">
             {group.name}
           </h1>
         )}
-        <div className="flex w-full flex-wrap items-center justify-between"></div>
+        <div className="pb-5">
+          <BlackButton>Invite</BlackButton>
+        </div>
         <div className="mb-3 flex flex-wrap gap-2">
           <div className="w-76 relative rounded-lg">
             <label className="sr-only">Search</label>

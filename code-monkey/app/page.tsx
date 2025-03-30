@@ -25,9 +25,9 @@ export default function Home() {
             <PrimaryButton onClick={() => router.push("/interview-guide")}>
               Interview Guide
             </PrimaryButton>
-            <BlackButton onClick={() => router.push("/leetcode-colab")}>
+            {/* <BlackButton onClick={() => router.push("/leetcode-colab")}>
               Leetcode Colab
-            </BlackButton>
+            </BlackButton> */}
           </div>
           <div className="mt-3 flex w-full justify-center">
             <div className="h-52 w-52">

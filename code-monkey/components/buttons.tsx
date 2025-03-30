@@ -34,7 +34,7 @@ export const BlackButton = (props: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`${rest.className} rounded-lg border bg-themeBrown px-2 py-1 text-sm font-medium text-white hover:bg-themeDarkBrown focus:outline-none focus:ring-4 focus:ring-red-300`}
+      className={`${rest.className} rounded-lg border bg-themeBrown px-2 py-1 text-sm font-medium text-white hover:bg-themeDarkBrown focus:outline-none`}
       {...rest}
     >
       {children}

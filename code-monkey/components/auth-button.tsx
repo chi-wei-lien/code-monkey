@@ -2,6 +2,7 @@
 
 import logout from "@/lib/api/auth/logout";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
@@ -13,6 +14,7 @@ interface AuthButtonProps {
 const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -58,8 +60,12 @@ const AuthButton = ({ isLoggedIn, username }: AuthButtonProps) => {
               aria-labelledby="dropdownInformationButton"
             >
               <li>
-                <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                  Dashboard
+                <a
+                  href="#"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => router.push("/notifications")}
+                >
+                  Notification
                 </a>
               </li>
               <li>
